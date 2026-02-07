@@ -29,19 +29,22 @@ const InlineRichText = ({ content, onChange }) => {
     <div className='inline-rich-text'>
       <div className='toolbar'>
         <button
-          onClick={() => editor.chain().focus().toggleBold().run()}
+          onClick={() => editor?.chain().focus().toggleBold().run()}
+          disabled={!editor}
           className={editor?.isActive('bold') ? 'active' : ''}
         >
           Bold
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleItalic().run()}
+          onClick={() => editor?.chain().focus().toggleItalic().run()}
+          disabled={!editor}
           className={editor?.isActive('italic') ? 'active' : ''}
         >
           Italic
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleUnderline().run()}
+          onClick={() => editor?.chain().focus().toggleUnderline().run()}
+          disabled={!editor}
           className={editor?.isActive('underline') ? 'active' : ''}
         >
           Underline
