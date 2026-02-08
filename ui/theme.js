@@ -5,10 +5,12 @@ export function createAppTheme (options = {}) {
   return createTheme({
     palette: {
       primary: {
-        main: options.primaryColour
+        main: options.primaryColour,
+        contrastText: 'white'
       },
       secondary: {
-        main: options.secondaryColour
+        main: options.secondaryColour,
+        contrastText: 'white'
       },
       error: {
         main: '#ff5567'

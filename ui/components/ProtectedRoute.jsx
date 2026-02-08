@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom'
 import { Box, CircularProgress } from '@mui/material'
 import { useAuth } from '../contexts/AuthContext'
+import NavBar from './NavBar'
 
 export default function ProtectedRoute ({ children, requiredScopes = null }) {
   const { isAuthenticated, isLoading, hasScopes } = useAuth()
@@ -38,5 +39,10 @@ export default function ProtectedRoute ({ children, requiredScopes = null }) {
     )
   }
 
-  return children || <Outlet />
+  return children || (
+    <>
+      <NavBar />
+      <Outlet />
+    </>
+  )
 }
