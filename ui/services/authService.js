@@ -1,8 +1,6 @@
-import { getConfig } from '../config.js'
-
 class AuthService {
   async fetch (endpoint, options = {}) {
-    const response = await fetch(`${getConfig('apiUrl')}/auth/${endpoint}`, {
+    const response = await fetch(`/api/auth/${endpoint}`, {
       method: 'POST',
       credentials: 'include',
       ...options
