@@ -1,19 +1,19 @@
 import React from 'react'
-import { Box, Container, Typography } from '@mui/material'
+import { Box, Container } from '@mui/material'
+import PageBar from '../components/PageBar'
 
 function AboutPage () {
   return (
-    <Container>
-      <Box sx={{ mt: 4 }}>
-        <Typography variant='h3' gutterBottom>
-          About
-        </Typography>
-
-        <Box sx={{ mt: 3 }}>
-          Learn more about this application.
+    <>
+      <PageBar title='About' />
+      <Container>
+        <Box sx={{ mt: 4 }}>
+          <Box sx={{ mt: 3 }}>
+            Learn more about this application.
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </>
   )
 }
 

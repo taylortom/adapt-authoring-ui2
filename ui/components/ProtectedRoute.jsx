@@ -39,10 +39,10 @@ export default function ProtectedRoute ({ children, requiredScopes = null }) {
     )
   }
 
-  return children || (
+  return (
     <>
       <NavBar />
-      <Outlet />
+      {children || <Outlet />}
     </>
   )
 }
