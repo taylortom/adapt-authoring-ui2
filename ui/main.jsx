@@ -6,7 +6,7 @@ import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import { queryClient } from './services/queryClient'
 import { theme } from './theme'
-import { loadConfig } from './config'
+import { loadConfig } from './utils/config'
 import App from './App'
 import './index.css'
 
