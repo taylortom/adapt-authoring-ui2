@@ -5,6 +5,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Login from './pages/Login'
 import HomePage from './pages/HomePage'
 import AboutPage from './pages/AboutPage'
+import ContentPluginsPage from './pages/ContentPluginsPage'
 
 function App () {
   return (
@@ -17,6 +18,7 @@ function App () {
           <Route element={<ProtectedRoute />}>
             <Route path='/' element={<HomePage />} />
             <Route path='/about' element={<AboutPage />} />
+            <Route path='/contentplugins' element={<ContentPluginsPage />} />
           </Route>
           <Route path='*' element={<Navigate to='/' replace />} />
         </Routes>
