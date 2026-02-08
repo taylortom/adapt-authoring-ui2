@@ -74,6 +74,12 @@ export default function NavBar () {
           >
             About
           </MenuItem>
+          <MenuItem
+            onClick={() => handleNavigate('/contentplugins')}
+            selected={location.pathname === '/contentplugins'}
+          >
+            Content Plugins
+          </MenuItem>
         </Menu>
         <Typography variant='h6' sx={{ flexGrow: 1, cursor: 'pointer' }} onClick={() => navigate('/')}>
           {appTitle}
