@@ -2,11 +2,6 @@
 let configCache = null
 let configPromise = null
 
-const FALLBACK_CONFIG = {
-  apiUrl: 'http://localhost:3001/api',
-  wsUrl: 'ws://localhost:3001'
-}
-
 export async function loadConfig () {
   if (configCache) {
     return configCache
@@ -29,8 +24,7 @@ export async function loadConfig () {
     })
     .catch(error => {
       console.error('Failed to load config, using defaults:', error)
-      configCache = FALLBACK_CONFIG
-      return configCache
+      return {}
     })
 
   return configPromise
