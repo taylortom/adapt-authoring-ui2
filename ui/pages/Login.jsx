@@ -14,7 +14,8 @@ import {
 import { useAuth } from '../contexts/AuthContext'
 import { getConfig } from '../utils/config'
 
-import loginBg from '../assets/login_bg.jpg'
+import loginBg from '../assets/images/login_bg.jpg'
+import logo from '../assets/images/adapt-learning-logo-white.png'
 
 export default function Login () {
   const [email, setEmail] = useState('')
@@ -49,22 +50,30 @@ export default function Login () {
           marginTop: 8,
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
-          backgroundImage: `url(${loginBg})`
+          alignItems: 'center'
+        }}
+      >
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
         }}
       >
         <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
-          {getConfig('adapt-authoring-ui2.logoUrl') && (
-            <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-              <img
-                src={getConfig('adapt-authoring-ui2.logoUrl')}
-                alt={getConfig('adapt-authoring-ui2.appTitle') || 'Logo'}
-                style={{ maxHeight: 64, maxWidth: '100%', objectFit: 'contain' }}
-              />
-            </Box>
-          )}
+          <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+            <img
+              src={getConfig('adapt-authoring-ui2.logoUrl') || logo}
+              alt={getConfig('adapt-authoring-ui2.appTitle') || 'Logo'}
+              style={{ maxHeight: 150, maxWidth: '100%', objectFit: 'contain' }}
+            />
+          </Box>
           <Typography component='h1' variant='h4' align='center' gutterBottom>
-            {getConfig('adapt-authoring-ui2.appTitle') || 'Sign In'}
+            {getConfig('adapt-authoring-ui2.appTitle')}
+          </Typography>
+          <Typography component='h1' variant='h5' align='center' gutterBottom>
+            Sign In
           </Typography>
 
           {localError && (

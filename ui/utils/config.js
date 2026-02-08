@@ -1,4 +1,6 @@
 // Frontend configuration loaded from backend
+import packageJson from '../../package.json'
+
 let configCache = null
 let configPromise = null
 
@@ -34,6 +36,7 @@ export function getConfig (key) {
   if (!configCache) {
     throw new Error('Config not loaded. Call loadConfig() first.')
   }
+  if (!key.includes('.')) key = `${packageJson.name}.${key}`
   return configCache[key]
 }
 

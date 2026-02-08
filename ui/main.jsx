@@ -13,15 +13,13 @@ import './index.css'
 // Load config from backend before rendering app
 loadConfig().then(() => {
   const theme = createAppTheme({
-    primaryColour: getConfig('adapt-authoring-ui2.primaryColour'),
-    secondaryColour: getConfig('adapt-authoring-ui2.secondaryColour')
+    primaryColour: getConfig('primaryColour'),
+    secondaryColour: getConfig('secondaryColour')
   })
-
-  const appTitle = getConfig('adapt-authoring-ui2.appTitle')
+  const appTitle = getConfig('appTitle')
   if (appTitle) {
     document.title = appTitle
   }
-
   ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>

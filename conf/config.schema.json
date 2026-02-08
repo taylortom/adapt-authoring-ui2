@@ -18,20 +18,20 @@
       "description": "Primary palette colour for the UI theme (hex format)",
       "type": "string",
       "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$",
-      "default": "#1976d2",
+      "default": "#00dd95",
       "_adapt": { "isPublic": true }
     },
     "secondaryColour": {
       "description": "Secondary palette colour for the UI theme (hex format)",
       "type": "string",
       "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$",
-      "default": "#dc004e",
+      "default": "#34bee0",
       "_adapt": { "isPublic": true }
     },
     "logoUrl": {
       "description": "URL of the logo image displayed in the UI",
       "type": "string",
-      "default": "adapt-learning-logo-white.png",
+      "default": "",
       "_adapt": { "isPublic": true }
     },
     "appTitle": {

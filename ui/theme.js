@@ -24,7 +24,7 @@ export function createAppTheme (options = {}) {
       }
     },
     typography: {
-      fontFamily: 'Raleway, Arial'
+      fontFamily: 'Raleway Variable'
     },
     cssVariables: true
   })
