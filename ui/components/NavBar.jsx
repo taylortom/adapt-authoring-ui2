@@ -10,11 +10,12 @@ import { getConfig } from '../utils/config'
 export default function NavBar () {
   const navigate = useNavigate()
   const location = useLocation()
-  const { logout } = useAuth()
+  const { user, logout } = useAuth()
   const [navMenuAnchor, setNavMenuAnchor] = useState(null)
   const [userMenuAnchor, setUserMenuAnchor] = useState(null)
 
   const appTitle = getConfig('appTitle')
+  const userName = user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : user.email
 
   const handleLogout = async () => {
     await logout()
@@ -76,6 +77,9 @@ export default function NavBar () {
         </Menu>
         <Typography variant='h6' sx={{ flexGrow: 1, cursor: 'pointer' }} onClick={() => navigate('/')}>
           {appTitle}
+        </Typography>
+        <Typography variant='body2' sx={{ mr: 1 }}>
+          {userName}
         </Typography>
         <IconButton
           size='large'
