@@ -1,8 +1,12 @@
-import appConfig from '../../config/app.config.js'
+import { getConfig } from '../utils/config.js'
 
 class AuthService {
+  constructor () {
+    this.authUrl = `${getConfig('apiUrl')}/auth`
+  }
+
   async login (email, password, persistSession = false) {
-    const response = await fetch(`${appConfig.apiUrl}/auth/local`, {
+    const response = await fetch(`${this.authUrl}/local`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -20,7 +24,7 @@ class AuthService {
   }
 
   async logout () {
-    const response = await fetch(`${appConfig.apiUrl}/auth/disavow`, {
+    const response = await fetch(`${getConfig('apiUrl')}/disavow`, {
       method: 'POST',
       credentials: 'include'
     })
@@ -34,7 +38,7 @@ class AuthService {
   }
 
   async checkAuth () {
-    const response = await fetch(`${appConfig.apiUrl}/auth/check`, {
+    const response = await fetch(`${this.authUrl}/check`, {
       method: 'GET',
       credentials: 'include'
     })
