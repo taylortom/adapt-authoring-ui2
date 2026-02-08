@@ -23,6 +23,9 @@ export function createAppTheme (options = {}) {
       },
       success: {
         main: '#00dd95'
+      },
+      background: {
+        default: '#f3fcfe'
       }
     },
     typography: {
