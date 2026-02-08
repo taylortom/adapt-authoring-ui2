@@ -8,10 +8,10 @@ export default function ProtectedRoute ({ children, requiredScopes = null }) {
   if (isLoading) {
     return (
       <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="100vh"
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
+        minHeight='100vh'
       >
         <CircularProgress />
       </Box>
@@ -19,16 +19,16 @@ export default function ProtectedRoute ({ children, requiredScopes = null }) {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />
+    return <Navigate to='/login' replace />
   }
 
   if (requiredScopes && !hasScopes(requiredScopes)) {
     return (
       <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="100vh"
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
+        minHeight='100vh'
       >
         <div>
           <h2>Access Denied</h2>
