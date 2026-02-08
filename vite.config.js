@@ -4,16 +4,15 @@ import react from '@vitejs/plugin-react'
  * Note: this config is for CI use only to confirm build
  */
 export default defineConfig({
+  root: './ui',
   plugins: [react()],
   server: {
     port: 3000,
     open: true
   },
   build: {
-    // Output directory for standalone build (used by CI and separate Node.js server)
     outDir: 'dist',
     sourcemap: true,
-    // Generate manifest for asset references
     manifest: true
   }
 })
