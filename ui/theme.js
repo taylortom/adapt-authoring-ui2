@@ -1,14 +1,30 @@
 import { createTheme } from '@mui/material/styles'
+import '@fontsource-variable/raleway'
 
-export function createAppTheme ({ primaryColour, secondaryColour } = {}) {
+export function createAppTheme (options = {}) {
   return createTheme({
     palette: {
       primary: {
-        main: primaryColour
+        main: options.primaryColour
       },
       secondary: {
-        main: secondaryColour
+        main: options.secondaryColour
+      },
+      error: {
+        main: '#ff5567'
+      },
+      warning: {
+        main: '#ffa08d'
+      },
+      info: {
+        main: '#34bee0'
+      },
+      success: {
+        main: '#00dd95'
       }
+    },
+    typography: {
+      fontFamily: 'Raleway, Arial'
     },
     cssVariables: true
   })

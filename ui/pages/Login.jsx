@@ -14,6 +14,8 @@ import {
 import { useAuth } from '../contexts/AuthContext'
 import { getConfig } from '../utils/config'
 
+import loginBg from '../assets/login_bg.jpg'
+
 export default function Login () {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -47,7 +49,8 @@ export default function Login () {
           marginTop: 8,
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center'
+          alignItems: 'center',
+          backgroundImage: `url(${loginBg})`
         }}
       >
         <Paper elevation={3} sx={{ p: 4, width: '100%' }}>

@@ -31,7 +31,7 @@
     "logoUrl": {
       "description": "URL of the logo image displayed in the UI",
       "type": "string",
-      "default": "",
+      "default": "adapt-learning-logo-white.png",
       "_adapt": { "isPublic": true }
     },
     "appTitle": {
