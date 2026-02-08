@@ -1,9 +1,9 @@
 import React from 'react'
-import { Box, Button, Container, Typography } from '@mui/material'
+import { Box, Container, Typography } from '@mui/material'
 import { useAuth } from '../contexts/AuthContext'
 
 function HomePage () {
-  const { user, logout, scopes, isSuper } = useAuth()
+  const { user, scopes, isSuper } = useAuth()
 
   return (
     <Container>
@@ -18,26 +18,9 @@ function HomePage () {
         <Box sx={{ mt: 3 }}>
           <Typography variant='h6'>Your Permissions:</Typography>
           {isSuper
-            ? (
-              <Typography>🔑 Superuser (full access)</Typography>
-              )
-            : (
-              <ul>
-                {scopes?.map((scope) => (
-                  <li key={scope}>{scope}</li>
-                ))}
-              </ul>
-              )}
+            ? (<Typography>🔑 Superuser (full access)</Typography>)
+            : (<ul>{scopes?.map((scope) => (<li key={scope}>{scope}</li>))}</ul>)}
         </Box>
-
-        <Button
-          variant='contained'
-          color='error'
-          onClick={logout}
-          sx={{ mt: 3 }}
-        >
-          Logout
-        </Button>
       </Box>
     </Container>
   )
