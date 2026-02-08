@@ -12,6 +12,7 @@ import {
   Paper
 } from '@mui/material'
 import { useAuth } from '../contexts/AuthContext'
+import { getConfig } from '../utils/config'
 
 export default function Login () {
   const [email, setEmail] = useState('')
@@ -40,7 +41,7 @@ export default function Login () {
   }
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component='main' maxWidth='xs'>
       <Box
         sx={{
           marginTop: 8,
@@ -50,39 +51,48 @@ export default function Login () {
         }}
       >
         <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
-          <Typography component="h1" variant="h4" align="center" gutterBottom>
-            Sign In
+          {getConfig('adapt-authoring-ui2.logoUrl') && (
+            <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+              <img
+                src={getConfig('adapt-authoring-ui2.logoUrl')}
+                alt={getConfig('adapt-authoring-ui2.appTitle') || 'Logo'}
+                style={{ maxHeight: 64, maxWidth: '100%', objectFit: 'contain' }}
+              />
+            </Box>
+          )}
+          <Typography component='h1' variant='h4' align='center' gutterBottom>
+            {getConfig('adapt-authoring-ui2.appTitle') || 'Sign In'}
           </Typography>
 
           {localError && (
-            <Alert severity="error" sx={{ mb: 2 }}>
+            <Alert severity='error' sx={{ mb: 2 }}>
               {localError}
             </Alert>
           )}
 
-          <Box component="form" onSubmit={handleSubmit} noValidate>
+          <Box component='form' onSubmit={handleSubmit} noValidate>
             <TextField
-              margin="normal"
+              margin='normal'
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id='email'
+              label='Email Address'
+              name='email'
+              autoComplete='email'
               autoFocus
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={isLoading}
             />
             <TextField
-              margin="normal"
+              margin='normal'
               required
               fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
+              name='password'
+              label='Password'
+              type='password'
+              id='password'
+              autoComplete='current-password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={isLoading}
@@ -92,16 +102,16 @@ export default function Login () {
                 <Checkbox
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  color="primary"
+                  color='primary'
                   disabled={isLoading}
                 />
               }
-              label="Remember me"
+              label='Remember me'
             />
             <Button
-              type="submit"
+              type='submit'
               fullWidth
-              variant="contained"
+              variant='contained'
               sx={{ mt: 3, mb: 2 }}
               disabled={isLoading}
             >

@@ -13,6 +13,32 @@
     	"type": "string",
       "isDirectory": true,
       "default": "$TEMP/ui-src"
+    },
+    "primaryColour": {
+      "description": "Primary palette colour for the UI theme (hex format)",
+      "type": "string",
+      "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$",
+      "default": "#1976d2",
+      "_adapt": { "isPublic": true }
+    },
+    "secondaryColour": {
+      "description": "Secondary palette colour for the UI theme (hex format)",
+      "type": "string",
+      "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$",
+      "default": "#dc004e",
+      "_adapt": { "isPublic": true }
+    },
+    "logoUrl": {
+      "description": "URL of the logo image displayed in the UI",
+      "type": "string",
+      "default": "",
+      "_adapt": { "isPublic": true }
+    },
+    "appTitle": {
+      "description": "Application title displayed in the UI header and browser tab",
+      "type": "string",
+      "default": "Adapt Authoring Tool",
+      "_adapt": { "isPublic": true }
     }
   }
 }

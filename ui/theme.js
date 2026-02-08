@@ -1,13 +1,15 @@
 import { createTheme } from '@mui/material/styles'
 
-export const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#1976d2'
+export function createAppTheme ({ primaryColour, secondaryColour } = {}) {
+  return createTheme({
+    palette: {
+      primary: {
+        main: primaryColour
+      },
+      secondary: {
+        main: secondaryColour
+      }
     },
-    secondary: {
-      main: '#dc004e'
-    }
-  },
-  cssVariables: true // Enable CSS variables for per-client reskins
-})
+    cssVariables: true
+  })
+}
