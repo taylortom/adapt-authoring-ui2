@@ -11,23 +11,13 @@ function App () {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+          {/* Unprotected routes */}
           <Route path='/login' element={<Login />} />
-          <Route
-            path='/'
-            element={
-              <ProtectedRoute>
-                <HomePage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path='/about'
-            element={
-              <ProtectedRoute>
-                <AboutPage />
-              </ProtectedRoute>
-            }
-          />
+          {/* Protected routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route path='/' element={<HomePage />} />
+            <Route path='/about' element={<AboutPage />} />
+          </Route>
           <Route path='*' element={<Navigate to='/' replace />} />
         </Routes>
       </AuthProvider>
