@@ -1,54 +1,32 @@
-import { getConfig } from '../utils/config.js'
+import { getConfig } from '../config.js'
 
 class AuthService {
-  constructor () {
-    this.authUrl = `${getConfig('apiUrl')}/auth`
+  async fetch (endpoint, options = {}) {
+    const response = await fetch(`${getConfig('apiUrl')}/auth/${endpoint}`, {
+      method: 'POST',
+      credentials: 'include',
+      ...options
+    })
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.message)
+    }
+    return response.json()
   }
 
   async login (email, password, persistSession = false) {
-    const response = await fetch(`${this.authUrl}/local`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include',
+    return this.fetch('local', {
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, persistSession })
     })
-
-    if (!response.ok) {
-      const error = await response.json()
-      throw new Error(error.message || 'Login failed')
-    }
-
-    return response.json()
   }
 
   async logout () {
-    const response = await fetch(`${getConfig('apiUrl')}/disavow`, {
-      method: 'POST',
-      credentials: 'include'
-    })
-
-    if (!response.ok) {
-      const error = await response.json()
-      throw new Error(error.message || 'Logout failed')
-    }
-
-    return response.json()
+    return this.fetch('disavow')
   }
 
   async checkAuth () {
-    const response = await fetch(`${this.authUrl}/check`, {
-      method: 'GET',
-      credentials: 'include'
-    })
-
-    if (!response.ok) {
-      const error = await response.json()
-      throw new Error(error.message || 'Not authenticated')
-    }
-
-    return response.json()
+    return this.fetch('check', { method: 'GET' })
   }
 }
 
