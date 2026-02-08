@@ -9,7 +9,9 @@ class AuthService {
       const error = await response.json()
       throw new Error(error.message)
     }
-    return response.json()
+    if (response.status !== 204 && response.status !== 304) {
+      return response.json()
+    }
   }
 
   async login (email, password, persistSession = false) {
