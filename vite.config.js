@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-
+/**
+ * Note: this config is for CI use only to confirm build
+ */
 export default defineConfig({
   plugins: [react()],
   server: {
