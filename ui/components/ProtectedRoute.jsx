@@ -8,12 +8,7 @@ export default function ProtectedRoute ({ children, requiredScopes = null }) {
 
   if (isLoading) {
     return (
-      <Box
-        display='flex'
-        justifyContent='center'
-        alignItems='center'
-        minHeight='100vh'
-      >
+      <Box display='flex' justifyContent='center' alignItems='center' minHeight='100vh'>
         <CircularProgress />
       </Box>
     )
@@ -25,12 +20,7 @@ export default function ProtectedRoute ({ children, requiredScopes = null }) {
 
   if (requiredScopes && !hasScopes(requiredScopes)) {
     return (
-      <Box
-        display='flex'
-        justifyContent='center'
-        alignItems='center'
-        minHeight='100vh'
-      >
+      <Box display='flex' justifyContent='center' alignItems='center' minHeight='100vh'>
         <div>
           <h2>Access Denied</h2>
           <p>You do not have permission to access this resource.</p>
