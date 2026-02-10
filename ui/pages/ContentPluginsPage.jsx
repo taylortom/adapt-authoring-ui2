@@ -133,7 +133,7 @@ function PluginListItem ({ plugin, divider }) {
                 sx={{ borderRadius: 0, flex: 1 }}
               >
               Update
-            </Button>
+              </Button>
             : ''}
           <Button
             variant='contained'
@@ -204,7 +204,7 @@ export default function ContentPluginsPage () {
     { label: 'Selete', icon: DeleteIcon }
   ]
   return (
-    <Page title='Content Plugins' body='Installed content plugins available in the authoring tool' actions={actions} crumbs={crumbs}>
+    <Page title='Content Plugins' subtitle='Installed content plugins available in the authoring tool' actions={actions} crumbs={crumbs} contentPadding={0}>
       {plugins.length === 0
         ? (<Alert severity='info'>No content plugins installed</Alert>)
         : (<List>{plugins.map((plugin, index) => (<PluginListItem key={plugin._id} plugin={plugin} divider={index < plugins.length - 1} />))}</List>)}

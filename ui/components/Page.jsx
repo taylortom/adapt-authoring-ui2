@@ -45,9 +45,13 @@ function Links (items) {
     return ''
   }
   return (
-    <Stack direction='row' spacing={2} sx={{ p: 1, bgcolor: 'tertiary.main', justifyContent: 'center' }}>
-      {items.map((item, i) => <Link key={i} href={item.href}><Typography variant='button'>{item.label}</Typography></Link>)}
-    </Stack>
+    <AppBar position='sticky' color='tertiary'>
+      <Toolbar>
+        <Stack direction='row' spacing={2} sx={{ justifyContent: 'center' }}>
+          {items.map((item, i) => <Link key={i} href={item.href}><Typography variant='button'>{item.label}</Typography></Link>)}
+        </Stack>
+      </Toolbar>
+    </AppBar>
   )
 }
 
@@ -77,49 +81,31 @@ function Sidebar ({ children }) {
   )
 }
 
-export default function Page ({ title = '', body = '', actions = {}, crumbs = [], links = [], children, sidebarChildren }) {
+export default function Page ({ title = '', subtitle = '', actions = {}, crumbs = [], links = [], children, sidebarChildren, contentPadding = 4 }) {
   return (
     <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 64px)' }}>
       <Sidebar>
         {sidebarChildren}
       </Sidebar>
       <Box sx={{ flex: 6, overflow: 'auto' }}>
-        <AppBar position='sticky' color='background.paper'>
-          {Crumbs(crumbs)}
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Typography variant='h4' component='h1'>{title}</Typography>
-            {Actions(actions)}
-          </Box>
-        </AppBar>
-        <AppBar position='sticky' color='tertiary'>
-          <Toolbar>{Links(links)}</Toolbar>
-        </AppBar>
-        <Box>
-          <Container sx={{ mt: 4, mb: 4 }}>
-            {body && <Typography variant='body1' color='text.secondary' sx={{ mt: 4, mb: 4 }}>{body}</Typography>}
-            <Paper sx={{ p: 4 }}>
-              {children}
-            </Paper>
-          </Container>
-        </Box>
-        {/* <Box sx={{ bgcolor: 'background.paper', borderBottom: 1, borderColor: 'divider', py: 2 }}>
+        <AppBar position='sticky' sx={{ p: 3, bgcolor: 'background.paper', color: 'text.primary' }}>
           <Container>
             {Crumbs(crumbs)}
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <Typography variant='h4' component='h1'>{title}</Typography>
+              <Typography variant='h4'>{title}</Typography>
               {Actions(actions)}
             </Box>
+            {subtitle ? <Typography variant='subtitle1'>{subtitle}</Typography> : ''}
           </Container>
-        </Box>
-        {Links(links)} */}
-        {/* <Box>
+        </AppBar>
+        {Links(links)}
+        <Box>
           <Container sx={{ mt: 4, mb: 4 }}>
-            {body && <Typography variant='body1' color='text.secondary' sx={{ mt: 4, mb: 4 }}>{body}</Typography>}
-            <Paper sx={{ p: 4 }}>
+            <Paper sx={{ p: contentPadding }}>
               {children}
             </Paper>
           </Container>
-        </Box> */}
+        </Box>
       </Box>
     </Box>
   )
