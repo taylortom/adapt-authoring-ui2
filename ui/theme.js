@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material/styles'
+import '@fontsource-variable/open-sans'
 import '@fontsource-variable/raleway'
 
 export function createAppTheme (options = {}) {
@@ -30,13 +31,20 @@ export function createAppTheme (options = {}) {
     background: {
       default: '#f3fcfe'
     },
+    white: {
+      main: '#fff'
+    },
     disabled: {
       main: '#696969'
     }
   }
+  const headingFont = {
+    fontFamily: 'Raleway Variable, sans-serif'
+  }
   return createTheme({
     colorSchemes: {
-      light: { palette: { ...defaultPalette } },
+      light: { palette: { ...defaultPalette } }
+      /*
       dark: {
         palette: {
           ...defaultPalette,
@@ -46,9 +54,10 @@ export function createAppTheme (options = {}) {
           },
           background: {
             default: '#363636'
-          }
+          },
         }
       }
+      */
     },
     components: {
       MuiButton: {
@@ -58,7 +67,18 @@ export function createAppTheme (options = {}) {
       }
     },
     typography: {
-      fontFamily: 'Raleway Variable'
+      fontFamily: 'Open Sans, sans-serif',
+      h1: headingFont,
+      h2: headingFont,
+      h3: headingFont,
+      h4: headingFont,
+      h5: headingFont,
+      h6: headingFont,
+      subtitle1: headingFont,
+      subtitle2: headingFont,
+      button: {
+        fontWeight: 700
+      }
     },
     cssVariables: true
   })
