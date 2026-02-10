@@ -23,6 +23,9 @@ export function useApi (root) {
     get: async function (_id = '', options = {}) {
       return apiFetch(`${root}/${_id}`, options)
     },
+    getSchema: async function (queryString = '', options = {}) {
+      return apiFetch(`${root}/schema?${queryString}`, options)
+    },
     query: async function (queryData, options = {}) {
       const queryString = typeof queryData === 'string'
       return apiFetch(`${root}/query${typeof queryData === 'string' ? queryData : ''}`, { method: 'POST', body: queryString ? '' : queryData, ...options })
