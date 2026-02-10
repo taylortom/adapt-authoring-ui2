@@ -23,7 +23,7 @@ loadConfig().then(() => {
   ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme} defaultMode='system'>
           <CssBaseline />
           <App />
           <ReactQueryDevtools initialIsOpen={false} />
