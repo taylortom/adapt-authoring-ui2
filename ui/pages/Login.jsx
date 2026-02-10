@@ -8,8 +8,7 @@ import {
   FormControlLabel,
   TextField,
   Typography,
-  Alert,
-  Paper
+  Alert
 } from '@mui/material'
 import { useAuth } from '../contexts/AuthContext'
 import { getConfig } from '../utils/config'
@@ -33,7 +32,6 @@ export default function Login () {
       setLocalError('Please enter both email and password')
       return
     }
-
     const result = await login(email, password, rememberMe)
 
     if (result.success) {
@@ -41,6 +39,16 @@ export default function Login () {
     } else {
       setLocalError(result.error || 'Login failed. Please check your credentials.')
     }
+  }
+
+  const textAreaSx = {
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': { borderColor: 'rgba(255,255,255,0.5)' },
+      '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.9)' },
+      '&.Mui-focused fieldset': { borderColor: 'white' }
+    },
+    '& .MuiInputLabel-root': { color: 'rgba(255,255,255,0.7)' },
+    '& .MuiOutlinedInput-input': { color: 'white' }
   }
 
   return (
@@ -64,16 +72,15 @@ export default function Login () {
           alignItems: 'center'
         }}
       >
-        {/* <Paper elevation={3} sx={{ p: 4, width: '100%' }}> */}
         <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
           <img
-            src={getConfig('adapt-authoring-ui2.logoUrl') || logo}
-            alt={getConfig('adapt-authoring-ui2.appTitle') || 'Logo'}
+            src={getConfig('logoUrl') || logo}
+            alt={getConfig('appTitle') || 'Logo'}
             style={{ maxHeight: 150, maxWidth: '100%', objectFit: 'contain' }}
           />
         </Box>
         <Typography component='h1' variant='h4' align='center' gutterBottom color='white'>
-          {getConfig('adapt-authoring-ui2.appTitle')}
+          {getConfig('appTitle')}
         </Typography>
         <Typography component='h1' variant='h5' align='center' gutterBottom color='white'>
           Sign In
@@ -98,6 +105,7 @@ export default function Login () {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={isLoading}
+            sx={textAreaSx}
           />
           <TextField
             margin='normal'
@@ -111,6 +119,7 @@ export default function Login () {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             disabled={isLoading}
+            sx={textAreaSx}
           />
           <FormControlLabel
             control={
@@ -119,21 +128,23 @@ export default function Login () {
                 onChange={(e) => setRememberMe(e.target.checked)}
                 color='primary'
                 disabled={isLoading}
+                sx={{ color: 'rgba(255,255,255,0.7)', '&.Mui-checked': { color: 'white' } }}
               />
               }
-            label='Remember me'
+            label={<Typography color='white'>Remember me</Typography>}
+            sx={{ '& .MuiFormControlLabel-label': { color: 'white' } }}
           />
           <Button
             type='submit'
             fullWidth
             variant='contained'
+            size='large'
             sx={{ mt: 3, mb: 2 }}
             disabled={isLoading}
           >
             {isLoading ? 'Signing in...' : 'Sign In'}
           </Button>
         </Box>
-        {/* </Paper> */}
       </Box>
     </Container>
   )
