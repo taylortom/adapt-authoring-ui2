@@ -1,13 +1,16 @@
 import { useState } from 'react'
 import {
+  AppBar,
   Box,
   Breadcrumbs,
   Container,
   Drawer,
   Fab,
+  IconButton,
   Link,
   Paper,
   Stack,
+  Toolbar,
   Typography
 } from '@mui/material'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
@@ -19,7 +22,7 @@ function Actions (items) {
   }
   return (
     <Stack direction='row' spacing={1}>
-      {items.map((item, i) => <Fab key={i} color={item.color ?? 'secondary'} size='medium' aria-label={item.label}><item.icon /></Fab>)}
+      {items.map((item, i) => <Fab key={i} color={item.color ?? 'secondary'} size='medium' aria-label={item.label} sx={{ boxShadow: 'none' }}><item.icon /></Fab>)}
     </Stack>
   )
 }
@@ -52,21 +55,22 @@ function Sidebar ({ children }) {
   const [open, setOpen] = useState(true)
   const style = {
     flex: open ? 1 : 0,
-    transition: 'flex 0.3s ease',
+    transition: 'flex 0.6s ease',
     '& .MuiDrawer-paper': {
       position: 'relative',
       boxSizing: 'border-box',
       overflow: 'hidden',
       width: open ? 'auto' : 0,
-      transition: 'width 0.3s ease'
+      transition: 'width 0.3s ease',
+      bgcolor: 'tertiary.main'
     }
   }
   return (
     <Drawer variant='permanent' anchor='left' sx={style}>
       <Box sx={{ p: 2, alignSelf: 'flex-end' }}>
-        <Fab size='small' color='primary' aria-label={open ? 'close sidebar' : 'open sidebar'} onClick={() => setOpen(!open)}>
+        <IconButton size='small' color='primary' aria-label={open ? 'close sidebar' : 'open sidebar'} onClick={() => setOpen(!open)} sx={{ boxShadow: 'none' }}>
           {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-        </Fab>
+        </IconButton>
       </Box>
       {children}
     </Drawer>
@@ -80,16 +84,16 @@ export default function Page ({ title = '', body = '', actions = {}, crumbs = []
         {sidebarChildren}
       </Sidebar>
       <Box sx={{ flex: 6, overflow: 'auto' }}>
-        <Box sx={{ bgcolor: 'background.paper', borderBottom: 1, borderColor: 'divider', py: 2 }}>
-          <Container>
-            {Crumbs(crumbs)}
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <Typography variant='h4' component='h1'>{title}</Typography>
-              {Actions(actions)}
-            </Box>
-          </Container>
-        </Box>
-        {Links(links)}
+        <AppBar position='sticky' color='background.paper'>
+          {Crumbs(crumbs)}
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Typography variant='h4' component='h1'>{title}</Typography>
+            {Actions(actions)}
+          </Box>
+        </AppBar>
+        <AppBar position='sticky' color='tertiary'>
+          <Toolbar>{Links(links)}</Toolbar>
+        </AppBar>
         <Box>
           <Container sx={{ mt: 4, mb: 4 }}>
             {body && <Typography variant='body1' color='text.secondary' sx={{ mt: 4, mb: 4 }}>{body}</Typography>}
@@ -98,6 +102,24 @@ export default function Page ({ title = '', body = '', actions = {}, crumbs = []
             </Paper>
           </Container>
         </Box>
+        {/* <Box sx={{ bgcolor: 'background.paper', borderBottom: 1, borderColor: 'divider', py: 2 }}>
+          <Container>
+            {Crumbs(crumbs)}
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Typography variant='h4' component='h1'>{title}</Typography>
+              {Actions(actions)}
+            </Box>
+          </Container>
+        </Box>
+        {Links(links)} */}
+        {/* <Box>
+          <Container sx={{ mt: 4, mb: 4 }}>
+            {body && <Typography variant='body1' color='text.secondary' sx={{ mt: 4, mb: 4 }}>{body}</Typography>}
+            <Paper sx={{ p: 4 }}>
+              {children}
+            </Paper>
+          </Container>
+        </Box> */}
       </Box>
     </Box>
   )

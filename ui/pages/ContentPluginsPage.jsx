@@ -14,9 +14,7 @@ import {
   ListItemAvatar,
   ListItemButton,
   ListItemText,
-  Paper,
-  Stack,
-  Typography
+  Stack
 } from '@mui/material'
 import Page from '../components/Page'
 import { useApi } from '../utils/api'
@@ -135,7 +133,7 @@ function PluginListItem ({ plugin, divider }) {
                 sx={{ borderRadius: 0, flex: 1 }}
               >
               Update
-              </Button>
+            </Button>
             : ''}
           <Button
             variant='contained'
@@ -205,13 +203,8 @@ export default function ContentPluginsPage () {
     { label: 'Update', icon: FileUploadIcon },
     { label: 'Selete', icon: DeleteIcon }
   ]
-  const links = [
-    { label: 'Dashboard', href: '/' },
-    { label: 'About', href: '/about' },
-    { label: 'Content Plugins', href: '/contentplugins' }
-  ]
   return (
-    <Page title='Content Plugins' body='Installed content plugins available in the authoring tool' actions={actions} crumbs={crumbs} links={links}>
+    <Page title='Content Plugins' body='Installed content plugins available in the authoring tool' actions={actions} crumbs={crumbs}>
       {plugins.length === 0
         ? (<Alert severity='info'>No content plugins installed</Alert>)
         : (<List>{plugins.map((plugin, index) => (<PluginListItem key={plugin._id} plugin={plugin} divider={index < plugins.length - 1} />))}</List>)}
