@@ -1,18 +1,21 @@
 import { useState } from 'react'
 import {
   AppBar,
-  FormControl,
-  InputLabel,
-  Select,
+  ListItemIcon,
+  ListItemText,
   Toolbar,
   Typography,
   IconButton,
   Menu,
   MenuItem
 } from '@mui/material'
+import { useColorScheme } from '@mui/material/styles'
 import MenuIcon from '@mui/icons-material/Menu'
 import AccountCircle from '@mui/icons-material/AccountCircle'
+import DarkModeIcon from '@mui/icons-material/DarkMode'
+import LightModeIcon from '@mui/icons-material/LightMode'
 import LogoutIcon from '@mui/icons-material/Logout'
+import SettingsBrightnessIcon from '@mui/icons-material/SettingsBrightness'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { getConfig } from '../utils/config'
@@ -21,6 +24,7 @@ export default function NavBar () {
   const navigate = useNavigate()
   const location = useLocation()
   const { user, logout } = useAuth()
+  const { mode, setMode } = useColorScheme()
   const [navMenuAnchor, setNavMenuAnchor] = useState(null)
   const [userMenuAnchor, setUserMenuAnchor] = useState(null)
 
@@ -54,8 +58,6 @@ export default function NavBar () {
     handleNavMenuClose()
   }
 
-  const [theme, setTheme] = useState(localStorage.getItem('theme'))
-
   return (
     <AppBar position='sticky' color='secondary' sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
       <Toolbar>
@@ -68,6 +70,9 @@ export default function NavBar () {
           </MenuItem>
           <MenuItem onClick={() => handleNav('/about')} selected={location.pathname === '/about'}>
             About
+          </MenuItem>
+          <MenuItem onClick={() => handleNav('/form')} selected={location.pathname === '/form'}>
+            Form
           </MenuItem>
           <MenuItem onClick={() => handleNav('/contentplugins')} selected={location.pathname === '/contentplugins'}>
             Content Plugins
@@ -89,15 +94,17 @@ export default function NavBar () {
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
-          <MenuItem>
-            <FormControl fullWidth>
-              <InputLabel id='demo-simple-select-label'>Theme mode</InputLabel>
-              <Select labelId='demo-simple-select-label' id='demo-simple-select' value={theme} label='Age' onChange={(event) => setTheme(event.target.value)}>
-                <MenuItem value='system'>System</MenuItem>
-                <MenuItem value='dark'>Dark</MenuItem>
-                <MenuItem value='light'>Light</MenuItem>
-              </Select>
-            </FormControl>
+          <MenuItem onClick={() => setMode('system')} selected={mode === 'system'}>
+            <ListItemIcon><SettingsBrightnessIcon /></ListItemIcon>
+            <ListItemText>System</ListItemText>
+          </MenuItem>
+          <MenuItem onClick={() => setMode('light')} selected={mode === 'light'}>
+            <ListItemIcon><LightModeIcon /></ListItemIcon>
+            <ListItemText>Light</ListItemText>
+          </MenuItem>
+          <MenuItem onClick={() => setMode('dark')} selected={mode === 'dark'}>
+            <ListItemIcon><DarkModeIcon /></ListItemIcon>
+            <ListItemText>Dark</ListItemText>
           </MenuItem>
           <MenuItem onClick={handleLogout}>
             <LogoutIcon sx={{ mr: 1 }} />
