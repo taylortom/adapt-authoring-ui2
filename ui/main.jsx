@@ -11,6 +11,15 @@ import { loadLang } from './utils/lang'
 import App from './App'
 import './index.css'
 
+function getSavedColorMode () {
+  try {
+    const prefs = JSON.parse(window.localStorage.getItem('userPreferences'))
+    return prefs?.colorMode || 'system'
+  } catch {
+    return 'system'
+  }
+}
+
 // Load config and lang from backend before rendering app
 Promise.all([loadConfig(), loadLang()]).then(() => {
   const theme = createAppTheme({
@@ -24,7 +33,7 @@ Promise.all([loadConfig(), loadLang()]).then(() => {
   ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme} defaultMode='system'>
+        <ThemeProvider theme={theme} defaultMode={getSavedColorMode()}>
           <CssBaseline />
           <App />
           <ReactQueryDevtools initialIsOpen={false} />

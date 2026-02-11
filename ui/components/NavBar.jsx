@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
   AppBar,
   ListItemIcon,
@@ -23,7 +23,6 @@ export default function NavBar () {
   const { user, logout } = useAuth()
   const { setMode } = useColorScheme()
   const { colorMode, setColorMode } = usePreferences()
-  useEffect(() => setMode(colorMode), [colorMode, setMode])
   const [navMenuAnchor, setNavMenuAnchor] = useState(null)
   const [userMenuAnchor, setUserMenuAnchor] = useState(null)
 
