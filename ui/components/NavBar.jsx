@@ -19,6 +19,7 @@ import SettingsBrightnessIcon from '@mui/icons-material/SettingsBrightness'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { getConfig } from '../utils/config'
+import { t } from '../utils/lang'
 
 export default function NavBar () {
   const navigate = useNavigate()
@@ -66,16 +67,16 @@ export default function NavBar () {
         </IconButton>
         <Menu anchorEl={navMenuAnchor} open={Boolean(navMenuAnchor)} onClose={handleNavMenuClose}>
           <MenuItem onClick={() => handleNav('/')} selected={location.pathname === '/'}>
-            Home
+            {t('app.home')}
           </MenuItem>
           <MenuItem onClick={() => handleNav('/about')} selected={location.pathname === '/about'}>
-            About
+            {t('app.about')}
           </MenuItem>
           <MenuItem onClick={() => handleNav('/form')} selected={location.pathname === '/form'}>
-            Form
+            {t('app.form')}
           </MenuItem>
           <MenuItem onClick={() => handleNav('/contentplugins')} selected={location.pathname === '/contentplugins'}>
-            Content Plugins
+            {t('app.plugins')}
           </MenuItem>
         </Menu>
         <Typography variant='h6' sx={{ flexGrow: 1, cursor: 'pointer' }} onClick={() => navigate('/')}>
@@ -96,19 +97,19 @@ export default function NavBar () {
         >
           <MenuItem onClick={() => setMode('system')} selected={mode === 'system'}>
             <ListItemIcon><SettingsBrightnessIcon /></ListItemIcon>
-            <ListItemText>System</ListItemText>
+            <ListItemText>{t('app.system')}</ListItemText>
           </MenuItem>
           <MenuItem onClick={() => setMode('light')} selected={mode === 'light'}>
             <ListItemIcon><LightModeIcon /></ListItemIcon>
-            <ListItemText>Light</ListItemText>
+            <ListItemText>{t('app.lightmode')}</ListItemText>
           </MenuItem>
           <MenuItem onClick={() => setMode('dark')} selected={mode === 'dark'}>
             <ListItemIcon><DarkModeIcon /></ListItemIcon>
-            <ListItemText>Dark</ListItemText>
+            <ListItemText>{t('app.darkmode')}</ListItemText>
           </MenuItem>
           <MenuItem onClick={handleLogout}>
             <LogoutIcon sx={{ mr: 1 }} />
-            Logout
+            {t('app.logout')}
           </MenuItem>
         </Menu>
       </Toolbar>

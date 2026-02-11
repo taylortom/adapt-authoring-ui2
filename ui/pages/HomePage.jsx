@@ -1,16 +1,17 @@
 import { Typography } from '@mui/material'
 import Page from '../components/Page'
 import { useAuth } from '../contexts/AuthContext'
+import { t } from '../utils/lang'
 
 function HomePage () {
   const { user, scopes, isSuper } = useAuth()
   const links = [
-    { label: 'Dashboard', href: '/' },
-    { label: 'About', href: '/about' },
-    { label: 'Content Plugins', href: '/contentplugins' }
+    { label: t('app.dashboard'), href: '/' },
+    { label: t('app.about'), href: '/about' },
+    { label: t('app.plugins'), href: '/contentplugins' }
   ]
   return (
-    <Page title='Home' body={`Welcome to the application, ${user?.email || 'User'}!`} links={links}>
+    <Page title={t('app.dashboard')} body={`Welcome to the application, ${user?.email}!`} links={links}>
       <Typography variant='h6'>Your Permissions:</Typography>
       {isSuper
         ? (<Typography>🔑 Superuser (full access)</Typography>)

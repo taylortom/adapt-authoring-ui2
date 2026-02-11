@@ -29,6 +29,7 @@ import FileUploadIcon from '@mui/icons-material/FileUpload'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import WindowIcon from '@mui/icons-material/Window'
+import { t } from '../utils/lang'
 
 const API_ROOT = 'contentplugins'
 
@@ -49,7 +50,7 @@ function getPluginTypeIcon (type) {
 function PluginVersion (plugin) {
   return (
     <>
-      {plugin.canBeUpdated ? <Chip color='primary' variant='outlined' label='Update available' size='small' sx={{ minWidth: 80 }} /> : ''}
+      {plugin.canBeUpdated ? <Chip color='primary' variant='outlined' label={t('app.updateavailable')} size='small' sx={{ minWidth: 80 }} /> : ''}
       <Chip label={`v${plugin.version}`} size='small' variant='outlined' sx={{ marginLeft: '5px', minWidth: 80 }} />
     </>
   )
@@ -76,7 +77,7 @@ function PluginListItem ({ plugin, divider }) {
   }
 
   const handleDelete = (plugin) => {
-    if (window.confirm(`Are you sure you want to delete "${plugin.displayName}"?`)) {
+    if (window.confirm(t('app.confirmdelete', { name: plugin.displayName }))) {
       deleteMutation.mutate({ _id: plugin._id })
     }
   }
@@ -100,7 +101,7 @@ function PluginListItem ({ plugin, divider }) {
             color={plugin.isEnabled ? 'secondary' : 'disabled'}
             sx={{ borderRadius: 0, flex: 1 }}
           >
-            {plugin.isEnabled ? 'Disable' : 'Enable'}
+            {plugin.isEnabled ? t('app.disable') : t('app.enable')}
           </Button>
           <Button
             variant='contained'
@@ -111,7 +112,7 @@ function PluginListItem ({ plugin, divider }) {
             color={plugin.isDefault ? 'secondary' : 'disabled'}
             sx={{ borderRadius: 0, flex: 1 }}
           >
-            {plugin.isDefault ? 'Is default' : 'Not default'}
+            {plugin.isDefault ? t('app.isdefault') : t('app.notdefault')}
           </Button>
           {plugin.canBeUpdated
             ? <Button
@@ -123,8 +124,8 @@ function PluginListItem ({ plugin, divider }) {
                 color='primary'
                 sx={{ borderRadius: 0, flex: 1 }}
               >
-              Update
-              </Button>
+              {t('app.update')}
+            </Button>
             : ''}
           <Button
             variant='contained'
@@ -135,7 +136,7 @@ function PluginListItem ({ plugin, divider }) {
             color='error'
             sx={{ borderRadius: 0, flex: 1 }}
           >
-            Remove
+            {t('app.remove')}
           </Button>
         </Stack>
       </Collapse>
@@ -166,7 +167,7 @@ export default function ContentPluginsPage () {
     return (
       <>
         <Container sx={{ mt: 4 }}>
-          <Alert severity='error'>Error loading content plugins: {error.message}</Alert>
+          <Alert severity='error'>{t('app.errorloadingdata')}: {error.message}</Alert>
         </Container>
       </>
     )
@@ -185,17 +186,17 @@ export default function ContentPluginsPage () {
     : []
 
   const crumbs = [
-    { label: 'Dashboard', href: '/' },
-    { label: 'Content Plugins' }
+    { label: t('app.dashboard'), href: '/' },
+    { label: t('app.plugins') }
   ]
   const actions = [
-    { label: 'Update', icon: FileUploadIcon },
-    { label: 'Selete', icon: DeleteIcon }
+    { label: t('app.update'), icon: FileUploadIcon },
+    { label: t('app.delete'), icon: DeleteIcon }
   ]
   return (
-    <Page title='Content Plugins' subtitle='Installed content plugins available in the authoring tool' actions={actions} crumbs={crumbs} contentPadding={0}>
+    <Page title={t('app.plugins')} subtitle={t('app.pluginspagesubtitle')} actions={actions} crumbs={crumbs} contentPadding={0}>
       {plugins.length === 0
-        ? (<Alert severity='info'>No content plugins installed</Alert>)
+        ? (<Alert severity='info'>{t('app.noplugins')}</Alert>)
         : (<List>{plugins.map((plugin, index) => (<PluginListItem key={plugin._id} plugin={plugin} divider={index < plugins.length - 1} />))}</List>)}
     </Page>
   )

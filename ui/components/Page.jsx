@@ -72,7 +72,7 @@ function Sidebar ({ children }) {
   return (
     <Drawer variant='permanent' anchor='left' sx={style}>
       <Box sx={{ p: 2, alignSelf: 'flex-end' }}>
-        <IconButton size='small' color='primary' aria-label={open ? 'close sidebar' : 'open sidebar'} onClick={() => setOpen(!open)} sx={{ boxShadow: 'none' }}>
+        <IconButton size='small' color='primary' aria-label={open ? t('app.closesidebar') : t('app.opensidebar')} onClick={() => setOpen(!open)} sx={{ boxShadow: 'none' }}>
           {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </IconButton>
       </Box>

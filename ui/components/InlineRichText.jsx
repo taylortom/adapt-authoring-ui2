@@ -2,6 +2,7 @@ import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
 import Underline from '@tiptap/extension-underline'
+import { t } from '../utils/lang'
 
 const InlineRichText = ({ content, onChange }) => {
   const editor = useEditor({
@@ -32,21 +33,21 @@ const InlineRichText = ({ content, onChange }) => {
           disabled={!editor}
           className={editor?.isActive('bold') ? 'active' : ''}
         >
-          Bold
+          {t('app.bold')}
         </button>
         <button
           onClick={() => editor?.chain().focus().toggleItalic().run()}
           disabled={!editor}
           className={editor?.isActive('italic') ? 'active' : ''}
         >
-          Italic
+          {t('app.italic')}
         </button>
         <button
           onClick={() => editor?.chain().focus().toggleUnderline().run()}
           disabled={!editor}
           className={editor?.isActive('underline') ? 'active' : ''}
         >
-          Underline
+          {t('app.underline')}
         </button>
       </div>
       <EditorContent editor={editor} />

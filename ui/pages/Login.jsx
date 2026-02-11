@@ -15,6 +15,7 @@ import { getConfig } from '../utils/config'
 
 import loginBg from '../assets/images/login_bg.jpg'
 import logo from '../assets/images/adapt-learning-logo-white.png'
+import { t } from '../utils/lang'
 
 export default function Login () {
   const [email, setEmail] = useState('')
@@ -27,17 +28,11 @@ export default function Login () {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLocalError(null)
-
-    if (!email || !password) {
-      setLocalError('Please enter both email and password')
-      return
-    }
     const result = await login(email, password, rememberMe)
-
     if (result.success) {
       navigate('/')
     } else {
-      setLocalError(result.error || 'Login failed. Please check your credentials.')
+      setLocalError(result.error.message)
     }
   }
 
@@ -83,7 +78,7 @@ export default function Login () {
           {getConfig('appTitle')}
         </Typography>
         <Typography component='h1' variant='h5' align='center' gutterBottom color='white'>
-          Sign In
+          {t('app.signin')}
         </Typography>
 
         {localError && (
@@ -98,7 +93,7 @@ export default function Login () {
             required
             fullWidth
             id='email'
-            label='Email Address'
+            label={t('app.email')}
             name='email'
             autoComplete='email'
             autoFocus
@@ -112,7 +107,7 @@ export default function Login () {
             required
             fullWidth
             name='password'
-            label='Password'
+            label={t('app.password')}
             type='password'
             id='password'
             autoComplete='current-password'
@@ -131,7 +126,7 @@ export default function Login () {
                 sx={{ color: 'rgba(255,255,255,0.7)', '&.Mui-checked': { color: 'white' } }}
               />
               }
-            label={<Typography color='white'>Remember me</Typography>}
+            label={<Typography color='white'>{t('app.rememberme')}</Typography>}
             sx={{ '& .MuiFormControlLabel-label': { color: 'white' } }}
           />
           <Button
@@ -142,7 +137,7 @@ export default function Login () {
             sx={{ mt: 3, mb: 2 }}
             disabled={isLoading}
           >
-            {isLoading ? 'Signing in...' : 'Sign In'}
+            {isLoading ? t('app.signingin') : t('app.signin')}
           </Button>
         </Box>
       </Box>
