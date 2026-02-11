@@ -42,7 +42,6 @@ export function createAppTheme (options = {}) {
     fontFamily: 'Raleway Variable, sans-serif'
   }
   return createTheme({
-    defaultColorScheme: 'light',
     colorSchemes: {
       light: { palette: { ...defaultPalette } },
       dark: {
@@ -79,7 +78,6 @@ export function createAppTheme (options = {}) {
         fontWeight: 700
       }
     },
-    cssVariables: true,
     custom: {
       drawerWidth: 350
     }

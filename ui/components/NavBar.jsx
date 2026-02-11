@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import {
   AppBar,
-  ListItemIcon,
-  ListItemText,
+  Box,
   Toolbar,
+  ToggleButton,
+  ToggleButtonGroup,
+  Tooltip,
   Typography,
   IconButton,
   Menu,
@@ -13,7 +15,6 @@ import { useColorScheme } from '@mui/material/styles'
 import { useNavigate, useLocation } from 'react-router-dom'
 import Icons from '../utils/icons'
 import { useAuth } from '../contexts/AuthContext'
-import { usePreferences } from '../contexts/UserPreferencesContext'
 import { getConfig } from '../utils/config'
 import { t } from '../utils/lang'
 
@@ -21,8 +22,7 @@ export default function NavBar () {
   const navigate = useNavigate()
   const location = useLocation()
   const { user, logout } = useAuth()
-  const { setMode } = useColorScheme()
-  const { colorMode, setColorMode } = usePreferences()
+  const { mode, setMode } = useColorScheme()
   const [navMenuAnchor, setNavMenuAnchor] = useState(null)
   const [userMenuAnchor, setUserMenuAnchor] = useState(null)
 
@@ -92,18 +92,28 @@ export default function NavBar () {
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
-          <MenuItem onClick={() => { setColorMode('system'); setMode('system') }} selected={colorMode === 'system'}>
-            <ListItemIcon><Icons.SystemMode /></ListItemIcon>
-            <ListItemText>{t('app.system')}</ListItemText>
-          </MenuItem>
-          <MenuItem onClick={() => { setColorMode('light'); setMode('light') }} selected={colorMode === 'light'}>
-            <ListItemIcon><Icons.LightMode /></ListItemIcon>
-            <ListItemText>{t('app.lightmode')}</ListItemText>
-          </MenuItem>
-          <MenuItem onClick={() => { setColorMode('dark'); setMode('dark') }} selected={colorMode === 'dark'}>
-            <ListItemIcon><Icons.DarkMode /></ListItemIcon>
-            <ListItemText>{t('app.darkmode')}</ListItemText>
-          </MenuItem>
+          <Box sx={{ px: 1, py: 0.5 }}>
+            <Typography variant='caption' color='text.secondary' sx={{ mb: 0.5, display: 'block' }}>
+              {t('app.theme')}
+            </Typography>
+            <ToggleButtonGroup
+              value={mode}
+              exclusive
+              onChange={(_, val) => val && setMode(val)}
+              size='small'
+              fullWidth
+            >
+              <ToggleButton value='system'>
+                <Tooltip title={t('app.system')}><Icons.SystemMode /></Tooltip>
+              </ToggleButton>
+              <ToggleButton value='light'>
+                <Tooltip title={t('app.lightmode')}><Icons.LightMode /></Tooltip>
+              </ToggleButton>
+              <ToggleButton value='dark'>
+                <Tooltip title={t('app.darkmode')}><Icons.DarkMode /></Tooltip>
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
           <MenuItem onClick={handleLogout}>
             <Icons.Logout sx={{ mr: 1 }} />
             {t('app.logout')}

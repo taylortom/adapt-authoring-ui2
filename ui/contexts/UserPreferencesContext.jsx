@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useState } from 'react'
 
 const STORAGE_KEY = 'userPreferences'
-const DEFAULTS = { sidebarOpen: true, colorMode: 'system' }
+const DEFAULTS = { sidebarOpen: true }
 
 const UserPreferencesContext = createContext(null)
 
@@ -31,9 +31,7 @@ export function UserPreferencesProvider ({ children }) {
 
   const value = {
     sidebarOpen: prefs.sidebarOpen,
-    setSidebarOpen: (value) => updatePref('sidebarOpen', value),
-    colorMode: prefs.colorMode,
-    setColorMode: (value) => updatePref('colorMode', value)
+    setSidebarOpen: (value) => updatePref('sidebarOpen', value)
   }
 
   return <UserPreferencesContext.Provider value={value}>{children}</UserPreferencesContext.Provider>
