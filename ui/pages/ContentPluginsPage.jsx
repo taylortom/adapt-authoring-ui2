@@ -13,7 +13,9 @@ import {
   ListItemAvatar,
   ListItemButton,
   ListItemText,
-  Stack
+  Paper,
+  Stack,
+  Typography
 } from '@mui/material'
 import Page from '../components/Page'
 import { useApiQuery, useApiMutation } from '../utils/api'
@@ -175,6 +177,9 @@ export default function ContentPluginsPage () {
       }).sort((a, b) => a.displayName.localeCompare(b.displayName))
     : []
 
+  const pluginsByType = Object.groupBy(plugins, p => p.type)
+  const typeOrder = Object.keys(PLUGIN_TYPE_CONFIG).filter(k => k !== 'default')
+
   const crumbs = [
     { label: t('app.dashboard'), href: '/' },
     { label: t('app.plugins') }
@@ -183,17 +188,33 @@ export default function ContentPluginsPage () {
     { label: t('app.update'), icon: Icons.Update },
     { label: t('app.delete'), icon: Icons.Delete }
   ]
+  const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   const sidebarItems = [
-  { type: 'link', label: 'Components', icon: Icons.AdaptComponent, handleClick: () => {} },
-  { type: 'link', label: 'Extensions', icon: Icons.AdaptExtension, handleClick: () => {} },
-  { type: 'link', label: 'Menus', icon: Icons.AdaptMenu, handleClick: () => {} },
-  { type: 'link', label: 'Themes', icon: Icons.AdaptTheme, handleClick: () => {} },
-]
+    { type: 'link', label: 'Components', icon: Icons.AdaptComponent, handleClick: () => scrollTo('component') },
+    { type: 'link', label: 'Extensions', icon: Icons.AdaptExtension, handleClick: () => scrollTo('extension') },
+    { type: 'link', label: 'Menus', icon: Icons.AdaptMenu, handleClick: () => scrollTo('menu') },
+    { type: 'link', label: 'Themes', icon: Icons.AdaptTheme, handleClick: () => scrollTo('theme') },
+  ]
   return (
     <Page title={t('app.plugins')} subtitle={t('app.pluginspagesubtitle')} actions={actions} crumbs={crumbs} sidebarItems={sidebarItems} contentPadding={0}>
       {plugins.length === 0
         ? (<Alert severity='info'>{t('app.noplugins')}</Alert>)
-        : (<List>{plugins.map((plugin, index) => (<PluginListItem key={plugin._id} plugin={plugin} divider={index < plugins.length - 1} />))}</List>)}
+        : typeOrder.map(type => {
+            const group = pluginsByType[type]
+            if (!group?.length) return null
+            return (
+              <Paper key={type} id={type} sx={{ mb: 3 }}>
+                <Typography variant='subtitle1' sx={{ px: 2, pt: 2, pb: 1 }}>
+                  {type.charAt(0).toUpperCase() + type.slice(1) + 's'}
+                </Typography>
+                <List disablePadding>
+                  {group.map((plugin, index) => (
+                    <PluginListItem key={plugin._id} plugin={plugin} divider={index < group.length - 1} />
+                  ))}
+                </List>
+              </Paper>
+            )
+          })}
     </Page>
   )
 }
