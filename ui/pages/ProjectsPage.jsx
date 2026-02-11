@@ -25,6 +25,9 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import Page from '../components/Page'
 import { useApiQuery } from '../utils/api'
 import { t } from '../utils/lang'
+import Icons from '../utils/icons'
+
+import projectPlaceholder from '../assets/images/project_placeholder.jpg'
 
 const API_ROOT = 'content'
 const PAGE_SIZE = 12
@@ -38,7 +41,6 @@ export default function ProjectsPage () {
   const searchTimer = useRef(null)
 
   const params = new URLSearchParams({
-    _type: 'course',
     skip: String(page * limit),
     limit: String(limit),
     sort: JSON.stringify({ [sortField]: sortOrder })
@@ -47,7 +49,7 @@ export default function ProjectsPage () {
 
   const { data, isLoading, error } = useApiQuery(
     API_ROOT,
-    (api) => api.query(`?${params}`),
+    (api) => api.query(`?${params}`, { body: { _type: 'course' } }),
     { key: params.toString() }
   )
 
@@ -92,10 +94,17 @@ export default function ProjectsPage () {
     { label: t('app.dashboard'), href: '/' },
     { label: t('app.projects') }
   ]
+  const actions = [
+    { icon: Icons.Add, color: 'primary' }
+  ]
+  const sidebarItems = [
+    { type: 'button', label: t('app.createcourse'), handleClick: () => {} },
+    { type: 'button', style: 'secondary', label: t('app.importsource'), handleClick: () => {} },
+  ]
 
   return (
-    <Page title={t('app.projects')} crumbs={crumbs}>
-      <Stack direction='row' spacing={2} sx={{ mb: 3, alignItems: 'center' }}>
+    <Page title={t('app.projects')} crumbs={crumbs} actions={actions} sidebarItems={sidebarItems} includePaper={false}>
+      <Stack direction='row' spacing={0} sx={{ mb: 3, alignItems: 'center' }}>
         <TextField
           size='small'
           placeholder={t('app.search')}
@@ -137,20 +146,18 @@ export default function ProjectsPage () {
                       <CardMedia
                         component='img'
                         height='140'
-                        image={project.heroImage || '/adapt/api/assets/placeholder.png'}
+                        image={project.heroImage ? `api/assets/serve/${project.heroImage}` : projectPlaceholder}
                         alt={project.title}
                         sx={{ bgcolor: 'grey.200' }}
                       />
                       <CardContent>
-                        <Typography variant='subtitle1' noWrap>{project.title}</Typography>
-                        <Typography variant='caption' color='text.secondary'>
-                          {project.updatedAt ? new Date(project.updatedAt).toLocaleDateString() : ''}
+                        <Typography variant='subtitle1' color='secondary' align='center' noWrap>{project.title}</Typography>
+                        <Typography variant='overline' color='text.secondary' align='center' display='block'>
+                          {t('app.lastupdated')}
                         </Typography>
-                        {project.createdBy && (
-                          <Typography variant='caption' color='text.secondary' display='block'>
-                            {project.createdBy.email || project.createdBy}
-                          </Typography>
-                        )}
+                        <Typography variant='caption' color='text.secondary' align='center' display='block'>
+                          {project.updatedAt ? new Date(project.updatedAt).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric"  }) : ''}
+                        </Typography>
                       </CardContent>
                     </CardActionArea>
                   </Card>

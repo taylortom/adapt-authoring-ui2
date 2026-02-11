@@ -14,7 +14,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { getConfig } from '../utils/config'
 
 import loginBg from '../assets/images/login_bg.jpg'
-import logo from '../assets/images/adapt-learning-logo-white.png'
+import logo from '../assets/images/adapt_logo.png'
 import { t } from '../utils/lang'
 
 export default function Login () {

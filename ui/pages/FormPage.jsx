@@ -9,7 +9,7 @@ function FormPage () {
     alert(t('app.submit'))
   }
   const actions = [
-    { icon: Icons.Check, color: 'primary' }
+    { icon: Icons.Save, color: 'primary' }
   ]
   return (
     <Page title={t('app.formexample')} actions={actions}>

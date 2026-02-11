@@ -1,4 +1,5 @@
 import AccountCircle from '@mui/icons-material/AccountCircle'
+import AddIcon from '@mui/icons-material/Add'
 import AddLinkIcon from '@mui/icons-material/AddLink'
 import CheckIcon from '@mui/icons-material/Check'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
@@ -29,7 +30,7 @@ const Icons = {
   AdaptMenu: WindowIcon,
   AdaptPlugin: PowerIcon,
   AdaptTheme: PaletteIcon,
-  Check: CheckIcon,
+  Add: AddIcon,
   CloseSidebar: ChevronLeftIcon,
   Code: CodeIcon,
   DarkMode: DarkModeIcon,
@@ -43,6 +44,7 @@ const Icons = {
   Logout: LogoutIcon,
   Menu: MenuIcon,
   OpenSidebar: ChevronRightIcon,
+  Save: CheckIcon,
   SystemMode: SettingsBrightnessIcon,
   Uninstall: LinkOffIcon,
   Update: FileUploadIcon,

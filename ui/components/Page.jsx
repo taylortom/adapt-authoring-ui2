@@ -52,7 +52,7 @@ function Links (items) {
   )
 }
 
-export default function Page ({ title = '', subtitle = '', actions = {}, crumbs = [], links = [], children, sidebarItems = [], contentPadding = 4 }) {
+export default function Page ({ title = '', subtitle = '', actions = {}, crumbs = [], links = [], children, sidebarItems = [], paperPadding = 4, includePaper = true }) {
   return (
     <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 64px)' }}>
       <Sidebar items={sidebarItems} />
@@ -70,9 +70,9 @@ export default function Page ({ title = '', subtitle = '', actions = {}, crumbs 
         {Links(links)}
         <Box>
           <Container sx={{ mt: 4, mb: 4 }}>
-            <Paper sx={{ p: contentPadding }}>
-              {children}
-            </Paper>
+            {includePaper
+            ? <Paper sx={{ p: paperPadding }}>{children}</Paper>
+            : {children}}
           </Container>
         </Box>
       </Box>
