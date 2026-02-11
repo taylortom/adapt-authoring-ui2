@@ -54,6 +54,7 @@ export default function Login () {
           width: '100vw',
           height: '100vh',
           background: `url(${loginBg})`,
+          backgroundSize: 'cover',
           top: 0,
           left: 0,
           'z-index': -1
