@@ -3,6 +3,7 @@ import {
   AppBar,
   Box,
   Breadcrumbs,
+  Button,
   Container,
   Drawer,
   Fab,
@@ -11,7 +12,8 @@ import {
   Paper,
   Stack,
   Toolbar,
-  Typography
+  Typography,
+  useTheme
 } from '@mui/material'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
@@ -47,9 +49,9 @@ function Links (items) {
   }
   return (
     <AppBar position='sticky' color='tertiary'>
-      <Toolbar>
-        <Stack direction='row' spacing={2} sx={{ justifyContent: 'center' }}>
-          {items.map((item, i) => <Link key={i} href={item.href}><Typography variant='button'>{item.label}</Typography></Link>)}
+      <Toolbar variant='dense' sx={{ minHeight: 'auto', px: 1, py: 0.5 }}>
+        <Stack direction='row' sx={{ justifyContent: 'center', width: '100%' }}>
+          {items.map((item, i) => <Button key={i} color={item.color ?? 'primary'} size='medium' aria-label={item.label}>{item.label}</Button>)}
         </Stack>
       </Toolbar>
     </AppBar>
@@ -58,27 +60,47 @@ function Links (items) {
 
 function Sidebar ({ children }) {
   const [open, setOpen] = useState(true)
+  const theme = useTheme()
+  const toolbarHeight = theme.mixins.toolbar.minHeight
+  const drawerWidth = theme.custom.drawerWidth
   const style = {
-    flex: open ? 1 : 0,
-    transition: 'flex 0.6s ease',
+    width: open ? drawerWidth : 0,
+    flexShrink: 0,
+    transition: 'width 0.3s ease',
     '& .MuiDrawer-paper': {
-      position: 'relative',
+      position: 'fixed',
+      top: toolbarHeight,
+      left: 0,
+      height: `calc(100vh - ${toolbarHeight}px)`,
       boxSizing: 'border-box',
-      overflow: 'hidden',
-      width: open ? 'auto' : 0,
+      overflowX: 'hidden',
+      width: open ? drawerWidth : 0,
       transition: 'width 0.3s ease',
       bgcolor: 'tertiary.main'
     }
   }
   return (
-    <Drawer variant='permanent' anchor='left' sx={style}>
-      <Box sx={{ p: 2, alignSelf: 'flex-end' }}>
-        <IconButton size='small' color='primary' aria-label={open ? t('app.closesidebar') : t('app.opensidebar')} onClick={() => setOpen(!open)} sx={{ boxShadow: 'none' }}>
-          {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+    <>
+      {!open && (
+        <IconButton
+          size='small'
+          color='primary'
+          aria-label={t('app.opensidebar')}
+          onClick={() => setOpen(true)}
+          sx={{ position: 'fixed', top: toolbarHeight + 8, left: 8, p: 2, zIndex: 'drawer' }}
+        >
+          <ChevronRightIcon />
         </IconButton>
-      </Box>
-      {children}
-    </Drawer>
+      )}
+      <Drawer variant='permanent' anchor='left' sx={style}>
+        <Box sx={{ p: 2, alignSelf: 'flex-end' }}>
+          <IconButton size='small' color='primary' aria-label={t('app.closesidebar')} onClick={() => setOpen(false)} sx={{ boxShadow: 'none' }}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </Box>
+        {children}
+      </Drawer>
+    </>
   )
 }
 

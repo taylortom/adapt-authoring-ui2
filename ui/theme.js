@@ -80,6 +80,9 @@ export function createAppTheme (options = {}) {
         fontWeight: 700
       }
     },
-    cssVariables: true
+    cssVariables: true,
+    custom: {
+      drawerWidth: 350
+    }
   })
 }
