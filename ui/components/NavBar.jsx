@@ -10,13 +10,8 @@ import {
   MenuItem
 } from '@mui/material'
 import { useColorScheme } from '@mui/material/styles'
-import MenuIcon from '@mui/icons-material/Menu'
-import AccountCircle from '@mui/icons-material/AccountCircle'
-import DarkModeIcon from '@mui/icons-material/DarkMode'
-import LightModeIcon from '@mui/icons-material/LightMode'
-import LogoutIcon from '@mui/icons-material/Logout'
-import SettingsBrightnessIcon from '@mui/icons-material/SettingsBrightness'
 import { useNavigate, useLocation } from 'react-router-dom'
+import Icons from '../utils/icons'
 import { useAuth } from '../contexts/AuthContext'
 import { usePreferences } from '../contexts/UserPreferencesContext'
 import { getConfig } from '../utils/config'
@@ -66,7 +61,7 @@ export default function NavBar () {
     <AppBar position='sticky' color='secondary' sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
       <Toolbar>
         <IconButton size='large' edge='start' color='inherit' aria-label='menu' onClick={handleNavMenuOpen} sx={{ mr: 2 }}>
-          <MenuIcon />
+          <Icons.Menu />
         </IconButton>
         <Menu anchorEl={navMenuAnchor} open={Boolean(navMenuAnchor)} onClose={handleNavMenuClose}>
           <MenuItem onClick={() => handleNav('/')} selected={location.pathname === '/'}>
@@ -89,7 +84,7 @@ export default function NavBar () {
           {userName}
         </Typography>
         <IconButton size='large' color='inherit' aria-label='user menu' onClick={handleUserMenuOpen}>
-          <AccountCircle />
+          <Icons.Account />
         </IconButton>
         <Menu
           anchorEl={userMenuAnchor}
@@ -99,19 +94,19 @@ export default function NavBar () {
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
           <MenuItem onClick={() => { setColorMode('system'); setMode('system') }} selected={colorMode === 'system'}>
-            <ListItemIcon><SettingsBrightnessIcon /></ListItemIcon>
+            <ListItemIcon><Icons.SystemMode /></ListItemIcon>
             <ListItemText>{t('app.system')}</ListItemText>
           </MenuItem>
           <MenuItem onClick={() => { setColorMode('light'); setMode('light') }} selected={colorMode === 'light'}>
-            <ListItemIcon><LightModeIcon /></ListItemIcon>
+            <ListItemIcon><Icons.LightMode /></ListItemIcon>
             <ListItemText>{t('app.lightmode')}</ListItemText>
           </MenuItem>
           <MenuItem onClick={() => { setColorMode('dark'); setMode('dark') }} selected={colorMode === 'dark'}>
-            <ListItemIcon><DarkModeIcon /></ListItemIcon>
+            <ListItemIcon><Icons.DarkMode /></ListItemIcon>
             <ListItemText>{t('app.darkmode')}</ListItemText>
           </MenuItem>
           <MenuItem onClick={handleLogout}>
-            <LogoutIcon sx={{ mr: 1 }} />
+            <Icons.Logout sx={{ mr: 1 }} />
             {t('app.logout')}
           </MenuItem>
         </Menu>

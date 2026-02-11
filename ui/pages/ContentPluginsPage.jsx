@@ -18,27 +18,17 @@ import {
 import Page from '../components/Page'
 import { useApiQuery, useApiMutation } from '../utils/api'
 
-import AddLinkIcon from '@mui/icons-material/AddLink'
-import ArticleIcon from '@mui/icons-material/Article'
-import ChromeReaderModeIcon from '@mui/icons-material/ChromeReaderMode'
-import DeleteIcon from '@mui/icons-material/Delete'
-import ExtensionIcon from '@mui/icons-material/Extension'
-import LinkOffIcon from '@mui/icons-material/LinkOff'
-import PaletteIcon from '@mui/icons-material/Palette'
-import FileUploadIcon from '@mui/icons-material/FileUpload'
-import VisibilityIcon from '@mui/icons-material/Visibility'
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
-import WindowIcon from '@mui/icons-material/Window'
+import Icons from '../utils/icons'
 import { t } from '../utils/lang'
 
 const API_ROOT = 'contentplugins'
 
 const PLUGIN_TYPE_CONFIG = {
-  component: { icon: ChromeReaderModeIcon, color: 'primary.main' },
-  extension: { icon: ExtensionIcon, color: 'secondary.main' },
-  menu: { icon: WindowIcon, color: 'warning.main' },
-  theme: { icon: PaletteIcon, color: 'error.main' },
-  default: { icon: ArticleIcon, color: '#757575' }
+  component: { icon: Icons.Reader, color: 'primary.main' },
+  extension: { icon: Icons.Extension, color: 'secondary.main' },
+  menu: { icon: Icons.Window, color: 'warning.main' },
+  theme: { icon: Icons.Theme, color: 'error.main' },
+  default: { icon: Icons.Article, color: '#757575' }
 }
 
 function getPluginTypeIcon (type) {
@@ -94,7 +84,7 @@ function PluginListItem ({ plugin, divider }) {
         <Stack direction='row' spacing='1px' sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
           <Button
             variant='contained'
-            endIcon={plugin.isEnabled ? (<VisibilityIcon />) : (<VisibilityOffIcon />)}
+            endIcon={plugin.isEnabled ? (<Icons.Enable />) : (<Icons.Disable />)}
             aria-label='enabled'
             onClick={() => handleToggleEnabled(plugin)}
             disabled={updateMutation.isPending}
@@ -105,7 +95,7 @@ function PluginListItem ({ plugin, divider }) {
           </Button>
           <Button
             variant='contained'
-            endIcon={plugin.isDefault ? (<AddLinkIcon />) : (<LinkOffIcon />)}
+            endIcon={plugin.isDefault ? (<Icons.Install />) : (<Icons.Uninstall />)}
             aria-label='default'
             onClick={() => handleToggleDefault(plugin)}
             disabled={updateMutation.isPending}
@@ -117,7 +107,7 @@ function PluginListItem ({ plugin, divider }) {
           {plugin.canBeUpdated
             ? <Button
                 variant='contained'
-                endIcon={updateMutation.isPending ? (<CircularProgress size={24} />) : (<FileUploadIcon />)}
+                endIcon={updateMutation.isPending ? (<CircularProgress size={24} />) : (<Icons.Update />)}
                 aria-label='enabled'
                 onClick={() => handleUpdate(plugin)}
                 disabled={updateMutation.isPending}
@@ -129,7 +119,7 @@ function PluginListItem ({ plugin, divider }) {
             : ''}
           <Button
             variant='contained'
-            endIcon={deleteMutation.isPending ? (<CircularProgress size={24} />) : (<DeleteIcon />)}
+            endIcon={deleteMutation.isPending ? (<CircularProgress size={24} />) : (<Icons.Delete />)}
             aria-label='enabled'
             onClick={() => handleDelete(plugin)}
             disabled={updateMutation.isPending}
@@ -190,8 +180,8 @@ export default function ContentPluginsPage () {
     { label: t('app.plugins') }
   ]
   const actions = [
-    { label: t('app.update'), icon: FileUploadIcon },
-    { label: t('app.delete'), icon: DeleteIcon }
+    { label: t('app.update'), icon: Icons.Update },
+    { label: t('app.delete'), icon: Icons.Delete }
   ]
   return (
     <Page title={t('app.plugins')} subtitle={t('app.pluginspagesubtitle')} actions={actions} crumbs={crumbs} contentPadding={0}>

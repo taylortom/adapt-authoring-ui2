@@ -1,4 +1,4 @@
-import CheckIcon from '@mui/icons-material/Check'
+import Icons from '../utils/icons'
 import Page from '../components/Page'
 import SchemaForm from 'adapt-authoring-ui2/ui/components/SchemaForm'
 import { t } from '../utils/lang'
@@ -9,7 +9,7 @@ function FormPage () {
     alert(t('app.submit'))
   }
   const actions = [
-    { icon: CheckIcon, color: 'primary' }
+    { icon: Icons.Check, color: 'primary' }
   ]
   return (
     <Page title={t('app.formexample')} actions={actions}>

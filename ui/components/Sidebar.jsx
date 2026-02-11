@@ -3,13 +3,45 @@ import {
   Box,
   Drawer,
   IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  ListSubheader,
+  Divider,
   useTheme
 } from '@mui/material'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import Icons from '../utils/icons'
 import { t } from '../utils/lang'
 
-export default function Sidebar ({ children }) {
+function SidebarItems ({ items }) {
+  if (!items?.length) {
+    return ''
+  }
+  return (
+    <List>
+      {items.map((item, i) => {
+        if (item.type === 'divider') {
+          return <Divider key={i} />
+        }
+        if (item.type === 'heading') {
+          return <ListSubheader key={i} sx={{ bgcolor: 'transparent', color: 'primary.contrastText' }}>{item.label}</ListSubheader>
+        }
+        return (
+          <ListItem key={i} disablePadding>
+            <ListItemButton onClick={item.handleClick} href={item.href} selected={item.selected}>
+              {item.icon && <ListItemIcon sx={{ color: 'primary.contrastText' }}><item.icon /></ListItemIcon>}
+              <ListItemText primary={item.label} sx={{ color: 'primary.contrastText' }} />
+            </ListItemButton>
+          </ListItem>
+        )
+      })}
+    </List>
+  )
+}
+
+export default function Sidebar ({ items }) {
   const { sidebarOpen: open, setSidebarOpen: setOpen } = usePreferences()
   const theme = useTheme()
   const toolbarHeight = theme.mixins.toolbar.minHeight
@@ -40,16 +72,16 @@ export default function Sidebar ({ children }) {
           onClick={() => setOpen(true)}
           sx={{ position: 'fixed', top: toolbarHeight + 8, left: 8, p: 2, zIndex: 'drawer' }}
         >
-          <ChevronRightIcon />
+          <Icons.OpenSidebar />
         </IconButton>
       )}
       <Drawer variant='permanent' anchor='left' sx={style}>
         <Box sx={{ p: 2, alignSelf: 'flex-end' }}>
           <IconButton size='small' color='primary' aria-label={t('app.closesidebar')} onClick={() => setOpen(false)} sx={{ boxShadow: 'none' }}>
-            <ChevronLeftIcon />
+            <Icons.CloseSidebar />
           </IconButton>
         </Box>
-        {children}
+        <SidebarItems items={items} />
       </Drawer>
     </>
   )

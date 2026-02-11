@@ -19,7 +19,7 @@ function Actions (items) {
   }
   return (
     <Stack direction='row' spacing={1}>
-      {items.map((item, i) => <Fab key={i} color={item.color ?? 'secondary'} size='medium' aria-label={item.label} sx={{ boxShadow: 'none' }}><item.icon /></Fab>)}
+      {items.map((item, i) => <Fab key={i} color={item.color ?? 'secondary'} size='medium' href={item.href} aria-label={item.label} sx={{ boxShadow: 'none' }}><item.icon /></Fab>)}
     </Stack>
   )
 }
@@ -52,12 +52,10 @@ function Links (items) {
   )
 }
 
-export default function Page ({ title = '', subtitle = '', actions = {}, crumbs = [], links = [], children, sidebarChildren, contentPadding = 4 }) {
+export default function Page ({ title = '', subtitle = '', actions = {}, crumbs = [], links = [], children, sidebarItems = [], contentPadding = 4 }) {
   return (
     <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 64px)' }}>
-      <Sidebar>
-        {sidebarChildren}
-      </Sidebar>
+      <Sidebar items={sidebarItems} />
       <Box sx={{ flex: 6, overflow: 'auto' }}>
         <AppBar position='sticky' sx={{ p: 3, bgcolor: 'background.paper', color: 'text.primary' }}>
           <Container>
