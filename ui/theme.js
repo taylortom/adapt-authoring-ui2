@@ -79,7 +79,7 @@ export function createAppTheme (options = {}) {
       }
     },
     custom: {
-      drawerWidth: 350
+      sidebarWidth: 300
     }
   })
 }

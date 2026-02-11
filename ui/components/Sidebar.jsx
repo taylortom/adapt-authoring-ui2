@@ -60,9 +60,9 @@ export default function Sidebar ({ items }) {
   const { sidebarOpen: open, setSidebarOpen: setOpen } = usePreferences()
   const theme = useTheme()
   const toolbarHeight = theme.mixins.toolbar.minHeight
-  const drawerWidth = theme.custom.drawerWidth
+  const width = theme.custom.sidebarWidth
   const style = {
-    width: open ? drawerWidth : 0,
+    width: open ? width : 0,
     flexShrink: 0,
     transition: 'width 0.3s ease',
     '& .MuiDrawer-paper': {
@@ -72,7 +72,7 @@ export default function Sidebar ({ items }) {
       height: `calc(100vh - ${toolbarHeight}px)`,
       boxSizing: 'border-box',
       overflowX: 'hidden',
-      width: open ? drawerWidth : 0,
+      width: open ? width : 0,
       transition: 'width 0.3s ease',
       bgcolor: 'tertiary.main'
     }
