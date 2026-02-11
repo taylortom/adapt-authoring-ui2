@@ -44,7 +44,6 @@ export function createAppTheme (options = {}) {
   return createTheme({
     colorSchemes: {
       light: { palette: { ...defaultPalette } }
-      /*
       dark: {
         palette: {
           ...defaultPalette,
@@ -57,7 +56,6 @@ export function createAppTheme (options = {}) {
           },
         }
       }
-      */
     },
     components: {
       MuiButton: {

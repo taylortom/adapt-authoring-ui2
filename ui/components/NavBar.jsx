@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   AppBar,
   ListItemIcon,
@@ -18,6 +18,7 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import SettingsBrightnessIcon from '@mui/icons-material/SettingsBrightness'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { usePreferences } from '../contexts/UserPreferencesContext'
 import { getConfig } from '../utils/config'
 import { t } from '../utils/lang'
 
@@ -25,7 +26,9 @@ export default function NavBar () {
   const navigate = useNavigate()
   const location = useLocation()
   const { user, logout } = useAuth()
-  const { mode, setMode } = useColorScheme()
+  const { setMode } = useColorScheme()
+  const { colorMode, setColorMode } = usePreferences()
+  useEffect(() => setMode(colorMode), [colorMode, setMode])
   const [navMenuAnchor, setNavMenuAnchor] = useState(null)
   const [userMenuAnchor, setUserMenuAnchor] = useState(null)
 
@@ -95,15 +98,15 @@ export default function NavBar () {
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
-          <MenuItem onClick={() => setMode('system')} selected={mode === 'system'}>
+          <MenuItem onClick={() => { setColorMode('system'); setMode('system') }} selected={colorMode === 'system'}>
             <ListItemIcon><SettingsBrightnessIcon /></ListItemIcon>
             <ListItemText>{t('app.system')}</ListItemText>
           </MenuItem>
-          <MenuItem onClick={() => setMode('light')} selected={mode === 'light'}>
+          <MenuItem onClick={() => { setColorMode('light'); setMode('light') }} selected={colorMode === 'light'}>
             <ListItemIcon><LightModeIcon /></ListItemIcon>
             <ListItemText>{t('app.lightmode')}</ListItemText>
           </MenuItem>
-          <MenuItem onClick={() => setMode('dark')} selected={mode === 'dark'}>
+          <MenuItem onClick={() => { setColorMode('dark'); setMode('dark') }} selected={colorMode === 'dark'}>
             <ListItemIcon><DarkModeIcon /></ListItemIcon>
             <ListItemText>{t('app.darkmode')}</ListItemText>
           </MenuItem>

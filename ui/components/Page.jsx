@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { usePreferences } from '../contexts/UserPreferencesContext'
 import {
   AppBar,
   Box,
@@ -59,7 +59,7 @@ function Links (items) {
 }
 
 function Sidebar ({ children }) {
-  const [open, setOpen] = useState(true)
+  const { sidebarOpen: open, setSidebarOpen: setOpen } = usePreferences()
   const theme = useTheme()
   const toolbarHeight = theme.mixins.toolbar.minHeight
   const drawerWidth = theme.custom.drawerWidth
