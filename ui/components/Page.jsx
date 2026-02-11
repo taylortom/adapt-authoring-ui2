@@ -45,7 +45,7 @@ function Links (items) {
     <AppBar position='sticky' sx={{ bgcolor: 'tertiary.main', color: 'secondary.main' }}>
       <Toolbar variant='dense' sx={{ minHeight: 'auto', px: 1, py: 0.5 }}>
         <Stack direction='row' sx={{ justifyContent: 'center', width: '100%' }}>
-          {items.map((item, i) => <Button key={i} color={item.color ?? 'primary'} size='medium' aria-label={item.label}>{item.label}</Button>)}
+          {items.map((item, i) => <Button key={i} color={item.color ?? 'primary'} size='medium' href={item.href} aria-label={item.label}>{item.label}</Button>)}
         </Stack>
       </Toolbar>
     </AppBar>
