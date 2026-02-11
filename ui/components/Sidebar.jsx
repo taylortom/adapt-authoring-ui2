@@ -1,6 +1,8 @@
 import { usePreferences } from '../contexts/UserPreferencesContext'
 import {
   Box,
+  Button,
+  Divider,
   Drawer,
   IconButton,
   List,
@@ -9,8 +11,7 @@ import {
   ListItemIcon,
   ListItemText,
   ListSubheader,
-  Divider,
-  useTheme
+  useTheme,
 } from '@mui/material'
 import Icons from '../utils/icons'
 import { t } from '../utils/lang'
@@ -20,22 +21,36 @@ function SidebarItems ({ items }) {
     return ''
   }
   return (
-    <List>
+    <List sx={{ p: 2, pt: 0, }}>
       {items.map((item, i) => {
         if (item.type === 'divider') {
           return <Divider key={i} />
         }
         if (item.type === 'heading') {
-          return <ListSubheader key={i} sx={{ bgcolor: 'transparent', color: 'primary.contrastText' }}>{item.label}</ListSubheader>
+          return <ListSubheader key={i} size='large' sx={{ bgcolor: 'transparent', color: 'secondary.main', textAlign: 'center' }}>{item.label}</ListSubheader>
         }
-        return (
-          <ListItem key={i} disablePadding>
-            <ListItemButton onClick={item.handleClick} href={item.href} selected={item.selected}>
-              {item.icon && <ListItemIcon sx={{ color: 'primary.contrastText' }}><item.icon /></ListItemIcon>}
-              <ListItemText primary={item.label} sx={{ color: 'primary.contrastText' }} />
-            </ListItemButton>
-          </ListItem>
-        )
+        if (item.type === 'button') {
+          const colour = item.style ?? 'primary'
+          const variant = colour === 'primary' ? 'contained' : 'outlined'
+          return (
+            <ListItem key={i}>
+              <Button onClick={item.handleClick} color={colour} variant={variant} fullWidth={true} sx={{ p: 2 }}>
+                {item.label}
+              </Button>
+            </ListItem>
+          )
+        }
+        if (item.type === 'link') {
+          const Icon = item.icon ?? Icons.OpenSidebar
+          return (
+            <ListItem key={i} disablePadding>
+              <ListItemButton onClick={item.handleClick} href={item.href} selected={item.selected}>
+                <ListItemIcon sx={{ color: 'primary.main' }}><Icon /></ListItemIcon>
+                <ListItemText primary={item.label} sx={{ color: 'secondary.main' }} />
+              </ListItemButton>
+            </ListItem>
+          )
+        }
       })}
     </List>
   )

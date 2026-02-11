@@ -1,6 +1,5 @@
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import AddLinkIcon from '@mui/icons-material/AddLink'
-import ArticleIcon from '@mui/icons-material/Article'
 import CheckIcon from '@mui/icons-material/Check'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
@@ -17,6 +16,7 @@ import LinkOffIcon from '@mui/icons-material/LinkOff'
 import LogoutIcon from '@mui/icons-material/Logout'
 import MenuIcon from '@mui/icons-material/Menu'
 import PaletteIcon from '@mui/icons-material/Palette'
+import PowerIcon from '@mui/icons-material/Power'
 import SettingsBrightnessIcon from '@mui/icons-material/SettingsBrightness'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
@@ -24,7 +24,11 @@ import WindowIcon from '@mui/icons-material/Window'
 
 const Icons = {
   Account: AccountCircle,
-  Article: ArticleIcon,
+  AdaptComponent: ChromeReaderModeIcon,
+  AdaptExtension: ExtensionIcon,
+  AdaptMenu: WindowIcon,
+  AdaptPlugin: PowerIcon,
+  AdaptTheme: PaletteIcon,
   Check: CheckIcon,
   CloseSidebar: ChevronLeftIcon,
   Code: CodeIcon,
@@ -32,7 +36,6 @@ const Icons = {
   Delete: DeleteIcon,
   Disable: VisibilityOffIcon,
   Enable: VisibilityIcon,
-  Extension: ExtensionIcon,
   Help: HelpIcon,
   Info: InfoIcon,
   Install: AddLinkIcon,
@@ -40,12 +43,9 @@ const Icons = {
   Logout: LogoutIcon,
   Menu: MenuIcon,
   OpenSidebar: ChevronRightIcon,
-  Reader: ChromeReaderModeIcon,
   SystemMode: SettingsBrightnessIcon,
-  Theme: PaletteIcon,
   Uninstall: LinkOffIcon,
   Update: FileUploadIcon,
-  Window: WindowIcon
 }
 
 export default Icons

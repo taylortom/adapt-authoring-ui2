@@ -24,11 +24,11 @@ import { t } from '../utils/lang'
 const API_ROOT = 'contentplugins'
 
 const PLUGIN_TYPE_CONFIG = {
-  component: { icon: Icons.Reader, color: 'primary.main' },
-  extension: { icon: Icons.Extension, color: 'secondary.main' },
-  menu: { icon: Icons.Window, color: 'warning.main' },
-  theme: { icon: Icons.Theme, color: 'error.main' },
-  default: { icon: Icons.Article, color: '#757575' }
+  component: { icon: Icons.AdaptComponent, color: 'primary.main' },
+  extension: { icon: Icons.AdaptExtension, color: 'secondary.main' },
+  menu: { icon: Icons.AdaptMenu, color: 'warning.main' },
+  theme: { icon: Icons.AdaptTheme, color: 'error.main' },
+  default: { icon: Icons.AdaptPlugin, color: '#757575' }
 }
 
 function getPluginTypeIcon (type) {
@@ -183,8 +183,14 @@ export default function ContentPluginsPage () {
     { label: t('app.update'), icon: Icons.Update },
     { label: t('app.delete'), icon: Icons.Delete }
   ]
+  const sidebarItems = [
+  { type: 'link', label: 'Components', icon: Icons.AdaptComponent, handleClick: () => {} },
+  { type: 'link', label: 'Extensions', icon: Icons.AdaptExtension, handleClick: () => {} },
+  { type: 'link', label: 'Menus', icon: Icons.AdaptMenu, handleClick: () => {} },
+  { type: 'link', label: 'Themes', icon: Icons.AdaptTheme, handleClick: () => {} },
+]
   return (
-    <Page title={t('app.plugins')} subtitle={t('app.pluginspagesubtitle')} actions={actions} crumbs={crumbs} contentPadding={0}>
+    <Page title={t('app.plugins')} subtitle={t('app.pluginspagesubtitle')} actions={actions} crumbs={crumbs} sidebarItems={sidebarItems} contentPadding={0}>
       {plugins.length === 0
         ? (<Alert severity='info'>{t('app.noplugins')}</Alert>)
         : (<List>{plugins.map((plugin, index) => (<PluginListItem key={plugin._id} plugin={plugin} divider={index < plugins.length - 1} />))}</List>)}
