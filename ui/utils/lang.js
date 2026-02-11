@@ -2,7 +2,7 @@
 import { prefetchApiQuery, getApiQueryData } from './api'
 
 export function loadLang (locale = navigator.language.split('-')[0]) {
-  return prefetchApiQuery('lang', (api) => api.get(locale), { staleTime: Infinity })
+  return prefetchApiQuery('lang', (api) => api.get(locale), { staleTime: Infinity, gcTime: Infinity })
 }
 
 export function t (key, data) {

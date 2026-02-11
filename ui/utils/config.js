@@ -3,7 +3,7 @@ import { prefetchApiQuery, getApiQueryData } from './api'
 import packageJson from '../../package.json'
 
 export function loadConfig () {
-  return prefetchApiQuery('config', (api) => api.get(), { staleTime: Infinity })
+  return prefetchApiQuery('config', (api) => api.get(), { staleTime: Infinity, gcTime: Infinity })
 }
 
 export function getConfig (key) {
