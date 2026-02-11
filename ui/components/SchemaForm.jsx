@@ -1,5 +1,4 @@
-import { useApi } from '../utils/api'
-import { useQuery } from '@tanstack/react-query'
+import { useApiQuery } from '../utils/api'
 import Form from '@rjsf/mui'
 import validator from '@rjsf/validator-ajv8'
 
@@ -33,19 +32,18 @@ const ATTRIBUTE_BLACKLIST = [
 ]
 
 const SchemaForm = ({ apiName, uiSchema, dataId, queryString, disableCache = false, onSubmit }) => {
-  const api = useApi(apiName)
   const cacheOpts = disableCache ? { gcTime: 0, staleTime: 0 } : {}
 
-  const { data: schema, error: schemaError } = useQuery({
-    queryKey: [apiName, 'schema'],
-    queryFn: () => api.getSchema(queryString),
-    ...cacheOpts
-  })
-  const { data, error: dataError } = useQuery({
-    queryKey: [apiName, 'schema'],
-    queryFn: () => api.get(dataId),
-    ...cacheOpts
-  })
+  const { data: schema, error: schemaError } = useApiQuery(
+    apiName,
+    (api) => api.getSchema(queryString),
+    { key: 'schema', ...cacheOpts }
+  )
+  const { data, error: dataError } = useApiQuery(
+    apiName,
+    (api) => api.get(dataId),
+    { key: dataId, ...cacheOpts }
+  )
   if (dataError ?? schemaError) {
     alert(dataError ?? schemaError)
   }

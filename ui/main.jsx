@@ -7,11 +7,12 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { queryClient } from './services/queryClient'
 import { createAppTheme } from './theme'
 import { loadConfig, getConfig } from './utils/config'
+import { loadLang } from './utils/lang'
 import App from './App'
 import './index.css'
 
-// Load config from backend before rendering app
-loadConfig().then(() => {
+// Load config and lang from backend before rendering app
+Promise.all([loadConfig(), loadLang()]).then(() => {
   const theme = createAppTheme({
     primaryColour: getConfig('primaryColour'),
     secondaryColour: getConfig('secondaryColour')

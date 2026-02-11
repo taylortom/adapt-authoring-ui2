@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   Alert,
   Avatar,
@@ -17,7 +16,7 @@ import {
   Stack
 } from '@mui/material'
 import Page from '../components/Page'
-import { useApi } from '../utils/api'
+import { useApiQuery, useApiMutation } from '../utils/api'
 
 import AddLinkIcon from '@mui/icons-material/AddLink'
 import ArticleIcon from '@mui/icons-material/Article'
@@ -31,7 +30,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import WindowIcon from '@mui/icons-material/Window'
 
-const api = useApi('contentplugins')
+const API_ROOT = 'contentplugins'
 
 const PLUGIN_TYPE_CONFIG = {
   component: { icon: ChromeReaderModeIcon, color: 'primary.main' },
@@ -56,27 +55,19 @@ function PluginVersion (plugin) {
   )
 }
 function PluginListItem ({ plugin, divider }) {
-  const queryClient = useQueryClient()
   const typeConfig = getPluginTypeIcon(plugin.type)
   const TypeIcon = typeConfig.icon
   const [open, setOpen] = useState(false)
 
-  const updateMutation = useMutation({
-    mutationFn: api.patch,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [api.key] })
-  })
-
-  const deleteMutation = useMutation({
-    mutationFn: ({ pluginId }) => api.delete(pluginId),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [api.key] })
-  })
+  const updateMutation = useApiMutation(API_ROOT, (api, { _id, data }) => api.patch(_id, data))
+  const deleteMutation = useApiMutation(API_ROOT, (api, { _id }) => api.remove(_id))
 
   const handleToggleEnabled = (plugin) => {
-    updateMutation.mutate(plugin._id, { isEnabled: !plugin.isEnabled })
+    updateMutation.mutate({ _id: plugin._id, data: { isEnabled: !plugin.isEnabled } })
   }
 
   const handleToggleDefault = (plugin) => {
-    updateMutation.mutate(plugin._id, { isDefault: !plugin.isDefault })
+    updateMutation.mutate({ _id: plugin._id, data: { isDefault: !plugin.isDefault } })
   }
 
   const handleUpdate = (plugin) => {
@@ -86,7 +77,7 @@ function PluginListItem ({ plugin, divider }) {
 
   const handleDelete = (plugin) => {
     if (window.confirm(`Are you sure you want to delete "${plugin.displayName}"?`)) {
-      deleteMutation.mutate(plugin._id)
+      deleteMutation.mutate({ _id: plugin._id })
     }
   }
 
@@ -153,14 +144,12 @@ function PluginListItem ({ plugin, divider }) {
 }
 
 export default function ContentPluginsPage () {
-  const { data, isLoading, error } = useQuery({
-    queryKey: [api.key],
-    queryFn: () => api.get()
-  })
-  const { data: updateData } = useQuery({
-    queryKey: [api.key, 'updates'],
-    queryFn: () => api.query('?includeUpdateInfo=true')
-  })
+  const { data, isLoading, error } = useApiQuery(API_ROOT, (api) => api.get())
+  const { data: updateData } = useApiQuery(
+    API_ROOT,
+    (api) => api.query('?includeUpdateInfo=true'),
+    { key: 'updates' }
+  )
 
   if (isLoading) {
     return (
