@@ -6,15 +6,15 @@ export function createAppTheme (options = {}) {
   const defaultPalette = {
     primary: {
       main: options.primaryColour,
-      contrastText: 'white'
+      contrastText: '#fff'
     },
     secondary: {
       main: options.secondaryColour,
-      contrastText: 'white'
+      contrastText: '#fff'
     },
     tertiary: {
       main: '#263944',
-      contrastText: 'secondary'
+      contrastText: options.secondaryColour
     },
     error: {
       main: '#ff5567'
@@ -49,7 +49,7 @@ export function createAppTheme (options = {}) {
           ...defaultPalette,
           tertiary: {
             main: '#484848',
-            contrastText: 'secondary'
+            contrastText: options.secondaryColour
           },
           background: {
             default: '#363636'
