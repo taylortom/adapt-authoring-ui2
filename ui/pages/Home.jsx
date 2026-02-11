@@ -3,7 +3,7 @@ import Page from '../components/Page'
 import { useAuth } from '../contexts/AuthContext'
 import { t } from '../utils/lang'
 
-function HomePage () {
+function Home () {
   const { user, scopes, isSuper } = useAuth()
   const links = [
     { label: t('app.dashboard'), href: '/' },
@@ -20,4 +20,4 @@ function HomePage () {
   )
 }
 
-export default HomePage
+export default Home

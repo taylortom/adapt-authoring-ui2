@@ -3,7 +3,7 @@ import Page from '../components/Page'
 import SchemaForm from 'adapt-authoring-ui2/ui/components/SchemaForm'
 import { t } from '../utils/lang'
 
-function FormPage () {
+function Form () {
   const _courseId = '697cbec62b258a7de1022d65'
   const handleSubmit = () => {
     alert(t('app.submit'))
@@ -23,4 +23,4 @@ function FormPage () {
   )
 }
 
-export default FormPage
+export default Form

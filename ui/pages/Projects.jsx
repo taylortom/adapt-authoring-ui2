@@ -32,7 +32,7 @@ import projectPlaceholder from '../assets/images/project_placeholder.jpg'
 const API_ROOT = 'content'
 const PAGE_SIZE = 12
 
-export default function ProjectsPage () {
+export default function Projects () {
   const [page, setPage] = useState(0)
   const [limit, setLimit] = useState(PAGE_SIZE)
   const [sortField, setSortField] = useState('updatedAt')

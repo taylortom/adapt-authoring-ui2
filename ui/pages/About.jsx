@@ -13,7 +13,7 @@ const sidebarItems = [
   { type: 'link', label: 'Source Code', icon: Icons.Code, handleClick: () => {} }
 ]
 
-function AboutPage () {
+function About () {
   return (
     <Page title='About' sidebarItems={sidebarItems}>
       <Typography>Learn more about this application.</Typography>
@@ -21,4 +21,4 @@ function AboutPage () {
   )
 }
 
-export default AboutPage
+export default About

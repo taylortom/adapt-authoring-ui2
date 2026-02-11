@@ -136,7 +136,7 @@ function PluginListItem ({ plugin, divider }) {
   )
 }
 
-export default function ContentPluginsPage () {
+export default function ContentPlugins () {
   const { data, isLoading, error } = useApiQuery(API_ROOT, (api) => api.get())
   const { data: updateData } = useApiQuery(
     API_ROOT,
