@@ -3,10 +3,7 @@ import { AuthProvider } from './contexts/AuthContext'
 import { UserPreferencesProvider } from './contexts/UserPreferencesContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import Login from './pages/Login'
-import AboutPage from './pages/AboutPage'
-import ContentPluginsPage from './pages/ContentPluginsPage'
-import FormPage from './pages/FormPage'
-import HomePage from './pages/HomePage'
+import routes from './routes'
 
 function App () {
   return (
@@ -18,10 +15,7 @@ function App () {
             <Route path='/login' element={<Login />} />
             {/* Protected routes */}
             <Route element={<ProtectedRoute />}>
-              <Route path='/' element={<HomePage />} />
-              <Route path='/about' element={<AboutPage />} />
-              <Route path='/form' element={<FormPage />} />
-              <Route path='/contentplugins' element={<ContentPluginsPage />} />
+              {routes.map(r => <Route key={r.path} path={r.path} element={r.element} />)}
             </Route>
             <Route path='*' element={<Navigate to='/' replace />} />
           </Routes>

@@ -14,6 +14,7 @@ import {
 import { useColorScheme } from '@mui/material/styles'
 import { useNavigate, useLocation } from 'react-router-dom'
 import Icons from '../utils/icons'
+import routes from '../routes'
 import { useAuth } from '../contexts/AuthContext'
 import { getConfig } from '../utils/config'
 import { t } from '../utils/lang'
@@ -63,18 +64,11 @@ export default function NavBar () {
           <Icons.Menu />
         </IconButton>
         <Menu anchorEl={navMenuAnchor} open={Boolean(navMenuAnchor)} onClose={handleNavMenuClose}>
-          <MenuItem onClick={() => handleNav('/')} selected={location.pathname === '/'}>
-            {t('app.home')}
-          </MenuItem>
-          <MenuItem onClick={() => handleNav('/about')} selected={location.pathname === '/about'}>
-            {t('app.about')}
-          </MenuItem>
-          <MenuItem onClick={() => handleNav('/form')} selected={location.pathname === '/form'}>
-            {t('app.form')}
-          </MenuItem>
-          <MenuItem onClick={() => handleNav('/contentplugins')} selected={location.pathname === '/contentplugins'}>
-            {t('app.plugins')}
-          </MenuItem>
+          {routes.filter(r => r.nav).map(r => (
+            <MenuItem key={r.path} onClick={() => handleNav(r.path)} selected={location.pathname === r.path}>
+              {t(r.label)}
+            </MenuItem>
+          ))}
         </Menu>
         <Typography variant='h6' sx={{ flexGrow: 1, cursor: 'pointer' }} onClick={() => navigate('/')}>
           {appTitle}
