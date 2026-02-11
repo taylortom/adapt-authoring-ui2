@@ -42,8 +42,9 @@ export function createAppTheme (options = {}) {
     fontFamily: 'Raleway Variable, sans-serif'
   }
   return createTheme({
+    defaultColorScheme: 'light',
     colorSchemes: {
-      light: { palette: { ...defaultPalette } }
+      light: { palette: { ...defaultPalette } },
       dark: {
         palette: {
           ...defaultPalette,
@@ -53,7 +54,7 @@ export function createAppTheme (options = {}) {
           },
           background: {
             default: '#363636'
-          },
+          }
         }
       }
     },
