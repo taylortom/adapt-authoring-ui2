@@ -27,16 +27,6 @@ export default function ContentTree ({
   onDelete,
   onReorder
 }) {
-  const [expandedItems, setExpandedItems] = useState(() => {
-    if (tree.length > 0) return [tree[0]._id]
-    return []
-  })
-
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
-    useSensor(KeyboardSensor)
-  )
-
   const allItemIds = useMemo(() => {
     const ids = []
     const collect = (nodes) => {
@@ -48,6 +38,13 @@ export default function ContentTree ({
     collect(tree)
     return ids
   }, [tree])
+
+  const [expandedItems, setExpandedItems] = useState(allItemIds)
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor)
+  )
 
   const handleSelectedItemsChange = useCallback((event, itemId) => {
     if (itemId) onSelect(itemId)

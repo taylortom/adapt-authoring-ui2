@@ -11,7 +11,7 @@ function buildTree (data) {
 
   const roots = []
   flatMap.forEach(item => {
-    if (item._type === 'course') {
+    if (item._type === 'course' || item._type === 'config') {
       roots.push(item)
     } else if (item._parentId && flatMap.has(item._parentId)) {
       flatMap.get(item._parentId).children.push(item)

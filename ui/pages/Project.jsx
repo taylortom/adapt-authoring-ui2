@@ -92,6 +92,7 @@ export default function Project () {
   ]
 
   const sidebarItems = [
+    { type: 'heading', label: t('app.coursestructure') },
     {
       type: 'custom',
       content: (
