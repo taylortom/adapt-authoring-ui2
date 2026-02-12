@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { useApiQuery } from '../utils/api'
 import Form from '@rjsf/mui'
 import validator from '@rjsf/validator-ajv8'
@@ -31,7 +32,18 @@ const ATTRIBUTE_BLACKLIST = [
   'userGroups'
 ]
 
-const SchemaForm = ({ apiName, uiSchema, dataId, queryString, disableCache = false, onSubmit }) => {
+function filterRequiredOnly (schema) {
+  if (!schema?.properties || !schema?.required?.length) return schema
+  const filtered = { ...schema, properties: {} }
+  schema.required.forEach(key => {
+    if (schema.properties[key]) {
+      filtered.properties[key] = schema.properties[key]
+    }
+  })
+  return filtered
+}
+
+const SchemaForm = ({ apiName, uiSchema, dataId, queryString, requiredOnly = false, disableCache = false, onSubmit }) => {
   const cacheOpts = disableCache ? { gcTime: 0, staleTime: 0 } : {}
 
   const { data: schema, error: schemaError } = useApiQuery(
@@ -50,11 +62,16 @@ const SchemaForm = ({ apiName, uiSchema, dataId, queryString, disableCache = fal
   if (!schema || !data) {
     return ''
   }
-  ATTRIBUTE_BLACKLIST.forEach(a => delete schema.properties[a])
+
+  const processedSchema = useMemo(() => {
+    const s = { ...schema, properties: { ...schema.properties } }
+    ATTRIBUTE_BLACKLIST.forEach(a => delete s.properties[a])
+    return requiredOnly ? filterRequiredOnly(s) : s
+  }, [schema, requiredOnly])
 
   return (
     <Form
-      schema={schema}
+      schema={processedSchema}
       uiSchema={uiSchema}
       formData={data}
       validator={validator}

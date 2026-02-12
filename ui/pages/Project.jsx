@@ -12,6 +12,7 @@ import { t } from '../utils/lang'
 export default function Project () {
   const { id: courseId } = useParams()
   const [selectedId, setSelectedId] = useState(courseId)
+  const [requiredOnly, setRequiredOnly] = useState(true)
 
   const {
     tree,
@@ -83,6 +84,11 @@ export default function Project () {
 
   const actions = [
     {
+      icon: Icons.Filter,
+      color: requiredOnly ? 'primary' : 'secondary',
+      handleClick: () => setRequiredOnly(prev => !prev)
+    },
+    {
       icon: Icons.Save,
       color: 'primary',
       handleClick: () => {
@@ -109,6 +115,7 @@ export default function Project () {
       )
     },
     { type: 'divider' },
+    { type: 'link', label: 'Extensions', icon: Icons.AdaptExtension, handleClick: () => {} },
     { type: 'link', label: 'Theme', icon: Icons.AdaptTheme, handleClick: () => {} },
     { type: 'link', label: 'Menu', icon: Icons.AdaptMenu, handleClick: () => {} },
   ]
@@ -123,6 +130,7 @@ export default function Project () {
               apiName='content'
               dataId={selectedId}
               queryString={`_type=${selectedItem._type}&_courseId=${courseId}`}
+              requiredOnly={requiredOnly}
               onSubmit={handleSubmit}
             />
           </Box>

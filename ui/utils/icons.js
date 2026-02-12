@@ -14,6 +14,7 @@ import DescriptionIcon from '@mui/icons-material/Description'
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
 import EditIcon from '@mui/icons-material/Edit'
 import ExtensionIcon from '@mui/icons-material/Extension'
+import FilterListIcon from '@mui/icons-material/FilterList'
 import FileUploadIcon from '@mui/icons-material/FileUpload'
 import HelpIcon from '@mui/icons-material/Help'
 import InfoIcon from '@mui/icons-material/Info'
@@ -49,6 +50,7 @@ const Icons = {
   DragHandle: DragIndicatorIcon,
   Edit: EditIcon,
   Enable: VisibilityIcon,
+  Filter: FilterListIcon,
   Help: HelpIcon,
   Info: InfoIcon,
   Install: AddLinkIcon,
