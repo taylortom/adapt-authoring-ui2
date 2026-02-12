@@ -51,6 +51,9 @@ function SidebarItems ({ items }) {
             </ListItem>
           )
         }
+        if (item.type === 'custom') {
+          return <Box key={i}>{item.content}</Box>
+        }
       })}
     </List>
   )

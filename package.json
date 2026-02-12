@@ -23,6 +23,7 @@
     "@fontsource-variable/raleway": "^5.2.8",
     "@mui/icons-material": "^7.3.7",
     "@mui/material": "^7.3.7",
+    "@mui/x-tree-view": "^8.27.0",
     "@rjsf/core": "^6.2.5",
     "@rjsf/mui": "^6.2.5",
     "@rjsf/utils": "^6.2.5",

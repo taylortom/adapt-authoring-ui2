@@ -1,9 +1,11 @@
 import { useCallback, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Alert,
   Box,
   Card,
   CardActionArea,
+  CardActions,
   CardContent,
   CardMedia,
   CircularProgress,
@@ -33,6 +35,7 @@ const API_ROOT = 'content'
 const PAGE_SIZE = 12
 
 export default function Projects () {
+  const navigate = useNavigate()
   const [page, setPage] = useState(0)
   const [limit, setLimit] = useState(PAGE_SIZE)
   const [sortField, setSortField] = useState('updatedAt')
@@ -160,6 +163,13 @@ export default function Projects () {
                         </Typography>
                       </CardContent>
                     </CardActionArea>
+                    <CardActions sx={{ justifyContent: 'center' }}>
+                      <Tooltip title={t('app.edit')}>
+                        <IconButton size='small' color='primary' onClick={() => navigate(`/project/${project._id}`)}>
+                          <Icons.Edit />
+                        </IconButton>
+                      </Tooltip>
+                    </CardActions>
                   </Card>
                 </Grid>
               ))}
