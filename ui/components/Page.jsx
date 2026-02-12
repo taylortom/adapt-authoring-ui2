@@ -72,7 +72,7 @@ export default function Page ({ title = '', subtitle = '', actions = {}, crumbs 
           <Container sx={{ mt: 4, mb: 4 }}>
             {includePaper
             ? <Paper sx={{ p: paperPadding }}>{children}</Paper>
-            : {children}}
+            : children}
           </Container>
         </Box>
       </Box>
