@@ -58,6 +58,7 @@ const Icons = {
   OpenSidebar: ChevronRightIcon,
   Page: DescriptionIcon,
   Save: CheckIcon,
+  Settings: SettingsIcon,
   SystemMode: SettingsBrightnessIcon,
   Uninstall: LinkOffIcon,
   Update: FileUploadIcon,

@@ -107,7 +107,10 @@ export default function Project () {
           onReorder={handleReorder}
         />
       )
-    }
+    },
+    { type: 'divider' },
+    { type: 'link', label: 'Theme', icon: Icons.AdaptTheme, handleClick: () => {} },
+    { type: 'link', label: 'Menu', icon: Icons.AdaptMenu, handleClick: () => {} },
   ]
 
   return (

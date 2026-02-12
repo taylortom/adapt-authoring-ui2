@@ -6,7 +6,8 @@ const CONTENT_TYPES = {
   page: { label: 'app.page', icon: Icons.Page, iconColour: '#ed6c02', children: ['article'] },
   article: { label: 'app.article', icon: Icons.Article, iconColour: '#9c27b0', children: ['block'] },
   block: { label: 'app.block', icon: Icons.Block, iconColour: '#d32f2f', children: ['component'] },
-  component: { label: 'app.component', icon: Icons.AdaptComponent, iconColour: '#0288d1', children: [] }
+  component: { label: 'app.component', icon: Icons.AdaptComponent, iconColour: '#0288d1', children: [] },
+  config: { label: 'app.config', icon: Icons.Settings, iconColour: '#616161', children: [] }
 }
 
 export function getAllowedChildTypes (parentType) {

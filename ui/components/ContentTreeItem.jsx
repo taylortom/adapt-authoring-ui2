@@ -12,7 +12,7 @@ export default function ContentTreeItem ({ item, pluginNames, onAddChild, onDele
   const TypeIcon = getContentTypeIcon(item._type)
   const iconColour = getContentTypeIconColour(item._type)
   const canAddChildren = getAllowedChildTypes(item._type).length > 0
-  const isCourse = item._type === 'course'
+  const isRootNode = item._type === 'course' || item._type === 'config'
   const title = item._type === 'component' && item._component
     ? pluginNames?.get(item._component) ?? item._component
     : t(`app.${item._type}`)
@@ -24,7 +24,7 @@ export default function ContentTreeItem ({ item, pluginNames, onAddChild, onDele
     transform,
     transition,
     isDragging
-  } = useSortable({ id: item._id, disabled: isCourse })
+  } = useSortable({ id: item._id, disabled: isRootNode })
 
   const dragStyle = {
     transform: CSS.Transform.toString(transform),
@@ -43,7 +43,7 @@ export default function ContentTreeItem ({ item, pluginNames, onAddChild, onDele
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
         >
-          {!isCourse && (
+          {!isRootNode && (
             <Box
               component='span'
               sx={{ display: 'inline-flex', cursor: 'grab' }}
@@ -78,7 +78,7 @@ export default function ContentTreeItem ({ item, pluginNames, onAddChild, onDele
                   </IconButton>
                 </Tooltip>
               )}
-              {!isCourse && (
+              {!isRootNode && (
                 <Tooltip title={t('app.delete')}>
                   <IconButton
                     size='small'
