@@ -112,6 +112,7 @@ export default function ContentTree ({
             onSelectedItemsChange={handleSelectedItemsChange}
             expandedItems={expandedItems}
             onExpandedItemsChange={handleExpandedItemsChange}
+            expansionTrigger='iconContainer'
             sx={{
               '& .MuiTreeItem-content': {
                 borderRadius: 1

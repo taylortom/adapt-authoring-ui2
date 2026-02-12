@@ -32,12 +32,21 @@ const ATTRIBUTE_BLACKLIST = [
   'userGroups'
 ]
 
+function hasRequiredFields (prop) {
+  if (prop.required?.length) return true
+  if (prop.properties) {
+    return Object.values(prop.properties).some(hasRequiredFields)
+  }
+  return false
+}
+
 function filterRequiredOnly (schema) {
-  if (!schema?.properties || !schema?.required?.length) return schema
+  if (!schema?.properties) return schema
+  const requiredKeys = new Set(schema.required ?? [])
   const filtered = { ...schema, properties: {} }
-  schema.required.forEach(key => {
-    if (schema.properties[key]) {
-      filtered.properties[key] = schema.properties[key]
+  Object.entries(schema.properties).forEach(([key, prop]) => {
+    if (requiredKeys.has(key) || hasRequiredFields(prop)) {
+      filtered.properties[key] = prop
     }
   })
   return filtered
@@ -49,25 +58,28 @@ const SchemaForm = ({ apiName, uiSchema, dataId, queryString, requiredOnly = fal
   const { data: schema, error: schemaError } = useApiQuery(
     apiName,
     (api) => api.getSchema(queryString),
-    { key: 'schema', ...cacheOpts }
+    { key: `schema-${queryString}`, ...cacheOpts }
   )
   const { data, error: dataError } = useApiQuery(
     apiName,
     (api) => api.get(dataId),
     { key: dataId, ...cacheOpts }
   )
+  const processedSchema = useMemo(() => {
+    if (!schema) return null
+    const s = { ...schema, properties: { ...schema.properties } }
+    ATTRIBUTE_BLACKLIST.forEach(a => delete s.properties[a])
+    if (!requiredOnly) return s
+    const filtered = filterRequiredOnly(s)
+    return Object.keys(filtered.properties).length > 0 ? filtered : s
+  }, [schema, requiredOnly])
+
   if (dataError ?? schemaError) {
     alert(dataError ?? schemaError)
   }
-  if (!schema || !data) {
+  if (!processedSchema || !data) {
     return ''
   }
-
-  const processedSchema = useMemo(() => {
-    const s = { ...schema, properties: { ...schema.properties } }
-    ATTRIBUTE_BLACKLIST.forEach(a => delete s.properties[a])
-    return requiredOnly ? filterRequiredOnly(s) : s
-  }, [schema, requiredOnly])
 
   return (
     <Form

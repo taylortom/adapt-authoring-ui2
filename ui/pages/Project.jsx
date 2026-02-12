@@ -98,6 +98,12 @@ export default function Project () {
   ]
 
   const sidebarItems = [
+    { type: 'button', label: t('app.preview'), handleClick: () => {} },
+    { type: 'button', style: 'secondary', label: t('app.export'), handleClick: () => {} },
+    { type: 'divider' },
+    { type: 'link', label: 'Extensions', icon: Icons.AdaptExtension, handleClick: () => {} },
+    { type: 'link', label: 'Theme', icon: Icons.AdaptTheme, handleClick: () => {} },
+    { type: 'link', label: 'Menu', icon: Icons.AdaptMenu, handleClick: () => {} },
     { type: 'heading', label: t('app.coursestructure') },
     {
       type: 'custom',
@@ -113,11 +119,7 @@ export default function Project () {
           onReorder={handleReorder}
         />
       )
-    },
-    { type: 'divider' },
-    { type: 'link', label: 'Extensions', icon: Icons.AdaptExtension, handleClick: () => {} },
-    { type: 'link', label: 'Theme', icon: Icons.AdaptTheme, handleClick: () => {} },
-    { type: 'link', label: 'Menu', icon: Icons.AdaptMenu, handleClick: () => {} },
+    }
   ]
 
   return (

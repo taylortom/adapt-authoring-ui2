@@ -22,6 +22,7 @@ function buildTree (data) {
     node.children.sort((a, b) => (a._sortOrder ?? 0) - (b._sortOrder ?? 0))
     node.children.forEach(sortChildren)
   }
+  roots.sort((a, b) => (a._type === 'config' ? -1 : 0) - (b._type === 'config' ? -1 : 0))
   roots.forEach(sortChildren)
 
   return { tree: roots, flatMap }
