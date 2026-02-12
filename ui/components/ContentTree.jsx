@@ -20,6 +20,7 @@ import { t } from '../utils/lang'
 export default function ContentTree ({
   tree,
   flatMap,
+  pluginNames,
   selectedId,
   onSelect,
   onAddChild,
@@ -82,6 +83,7 @@ export default function ContentTree ({
       <ContentTreeItem
         key={node._id}
         item={node}
+        pluginNames={pluginNames}
         onAddChild={onAddChild}
         onDelete={onDelete}
       >
@@ -116,6 +118,9 @@ export default function ContentTree ({
             sx={{
               '& .MuiTreeItem-content': {
                 borderRadius: 1
+              },
+              '& .MuiTreeItem-iconContainer': {
+                color: 'secondary.main'
               }
             }}
           >

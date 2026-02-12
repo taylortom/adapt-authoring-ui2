@@ -34,6 +34,20 @@ export function useProjectContent (courseId) {
     { key: `project-${courseId}` }
   )
 
+  const { data: pluginsData } = useApiQuery(
+    'contentplugins',
+    (api) => api.get(),
+    { key: 'all' }
+  )
+
+  const pluginNames = useMemo(() => {
+    const map = new Map()
+    if (Array.isArray(pluginsData)) {
+      pluginsData.forEach(p => map.set(p.name, p.displayName))
+    }
+    return map
+  }, [pluginsData])
+
   const { tree, flatMap } = useMemo(() => buildTree(data), [data])
 
   const addMutation = useApiMutation(API_ROOT, (api, newItem) => api.post(newItem))
@@ -43,6 +57,7 @@ export function useProjectContent (courseId) {
   return {
     tree,
     flatMap,
+    pluginNames,
     isLoading,
     error,
     addItem: addMutation.mutate,

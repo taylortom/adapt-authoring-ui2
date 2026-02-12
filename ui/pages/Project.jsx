@@ -16,6 +16,7 @@ export default function Project () {
   const {
     tree,
     flatMap,
+    pluginNames,
     isLoading,
     error,
     addItem,
@@ -71,7 +72,8 @@ export default function Project () {
   }
 
   const selectedItem = flatMap.get(selectedId)
-  const courseTitle = tree[0]?.title ?? t('app.project')
+  const courseTitle = tree[0]?.displayTitle || tree[0]?.title || t('app.project')
+  const pageTitle = t(`app.${selectedItem._type}`) + ': ' + (selectedItem?.displayTitle || selectedItem?.title || courseTitle)
 
   const crumbs = [
     { label: t('app.dashboard'), href: '/' },
@@ -96,6 +98,7 @@ export default function Project () {
         <ContentTree
           tree={tree}
           flatMap={flatMap}
+          pluginNames={pluginNames}
           selectedId={selectedId}
           onSelect={handleSelect}
           onAddChild={handleAddChild}
@@ -107,7 +110,7 @@ export default function Project () {
   ]
 
   return (
-    <Page title={courseTitle} crumbs={crumbs} actions={actions} sidebarItems={sidebarItems}>
+    <Page title={pageTitle} crumbs={crumbs} actions={actions} sidebarItems={sidebarItems}>
       {selectedItem
         ? (
           <Box className='project-schema-form'>
