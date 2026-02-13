@@ -33,6 +33,8 @@ import WindowIcon from '@mui/icons-material/Window'
 import VideocamIcon from '@mui/icons-material/Videocam'
 import AudiotrackIcon from '@mui/icons-material/Audiotrack'
 import ImageIcon from '@mui/icons-material/Image'
+import ScheduleIcon from '@mui/icons-material/Schedule'
+import SortByAlphaIcon from '@mui/icons-material/SortByAlpha'
 
 const Icons = {
   Account: AccountCircle,
@@ -66,7 +68,9 @@ const Icons = {
   OpenSidebar: ChevronRightIcon,
   Page: DescriptionIcon,
   Save: CheckIcon,
+  Schedule: ScheduleIcon,
   Settings: SettingsIcon,
+  SortByAlpha: SortByAlphaIcon,
   SystemMode: SettingsBrightnessIcon,
   Uninstall: LinkOffIcon,
   Update: FileUploadIcon,

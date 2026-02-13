@@ -70,8 +70,8 @@ export default function Projects () {
       apiRoot='content'
       queryBody={{ _type: 'course' }}
       sortOptions={[
-        { value: 'title', label: t('app.title') },
-        { value: 'updatedAt', label: t('app.lastupdated') }
+        { value: 'title', label: t('app.title'), icon: Icons.SortByAlpha },
+        { value: 'updatedAt', label: t('app.lastupdated'), icon: Icons.Schedule }
       ]}
       defaultSort={{ field: 'updatedAt', order: -1 }}
       pageSizeOptions={[12, 24, 48]}

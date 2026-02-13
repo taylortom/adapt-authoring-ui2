@@ -2,8 +2,6 @@ import {
   Box,
   IconButton,
   InputAdornment,
-  MenuItem,
-  Select,
   Stack,
   TablePagination,
   TextField,
@@ -15,6 +13,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import { useEffect } from 'react'
 import Collection from './Collection'
+import IconButtonGroup from './IconButtonGroup'
 import { usePreferences } from '../contexts/UserPreferencesContext'
 import useCollectionState from '../hooks/useCollectionState'
 import { t } from '../utils/lang'
@@ -122,6 +121,19 @@ export default function GridCollection ({
     )
   }
 
+  const sortControls = sortOptions.length > 0
+    ? (
+      <Stack direction='row' spacing={1} sx={{ alignItems: 'center' }}>
+        <IconButtonGroup value={sortField} onChange={handleSortFieldChange} options={sortOptions} />
+        <Tooltip title={sortOrder === 1 ? t('app.ascending') : t('app.descending')}>
+          <IconButton size='large' onClick={handleToggleSortOrder}>
+            {sortOrder === 1 ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+          </IconButton>
+        </Tooltip>
+      </Stack>
+      )
+    : null
+
   return (
     <Collection
       items={items}
@@ -136,22 +148,8 @@ export default function GridCollection ({
       fullWidth={fullWidth}
       links={links}
       actions={actions}
+      headerControls={sortControls}
     >
-      {sortOptions.length > 0 && (
-        <Stack direction='row' spacing={0} sx={{ mb: 3, alignItems: 'center', justifyContent: 'flex-end' }}>
-          <Select size='small' value={sortField} onChange={handleSortFieldChange}>
-            {sortOptions.map((opt) => (
-              <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
-            ))}
-          </Select>
-          <Tooltip title={sortOrder === 1 ? t('app.ascending') : t('app.descending')}>
-            <IconButton size='small' onClick={handleToggleSortOrder}>
-              {sortOrder === 1 ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
-            </IconButton>
-          </Tooltip>
-        </Stack>
-      )}
-
       <Box sx={{ display: 'grid', gridTemplateColumns: `repeat(auto-fill, minmax(${gridMinWidth}px, 1fr))`, gap: 3 }}>
         {items.map((item) => (
           <Box key={item._id}>
@@ -168,7 +166,7 @@ export default function GridCollection ({
         onPageChange={handlePageChange}
         rowsPerPage={limit}
         onRowsPerPageChange={handleRowsPerPageChange}
-        rowsPerPageOptions={pageSizeOptions}
+        rowsPerPageOptions={pageSizeOptions.includes(limit) ? pageSizeOptions : [limit, ...pageSizeOptions].sort((a, b) => a - b)}
         labelRowsPerPage={t('app.pagesize')}
         labelDisplayedRows={({ page }) => totalPages ? `${t('app.page')} ${page + 1} / ${totalPages}` : `${t('app.page')} ${page + 1}`}
         sx={{

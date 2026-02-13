@@ -20,6 +20,7 @@ export default function Collection ({
   links,
   actions,
   subtitle,
+  headerControls,
   children
 }) {
   if (error) {
@@ -31,7 +32,7 @@ export default function Collection ({
   }
 
   return (
-    <Page title={title} subtitle={subtitle} crumbs={crumbs} dial={dial} sidebarItems={sidebarItems} fullWidth={fullWidth} links={links} actions={actions}>
+    <Page title={title} subtitle={subtitle} crumbs={crumbs} dial={dial} sidebarItems={sidebarItems} fullWidth={fullWidth} links={links} actions={actions} headerControls={headerControls}>
       {isLoading
         ? (
           <Box display='flex' justifyContent='center' alignItems='center' minHeight='30vh'>

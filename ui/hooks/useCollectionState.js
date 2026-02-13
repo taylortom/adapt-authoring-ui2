@@ -43,8 +43,9 @@ export default function useCollectionState ({
     }, SEARCH_DEBOUNCE_MS)
   }, [])
 
-  const handleSortFieldChange = (e) => {
-    setSortField(e.target.value)
+  const handleSortFieldChange = (_, value) => {
+    if (value === null) return
+    setSortField(value)
     setPage(0)
   }
 

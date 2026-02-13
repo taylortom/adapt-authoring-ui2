@@ -59,8 +59,8 @@ export default function Assets () {
       apiRoot='assets'
       queryBody={{}}
       sortOptions={[
-        { value: 'filename', label: t('app.filename') },
-        { value: 'updatedAt', label: t('app.lastupdated') }
+        { value: 'title', icon: Icons.SortByAlpha },
+        { value: 'updatedAt', icon: Icons.Schedule }
       ]}
       defaultSort={{ field: 'updatedAt', order: -1 }}
       pageSizeOptions={[12, 24, 48]}

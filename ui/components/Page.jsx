@@ -92,7 +92,7 @@ function SpeedDialActions (data) {
   )
 }
 
-export default function Page ({ title = '', subtitle = '', actions = {}, dial, crumbs = [], links = [], children, sidebarItems = [], fullWidth = false }) {
+export default function Page ({ title = '', subtitle = '', actions = {}, dial, crumbs = [], links = [], children, sidebarItems = [], fullWidth = false, headerControls }) {
   return (
     <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 64px)' }}>
       <Sidebar items={sidebarItems} />
@@ -103,6 +103,7 @@ export default function Page ({ title = '', subtitle = '', actions = {}, dial, c
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <Typography variant='h4'>{title}</Typography>
               <Stack direction='row' spacing={1} sx={{ alignItems: 'center' }}>
+                {headerControls}
                 {Actions(actions)}
                 {SpeedDialActions(dial)}
               </Stack>
