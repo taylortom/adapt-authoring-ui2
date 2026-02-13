@@ -1,16 +1,14 @@
 import About from './pages/About'
 import ContentPlugins from './pages/ContentPlugins'
-import Home from './pages/Home'
 import Login from './pages/Login'
 import Project from './pages/Project'
 import Projects from './pages/Projects'
 
 const RouteConfig = {
-  Home: { path: '/', element: <Home />, label: 'app.dashboard' },
+  Home: { path: '/', element: <Projects />, label: 'app.projects' },
   Login: { path: '/login', element: <Login />, protected: false, nav: false },
   About: { path: '/about', element: <About />, label: 'app.about' },
   Plugins: { path: '/contentplugins', element: <ContentPlugins />, label: 'app.plugins' },
-  Projects: { path: '/projects', element: <Projects />, label: 'app.projects' },
   Project: { path: '/project/:id', element: <Project />, nav: false }
 }
 
