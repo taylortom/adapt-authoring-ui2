@@ -196,7 +196,7 @@ export default function ContentPlugins () {
     { type: 'link', label: 'Themes', icon: Icons.AdaptTheme, handleClick: () => scrollTo('theme') },
   ]
   return (
-    <Page title={t('app.plugins')} subtitle={t('app.pluginspagesubtitle')} actions={actions} crumbs={crumbs} sidebarItems={sidebarItems} includePaper={false}>
+    <Page title={t('app.plugins')} subtitle={t('app.pluginspagesubtitle')} actions={actions} crumbs={crumbs} sidebarItems={sidebarItems}>
       {plugins.length === 0
         ? (<Alert severity='info'>{t('app.noplugins')}</Alert>)
         : typeOrder.map(type => {

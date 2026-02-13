@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Paper } from '@mui/material'
 import { useApiQuery } from '../utils/api'
 import Form from '@rjsf/mui'
 import validator from '@rjsf/validator-ajv8'
@@ -82,13 +83,15 @@ const SchemaForm = ({ apiName, uiSchema, dataId, queryString, requiredOnly = fal
   }
 
   return (
-    <Form
-      schema={processedSchema}
-      uiSchema={uiSchema}
-      formData={data}
-      validator={validator}
-      onSubmit={onSubmit}
-    />
+    <Paper sx={{ p: 4 }}>
+      <Form
+        schema={processedSchema}
+        uiSchema={uiSchema}
+        formData={data}
+        validator={validator}
+        onSubmit={onSubmit}
+      />
+    </Paper>
   )
 }
 

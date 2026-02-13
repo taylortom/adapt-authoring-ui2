@@ -6,7 +6,6 @@ import {
   Container,
   Fab,
   Link,
-  Paper,
   SpeedDial,
   SpeedDialAction,
   SpeedDialIcon,
@@ -93,7 +92,7 @@ function SpeedDialActions (data) {
   )
 }
 
-export default function Page ({ title = '', subtitle = '', actions = {}, dial, crumbs = [], links = [], children, sidebarItems = [], paperPadding = 4, includePaper = true }) {
+export default function Page ({ title = '', subtitle = '', actions = {}, dial, crumbs = [], links = [], children, sidebarItems = [], fullWidth = false }) {
   return (
     <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 64px)' }}>
       <Sidebar items={sidebarItems} />
@@ -112,13 +111,9 @@ export default function Page ({ title = '', subtitle = '', actions = {}, dial, c
           </Container>
         </AppBar>
         {Links(links)}
-        <Box>
-          <Container sx={{ mt: 4, mb: 4 }}>
-            {includePaper
-            ? <Paper sx={{ p: paperPadding }}>{children}</Paper>
-            : children}
-          </Container>
-        </Box>
+        <Container maxWidth={fullWidth ? false : 'lg'} sx={{ mt: 4, mb: 4 }}>
+          {children}
+        </Container>
       </Box>
     </Box>
   )

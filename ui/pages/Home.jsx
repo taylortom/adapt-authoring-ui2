@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+import { Paper, Typography } from '@mui/material'
 import Page from '../components/Page'
 import { useAuth } from '../contexts/AuthContext'
 import { t } from '../utils/lang'
@@ -12,10 +12,12 @@ function Home () {
   ]
   return (
     <Page title={t('app.dashboard')} body={`Welcome to the application, ${user?.email}!`} links={links}>
-      <Typography variant='h6'>Your Permissions:</Typography>
-      {isSuper
-        ? (<Typography>🔑 Superuser (full access)</Typography>)
-        : (<ul>{scopes?.map((scope) => (<li key={scope}>{scope}</li>))}</ul>)}
+      <Paper sx={{ p: 4 }}>
+        <Typography variant='h6'>Your Permissions:</Typography>
+        {isSuper
+          ? (<Typography>🔑 Superuser (full access)</Typography>)
+          : (<ul>{scopes?.map((scope) => (<li key={scope}>{scope}</li>))}</ul>)}
+      </Paper>
     </Page>
   )
 }

@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+import { Paper, Typography } from '@mui/material'
 import Icons from '../utils/icons'
 import Page from '../components/Page'
 
@@ -16,7 +16,9 @@ const sidebarItems = [
 function About () {
   return (
     <Page title='About' sidebarItems={sidebarItems}>
-      <Typography>Learn more about this application.</Typography>
+      <Paper sx={{ p: 4 }}>
+        <Typography>Learn more about this application.</Typography>
+      </Paper>
     </Page>
   )
 }
