@@ -34,7 +34,24 @@ export function createApiClient (root) {
     },
     query: async function (queryData, options = {}) {
       const isString = typeof queryData === 'string'
-      return apiFetch(`${root}/query${isString ? queryData : ''}`, { method: 'POST', body: isString ? undefined : queryData, ...options })
+      const endpoint = `${root}/query${isString ? queryData : ''}`
+      const fetchOpts = { method: 'POST', body: isString ? undefined : queryData, ...options }
+      const { body, headers: customHeaders, ...rest } = fetchOpts
+      const response = await fetch(`/api/${endpoint}`, {
+        method: rest.method || 'GET',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json', ...(customHeaders ?? {}) },
+        body: body ? JSON.stringify(body) : undefined,
+        ...rest
+      })
+      if (!response.ok) {
+        let message = response.statusText
+        try { message = (await response.json()).message || message } catch {}
+        throw new Error(message)
+      }
+      const results = await response.json()
+      const pageTotal = Number(response.headers.get('X-Adapt-PageTotal'))
+      return { results, pagination: { pageTotal: pageTotal || 0 } }
     },
     patch: async function (_id, data, options = {}) {
       if (!_id) throw new Error('Must provide \'_id\' param')

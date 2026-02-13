@@ -3,35 +3,40 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  Stack,
   Typography
 } from '@mui/material'
-import Collection from '../components/Collection'
+import GridCollection from '../components/GridCollection'
 import { t } from '../utils/lang'
 import Icons from '../utils/icons'
 
 function AssetCard ({ asset }) {
+  const Icon = Icons[asset.type[0].toUpperCase() + asset.type.slice(1)] ?? Icons.Page
   return (
     <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <CardActionArea>
-        {asset.hasThumb
+        {asset.hasThumb || asset.type === 'image'
           ? (
             <CardMedia
               component='img'
               height='140'
-              image={`/api/assets/serve/${asset._id}?thumb=true`}
+              image={`/api/assets/serve/${asset._id}${asset.hasThumb ? '?thumb=true' : ''}`}
               alt={asset.title}
-              sx={{ bgcolor: 'grey.200', objectFit: 'contain' }}
+              sx={{ bgcolor: 'grey.200' }}
             />
             )
           : (
             <CardMedia
               sx={{ height: 140, bgcolor: 'grey.200', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
-              <Icons.Page sx={{ fontSize: 48, color: 'grey.500' }} />
+              <Icon sx={{ fontSize: 48, color: 'grey.500' }} />
             </CardMedia>
             )}
-        <CardContent>
-          <Typography variant='subtitle1' color='secondary' align='center' noWrap>{asset.title}</Typography>
+        <CardContent sx={{ p: 1, '&:last-child': { pb: 1 } }}>
+          <Stack direction='row' spacing={0.5} sx={{ alignItems: 'center', justifyContent: 'center' }}>
+            <Icon sx={{ fontSize: 16, color: 'secondary.main' }} />
+            <Typography variant='subtitle2' noWrap>{asset.title}</Typography>
+          </Stack>
         </CardContent>
       </CardActionArea>
     </Card>
@@ -39,10 +44,6 @@ function AssetCard ({ asset }) {
 }
 
 export default function Assets () {
-  const crumbs = [
-    { label: t('app.projects'), href: '/' },
-    { label: t('app.assets') }
-  ]
   const dial = {
     label: 'asset actions',
     actions: [
@@ -54,7 +55,7 @@ export default function Assets () {
   ]
 
   return (
-    <Collection
+    <GridCollection
       apiRoot='assets'
       queryBody={{}}
       sortOptions={[
@@ -67,10 +68,8 @@ export default function Assets () {
       gridMinWidth={200}
       renderItem={(item) => <AssetCard asset={item} />}
       title={t('app.assets')}
-      crumbs={crumbs}
       dial={dial}
       sidebarItems={sidebarItems}
-      fullWidth
     />
   )
 }

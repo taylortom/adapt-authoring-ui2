@@ -30,8 +30,9 @@ export default function useCollectionState ({
     { key: params.toString() }
   )
 
-  const items = Array.isArray(data) ? data : []
+  const items = Array.isArray(data?.results) ? data.results : []
   const processedItems = transformData ? transformData(items) : items
+  const totalPages = data?.pagination?.pageTotal || 0
 
   const handleSearchChange = useCallback((e) => {
     const value = e.target.value
@@ -65,6 +66,7 @@ export default function useCollectionState ({
     items: processedItems,
     isLoading,
     error,
+    totalPages,
     page,
     limit,
     sortField,

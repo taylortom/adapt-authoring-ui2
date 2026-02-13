@@ -49,7 +49,8 @@ export function useProjectContent (courseId) {
     return map
   }, [pluginsData])
 
-  const { tree, flatMap } = useMemo(() => buildTree(data), [data])
+  const contentData = data?.results ?? data
+  const { tree, flatMap } = useMemo(() => buildTree(contentData), [contentData])
 
   const addMutation = useApiMutation(API_ROOT, (api, newItem) => api.post(newItem))
   const deleteMutation = useApiMutation(API_ROOT, (api, { _id }) => api.remove(_id))

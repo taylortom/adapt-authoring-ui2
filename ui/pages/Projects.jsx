@@ -9,7 +9,7 @@ import {
   Tooltip,
   Typography
 } from '@mui/material'
-import Collection from '../components/Collection'
+import GridCollection from '../components/GridCollection'
 import { t } from '../utils/lang'
 import Icons from '../utils/icons'
 
@@ -66,7 +66,7 @@ export default function Projects () {
   ]
 
   return (
-    <Collection
+    <GridCollection
       apiRoot='content'
       queryBody={{ _type: 'course' }}
       sortOptions={[

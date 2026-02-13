@@ -1,13 +1,10 @@
 import { useState } from 'react'
 import {
-  Alert,
   Avatar,
-  Box,
   Button,
   Chip,
   CircularProgress,
   Collapse,
-  Container,
   List,
   ListItem,
   ListItemAvatar,
@@ -17,7 +14,7 @@ import {
   Stack,
   Typography
 } from '@mui/material'
-import Page from '../components/Page'
+import ListCollection from '../components/ListCollection'
 import { useApiQuery, useApiMutation } from '../utils/api'
 
 import Icons from '../utils/icons'
@@ -47,6 +44,7 @@ function PluginVersion (plugin) {
     </>
   )
 }
+
 function PluginListItem ({ plugin, divider }) {
   const typeConfig = getPluginTypeIcon(plugin.type)
   const TypeIcon = typeConfig.icon
@@ -107,7 +105,8 @@ function PluginListItem ({ plugin, divider }) {
             {plugin.isDefault ? t('app.isdefault') : t('app.notdefault')}
           </Button>
           {plugin.canBeUpdated
-            ? <Button
+            ? (
+              <Button
                 variant='contained'
                 endIcon={updateMutation.isPending ? (<CircularProgress size={24} />) : (<Icons.Update />)}
                 aria-label='enabled'
@@ -116,8 +115,9 @@ function PluginListItem ({ plugin, divider }) {
                 color='primary'
                 sx={{ borderRadius: 0, flex: 1 }}
               >
-              {t('app.update')}
-            </Button>
+                {t('app.update')}
+              </Button>
+              )
             : ''}
           <Button
             variant='contained'
@@ -137,54 +137,23 @@ function PluginListItem ({ plugin, divider }) {
 }
 
 export default function ContentPlugins () {
-  const { data, isLoading, error } = useApiQuery(API_ROOT, (api) => api.get())
   const { data: updateData } = useApiQuery(
     API_ROOT,
     (api) => api.query('?includeUpdateInfo=true'),
     { key: 'updates' }
   )
 
-  if (isLoading) {
-    return (
-      <>
-        <Container>
-          <Box display='flex' justifyContent='center' alignItems='center' minHeight='50vh'>
-            <CircularProgress />
-          </Box>
-        </Container>
-      </>
-    )
-  }
-  if (error) {
-    return (
-      <>
-        <Container sx={{ mt: 4 }}>
-          <Alert severity='error'>{t('app.errorloadingdata')}: {error.message}</Alert>
-        </Container>
-      </>
-    )
-  }
-
   const updateMap = new Map()
-  if (Array.isArray(updateData)) {
-    updateData.forEach(p => updateMap.set(p._id, p))
+  const updateResults = updateData?.results ?? updateData
+  if (Array.isArray(updateResults)) {
+    updateResults.forEach(p => updateMap.set(p._id, p))
   }
-
-  const plugins = Array.isArray(data)
-    ? [...data].map(plugin => {
-        const update = updateMap.get(plugin._id)
-        return update ? { ...plugin, canBeUpdated: update.canBeUpdated } : plugin
-      }).sort((a, b) => a.displayName.localeCompare(b.displayName))
-    : []
-
-  const pluginsByType = Object.groupBy(plugins, p => p.type)
-  const typeOrder = Object.keys(PLUGIN_TYPE_CONFIG).filter(k => k !== 'default')
 
   const crumbs = [
     { label: t('app.dashboard'), href: '/' },
     { label: t('app.plugins') }
   ]
-  const actions = [
+  const pageActions = [
     { label: t('app.update'), icon: Icons.Update },
     { label: t('app.delete'), icon: Icons.Delete }
   ]
@@ -193,28 +162,38 @@ export default function ContentPlugins () {
     { type: 'link', label: 'Components', icon: Icons.AdaptComponent, handleClick: () => scrollTo('component') },
     { type: 'link', label: 'Extensions', icon: Icons.AdaptExtension, handleClick: () => scrollTo('extension') },
     { type: 'link', label: 'Menus', icon: Icons.AdaptMenu, handleClick: () => scrollTo('menu') },
-    { type: 'link', label: 'Themes', icon: Icons.AdaptTheme, handleClick: () => scrollTo('theme') },
+    { type: 'link', label: 'Themes', icon: Icons.AdaptTheme, handleClick: () => scrollTo('theme') }
   ]
+  const typeOrder = Object.keys(PLUGIN_TYPE_CONFIG).filter(k => k !== 'default')
+
   return (
-    <Page title={t('app.plugins')} subtitle={t('app.pluginspagesubtitle')} actions={actions} crumbs={crumbs} sidebarItems={sidebarItems}>
-      {plugins.length === 0
-        ? (<Alert severity='info'>{t('app.noplugins')}</Alert>)
-        : typeOrder.map(type => {
-            const group = pluginsByType[type]
-            if (!group?.length) return null
-            return (
-              <Paper key={type} id={type} sx={{ mb: 3 }}>
-                <Typography variant='subtitle1' sx={{ px: 2, pt: 2, pb: 1 }}>
-                  {type.charAt(0).toUpperCase() + type.slice(1) + 's'}
-                </Typography>
-                <List disablePadding>
-                  {group.map((plugin, index) => (
-                    <PluginListItem key={plugin._id} plugin={plugin} divider={index < group.length - 1} />
-                  ))}
-                </List>
-              </Paper>
-            )
-          })}
-    </Page>
+    <ListCollection
+      apiRoot={API_ROOT}
+      transformData={(items) =>
+        items.map(plugin => {
+          const update = updateMap.get(plugin._id)
+          return update ? { ...plugin, canBeUpdated: update.canBeUpdated } : plugin
+        }).sort((a, b) => a.displayName.localeCompare(b.displayName))}
+      groupBy={(plugin) => plugin.type}
+      groupOrder={typeOrder}
+      renderGroup={(type, group) => (
+        <Paper key={type} id={type} sx={{ mb: 3 }}>
+          <Typography variant='subtitle1' sx={{ px: 2, pt: 2, pb: 1 }}>
+            {type.charAt(0).toUpperCase() + type.slice(1) + 's'}
+          </Typography>
+          <List disablePadding>
+            {group.map((plugin, index) => (
+              <PluginListItem key={plugin._id} plugin={plugin} divider={index < group.length - 1} />
+            ))}
+          </List>
+        </Paper>
+      )}
+      emptyMessage={t('app.noplugins')}
+      title={t('app.plugins')}
+      subtitle={t('app.pluginspagesubtitle')}
+      actions={pageActions}
+      crumbs={crumbs}
+      sidebarItems={sidebarItems}
+    />
   )
 }

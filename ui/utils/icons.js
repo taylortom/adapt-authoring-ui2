@@ -30,6 +30,9 @@ import ViewColumnIcon from '@mui/icons-material/ViewColumn'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import WindowIcon from '@mui/icons-material/Window'
+import VideocamIcon from '@mui/icons-material/Videocam'
+import AudiotrackIcon from '@mui/icons-material/Audiotrack'
+import ImageIcon from '@mui/icons-material/Image'
 
 const Icons = {
   Account: AccountCircle,
@@ -40,6 +43,7 @@ const Icons = {
   AdaptTheme: PaletteIcon,
   Add: AddIcon,
   Article: ArticleIcon,
+  Audio: AudiotrackIcon,
   Block: ViewColumnIcon,
   CloseSidebar: ChevronLeftIcon,
   Code: CodeIcon,
@@ -52,6 +56,7 @@ const Icons = {
   Enable: VisibilityIcon,
   Filter: FilterListIcon,
   Help: HelpIcon,
+  Image: ImageIcon,
   Import: CodeIcon,
   Info: InfoIcon,
   Install: AddLinkIcon,
@@ -65,6 +70,7 @@ const Icons = {
   SystemMode: SettingsBrightnessIcon,
   Uninstall: LinkOffIcon,
   Update: FileUploadIcon,
+  Video: VideocamIcon,
 }
 
 export default Icons
