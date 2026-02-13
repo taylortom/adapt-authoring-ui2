@@ -11,24 +11,15 @@ import {
 import SearchIcon from '@mui/icons-material/Search'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import Collection from './Collection'
 import IconButtonGroup from './IconButtonGroup'
 import { usePreferences } from '../contexts/UserPreferencesContext'
 import useCollectionState from '../hooks/useCollectionState'
 import { t } from '../utils/lang'
 
-const HEADER_HEIGHT = 64
-const PAGE_CHROME_HEIGHT = 200 // appbar + sort controls + padding + pagination bar
 const GRID_GAP = 24
-
-function calcPageSize (gridMinWidth, cardHeight, sidebarWidth) {
-  const availableWidth = window.innerWidth - sidebarWidth - GRID_GAP * 2
-  const cols = Math.max(1, Math.floor(availableWidth / (gridMinWidth + GRID_GAP)))
-  const availableHeight = window.innerHeight - HEADER_HEIGHT - PAGE_CHROME_HEIGHT
-  const rows = Math.max(1, Math.floor(availableHeight / (cardHeight + GRID_GAP)))
-  return cols * rows
-}
+const PAGINATION_HEIGHT = 52
 
 export default function GridCollection ({
   apiRoot,
@@ -56,7 +47,18 @@ export default function GridCollection ({
   const theme = useTheme()
   const { sidebarOpen } = usePreferences()
   const sidebarWidth = sidebarOpen ? theme.custom.sidebarWidth : 0
-  const initialPageSize = defaultPageSize ?? calcPageSize(gridMinWidth, cardHeight, theme.custom.sidebarWidth)
+  const gridRef = useRef(null)
+  const measuredRef = useRef(false)
+
+  const calcPageSize = useCallback(() => {
+    const el = gridRef.current
+    if (!el) return null
+    const availableWidth = el.clientWidth
+    const availableHeight = window.innerHeight - el.getBoundingClientRect().top - PAGINATION_HEIGHT
+    const cols = Math.max(1, Math.floor(availableWidth / (gridMinWidth + GRID_GAP)))
+    const rows = Math.max(1, Math.floor(availableHeight / (cardHeight + GRID_GAP)))
+    return cols * rows
+  }, [gridMinWidth, cardHeight])
 
   const {
     items,
@@ -73,18 +75,26 @@ export default function GridCollection ({
     handleToggleSortOrder,
     handlePageChange,
     handleRowsPerPageChange
-  } = useCollectionState({ apiRoot, queryBody, defaultSort, defaultPageSize: initialPageSize, transformData })
+  } = useCollectionState({ apiRoot, queryBody, defaultSort, defaultPageSize: defaultPageSize ?? 12, transformData })
+
+  const gridCallbackRef = useCallback((node) => {
+    gridRef.current = node
+    if (node && !defaultPageSize && !measuredRef.current) {
+      measuredRef.current = true
+      const size = calcPageSize()
+      if (size) setLimit(size)
+    }
+  }, [defaultPageSize, calcPageSize, setLimit])
 
   useEffect(() => {
     if (defaultPageSize) return
     const recalc = () => {
-      const size = calcPageSize(gridMinWidth, cardHeight, sidebarOpen ? theme.custom.sidebarWidth : 0)
-      setLimit(prev => prev !== size ? size : prev)
+      const size = calcPageSize()
+      if (size) setLimit(prev => prev !== size ? size : prev)
     }
-    recalc()
     window.addEventListener('resize', recalc)
     return () => window.removeEventListener('resize', recalc)
-  }, [defaultPageSize, gridMinWidth, cardHeight, sidebarOpen, theme.custom.sidebarWidth, setLimit])
+  }, [defaultPageSize, calcPageSize, setLimit])
 
   const allSidebarItems = [...sidebarItems]
   if (showSidebarSearch) {
@@ -150,7 +160,7 @@ export default function GridCollection ({
       actions={actions}
       headerControls={sortControls}
     >
-      <Box sx={{ display: 'grid', gridTemplateColumns: `repeat(auto-fill, minmax(${gridMinWidth}px, 1fr))`, gap: 3 }}>
+      <Box ref={gridCallbackRef} sx={{ display: 'grid', gridTemplateColumns: `repeat(auto-fill, minmax(${gridMinWidth}px, 1fr))`, gap: 3 }}>
         {items.map((item) => (
           <Box key={item._id}>
             {renderItem(item)}
