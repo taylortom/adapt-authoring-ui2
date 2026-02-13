@@ -25,11 +25,6 @@ function UserListItem ({ user, divider }) {
 }
 
 export default function Users () {
-  const crumbs = [
-    { label: t('app.dashboard'), href: '/' },
-    { label: t('app.users') }
-  ]
-
   return (
     <ListCollection
       apiRoot='users'
@@ -44,7 +39,6 @@ export default function Users () {
       )}
       emptyMessage={t('app.nousers')}
       title={t('app.users')}
-      crumbs={crumbs}
     />
   )
 }

@@ -149,21 +149,7 @@ export default function ContentPlugins () {
     updateResults.forEach(p => updateMap.set(p._id, p))
   }
 
-  const crumbs = [
-    { label: t('app.dashboard'), href: '/' },
-    { label: t('app.plugins') }
-  ]
-  const pageActions = [
-    { label: t('app.update'), icon: Icons.Update },
-    { label: t('app.delete'), icon: Icons.Delete }
-  ]
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-  const sidebarItems = [
-    { type: 'link', label: 'Components', icon: Icons.AdaptComponent, handleClick: () => scrollTo('component') },
-    { type: 'link', label: 'Extensions', icon: Icons.AdaptExtension, handleClick: () => scrollTo('extension') },
-    { type: 'link', label: 'Menus', icon: Icons.AdaptMenu, handleClick: () => scrollTo('menu') },
-    { type: 'link', label: 'Themes', icon: Icons.AdaptTheme, handleClick: () => scrollTo('theme') }
-  ]
   const typeOrder = Object.keys(PLUGIN_TYPE_CONFIG).filter(k => k !== 'default')
 
   return (
@@ -191,9 +177,16 @@ export default function ContentPlugins () {
       emptyMessage={t('app.noplugins')}
       title={t('app.plugins')}
       subtitle={t('app.pluginspagesubtitle')}
-      actions={pageActions}
-      crumbs={crumbs}
-      sidebarItems={sidebarItems}
+      actions={[
+        { label: t('app.update'), icon: Icons.Update },
+        { label: t('app.delete'), icon: Icons.Delete }
+      ]}
+      sidebarItems={[
+        { type: 'link', label: 'Components', icon: Icons.AdaptComponent, handleClick: () => scrollTo('component') },
+        { type: 'link', label: 'Extensions', icon: Icons.AdaptExtension, handleClick: () => scrollTo('extension') },
+        { type: 'link', label: 'Menus', icon: Icons.AdaptMenu, handleClick: () => scrollTo('menu') },
+        { type: 'link', label: 'Themes', icon: Icons.AdaptTheme, handleClick: () => scrollTo('theme') }
+      ]}
     />
   )
 }

@@ -44,16 +44,6 @@ function AssetCard ({ asset }) {
 }
 
 export default function Assets () {
-  const dial = {
-    label: 'asset actions',
-    actions: [
-      { icon: Icons.Add, label: t('app.uploadasset') }
-    ]
-  }
-  const sidebarItems = [
-    { type: 'button', label: t('app.uploadasset'), handleClick: () => {} }
-  ]
-
   return (
     <GridCollection
       apiRoot='assets'
@@ -67,8 +57,15 @@ export default function Assets () {
       gridMinWidth={200}
       renderItem={(item) => <AssetCard asset={item} />}
       title={t('app.assets')}
-      dial={dial}
-      sidebarItems={sidebarItems}
+      dial={{
+        label: 'asset actions',
+        actions: [{ icon: Icons.Add, label: t('app.uploadasset') }]
+      }}
+      sidebarItems={[{
+        type: 'button',
+        label: t('app.uploadasset'),
+        handleClick: () => {} 
+      }]}
     />
   )
 }

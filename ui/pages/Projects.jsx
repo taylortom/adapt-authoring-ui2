@@ -49,22 +49,6 @@ function ProjectCard ({ project }) {
 }
 
 export default function Projects () {
-  const crumbs = [
-    { label: t('app.dashboard'), href: '/' },
-    { label: t('app.projects') }
-  ]
-  const dial = {
-    label: 'course actions',
-    actions: [
-      { icon: Icons.Add, label: t('app.addnewproject') },
-      { icon: Icons.Import, label: t('app.importcourse') }
-    ]
-  }
-  const sidebarItems = [
-    { type: 'button', label: t('app.addnewproject'), handleClick: () => {} },
-    { type: 'button', style: 'secondary', label: t('app.importcourse'), handleClick: () => {} }
-  ]
-
   return (
     <GridCollection
       apiRoot='content'
@@ -77,9 +61,17 @@ export default function Projects () {
       pageSizeOptions={[12, 24, 48]}
       renderItem={(item) => <ProjectCard project={item} />}
       title={t('app.projects')}
-      crumbs={crumbs}
-      dial={dial}
-      sidebarItems={sidebarItems}
+      dial={{
+        label: 'course actions',
+        actions: [
+          { icon: Icons.Add, label: t('app.addnewproject') },
+          { icon: Icons.Import, label: t('app.importcourse') }
+        ]
+      }}
+      sidebarItems={[
+        { type: 'button', label: t('app.addnewproject'), handleClick: () => {} },
+        { type: 'button', style: 'secondary', label: t('app.importcourse'), handleClick: () => {} }
+      ]}
       fullWidth
     />
   )
