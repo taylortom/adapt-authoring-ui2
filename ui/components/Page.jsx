@@ -98,7 +98,7 @@ export default function Page ({ title = '', subtitle = '', actions = {}, dial, c
       <Sidebar items={sidebarItems} />
       <Box sx={{ flex: 6, overflow: 'auto' }}>
         <AppBar position='sticky' sx={{ p: 3, bgcolor: 'background.paper', color: 'text.primary' }}>
-          <Container>
+          <Container maxWidth={fullWidth ? false : 'lg'}>
             {Crumbs(crumbs)}
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <Typography variant='h4'>{title}</Typography>
