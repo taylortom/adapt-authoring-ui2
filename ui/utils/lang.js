@@ -22,7 +22,9 @@ const TEMP_KEYS = {
   'app.pluginspagesubtitle': 'Manage installed Adapt plugins',
   'app.pluginspagesubtitle': 'Manage installed Adapt plugins',
   'app.projects': 'Projects',
+  'app.nousers': 'No users found',
   'app.updateavailable': 'Update available',
+  'app.users': 'Users',
 }
 
 export function loadLang (locale = navigator.language.split('-')[0]) {

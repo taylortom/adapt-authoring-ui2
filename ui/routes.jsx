@@ -4,6 +4,7 @@ import ContentPlugins from './pages/ContentPlugins'
 import Login from './pages/Login'
 import Project from './pages/Project'
 import Projects from './pages/Projects'
+import Users from './pages/Users'
 
 const RouteConfig = {
   Home: { path: '/', element: <Projects />, label: 'app.projects' },
@@ -11,6 +12,7 @@ const RouteConfig = {
   About: { path: '/about', element: <About />, label: 'app.about' },
   Assets: { path: '/assets', element: <Assets />, label: 'app.assets' },
   Plugins: { path: '/contentplugins', element: <ContentPlugins />, label: 'app.plugins' },
+  Users: { path: '/users', element: <Users />, label: 'app.users' },
   Project: { path: '/project/:id', element: <Project />, nav: false }
 }
 
