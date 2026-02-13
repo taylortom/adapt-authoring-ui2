@@ -1,17 +1,22 @@
-import Home from './pages/Home'
 import About from './pages/About'
-import Form from './pages/Form'
 import ContentPlugins from './pages/ContentPlugins'
-import Projects from './pages/Projects'
+import Home from './pages/Home'
+import Login from './pages/Login'
 import Project from './pages/Project'
+import Projects from './pages/Projects'
 
-const routes = [
-  { path: '/', element: <Home />, label: 'app.home', nav: true },
-  { path: '/about', element: <About />, label: 'app.about', nav: true },
-  { path: '/form', element: <Form />, label: 'app.form', nav: true },
-  { path: '/contentplugins', element: <ContentPlugins />, label: 'app.plugins', nav: true },
-  { path: '/projects', element: <Projects />, label: 'app.projects', nav: true },
-  { path: '/project/:id', element: <Project />, label: 'app.project', nav: false }
-]
+const RouteConfig = {
+  Home: { path: '/', element: <Home />, label: 'app.dashboard' },
+  Login: { path: '/login', element: <Login />, protected: false, nav: false },
+  About: { path: '/about', element: <About />, label: 'app.about' },
+  Plugins: { path: '/contentplugins', element: <ContentPlugins />, label: 'app.plugins' },
+  Projects: { path: '/projects', element: <Projects />, label: 'app.projects' },
+  Project: { path: '/project/:id', element: <Project />, nav: false }
+}
 
-export default routes
+export function filterRoutes (filterFunc) {
+  return Object.values(RouteConfig)
+    .map(r => Object.assign({ protected: true, nav: true }, r)) // add some default values
+    .filter(filterFunc)
+} 
+export default RouteConfig

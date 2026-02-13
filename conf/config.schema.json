@@ -6,13 +6,12 @@
       "description": "Location of UI build files",
     	"type": "string",
       "isDirectory": true,
-      "default": "$TEMP/ui-build"
+      "default": "$TEMP/ui2-build"
     },
-    "srcDir": {
-      "description": "Location of UI source files",
+    "mountPoint": {
+      "description": "The mount point for the UI, in relation to the appUrl",
     	"type": "string",
-      "isDirectory": true,
-      "default": "$TEMP/ui-src"
+      "default": "ui"
     },
     "primaryColour": {
       "description": "Primary palette colour for the UI theme (hex format)",

@@ -2,21 +2,20 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import { UserPreferencesProvider } from './contexts/UserPreferencesContext'
 import ProtectedRoute from './components/ProtectedRoute'
-import Login from './pages/Login'
-import routes from './routes'
+import { filterRoutes } from './routes'
+
+const mapRoutes = routes => routes.map(r => <Route key={r.path} path={r.path} element={r.element} />)
+const unprotectedRoutes = mapRoutes(filterRoutes(r => !r.protected))
+const protectedRoutes = mapRoutes(filterRoutes(r => r.protected))
 
 function App () {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={__BASE_PATH__}>
       <AuthProvider>
         <UserPreferencesProvider>
           <Routes>
-            {/* Unprotected routes */}
-            <Route path='/login' element={<Login />} />
-            {/* Protected routes */}
-            <Route element={<ProtectedRoute />}>
-              {routes.map(r => <Route key={r.path} path={r.path} element={r.element} />)}
-            </Route>
+            {unprotectedRoutes}
+            <Route element={<ProtectedRoute />}>{protectedRoutes}</Route>
             <Route path='*' element={<Navigate to='/' replace />} />
           </Routes>
         </UserPreferencesProvider>

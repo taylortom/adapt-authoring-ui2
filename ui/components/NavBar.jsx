@@ -14,7 +14,7 @@ import {
 import { useColorScheme } from '@mui/material/styles'
 import { useNavigate, useLocation } from 'react-router-dom'
 import Icons from '../utils/icons'
-import routes from '../routes'
+import { filterRoutes } from '../routes'
 import { useAuth } from '../contexts/AuthContext'
 import { getConfig } from '../utils/config'
 import { t } from '../utils/lang'
@@ -64,7 +64,7 @@ export default function NavBar () {
           <Icons.Menu />
         </IconButton>
         <Menu anchorEl={navMenuAnchor} open={Boolean(navMenuAnchor)} onClose={handleNavMenuClose}>
-          {routes.filter(r => r.nav).map(r => (
+          {filterRoutes(r => r.nav).map(r => (
             <MenuItem key={r.path} onClick={() => handleNav(r.path)} selected={location.pathname === r.path}>
               {t(r.label)}
             </MenuItem>
