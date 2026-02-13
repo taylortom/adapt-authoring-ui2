@@ -3,6 +3,7 @@ import { prefetchApiQuery, getApiQueryData } from './api'
 
 const TEMP_KEYS = {
   'app.about': 'About',
+  'app.assets': 'Assets',
   'app.article': 'Article',
   'app.block': 'Block',
   'app.component': 'Component',
