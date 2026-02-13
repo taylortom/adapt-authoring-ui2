@@ -7,6 +7,9 @@ import {
   Fab,
   Link,
   Paper,
+  SpeedDial,
+  SpeedDialAction,
+  SpeedDialIcon,
   Stack,
   Toolbar,
   Typography
@@ -52,7 +55,45 @@ function Links (items) {
   )
 }
 
-export default function Page ({ title = '', subtitle = '', actions = {}, crumbs = [], links = [], children, sidebarItems = [], paperPadding = 4, includePaper = true }) {
+function SpeedDialActions (data) {
+  if (!data) {
+    return ''
+  }
+  const Icon = data.icon
+  return (
+    <SpeedDial
+      ariaLabel={data.label}
+      icon={Icon ? <Icon /> : <SpeedDialIcon />}
+      direction='down'
+      FabProps={{ color: 'primary', size: 'medium', sx: { boxShadow: 'none' } }}
+      sx={{
+        '& .MuiSpeedDial-actions': { position: 'absolute', top: '100%' },
+        '& .MuiSpeedDialAction-staticTooltipLabel': { whiteSpace: 'nowrap' }
+      }}
+    >
+      {data.actions?.map((a, j) => (
+        <SpeedDialAction
+          key={j}
+          icon={<a.icon />}
+          slotProps={{
+            tooltip: { open: true, title: a.label },
+            fab: {
+              sx: {
+                p: 2,
+                bgcolor: 'secondary.main',
+                color: 'secondary.contrastText',
+                '&:hover': { bgcolor: 'secondary.dark' }
+              }
+            }
+          }}
+          onClick={a.handleClick}
+        />
+      ))}
+    </SpeedDial>
+  )
+}
+
+export default function Page ({ title = '', subtitle = '', actions = {}, dial, crumbs = [], links = [], children, sidebarItems = [], paperPadding = 4, includePaper = true }) {
   return (
     <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 64px)' }}>
       <Sidebar items={sidebarItems} />
@@ -62,7 +103,10 @@ export default function Page ({ title = '', subtitle = '', actions = {}, crumbs 
             {Crumbs(crumbs)}
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <Typography variant='h4'>{title}</Typography>
-              {Actions(actions)}
+              <Stack direction='row' spacing={1} sx={{ alignItems: 'center' }}>
+                {Actions(actions)}
+                {SpeedDialActions(dial)}
+              </Stack>
             </Box>
             {subtitle ? <Typography variant='subtitle1'>{subtitle}</Typography> : ''}
           </Container>

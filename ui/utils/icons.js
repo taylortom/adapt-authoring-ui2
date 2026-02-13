@@ -52,6 +52,7 @@ const Icons = {
   Enable: VisibilityIcon,
   Filter: FilterListIcon,
   Help: HelpIcon,
+  Import: CodeIcon,
   Info: InfoIcon,
   Install: AddLinkIcon,
   LightMode: LightModeIcon,

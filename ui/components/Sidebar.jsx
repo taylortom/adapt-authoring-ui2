@@ -24,10 +24,13 @@ function SidebarItems ({ items }) {
     <List sx={{ p: 2, pt: 0, }}>
       {items.map((item, i) => {
         if (item.type === 'divider') {
-          return <Divider key={i} />
+          return <Divider key={i} variant='middle' sx={{ mt: 4, mb: 4, borderColor: 'tertiary.contrastText' }}/>
+        }
+        if (item.type === 'spacer') {
+          return <Box key={i} sx={{ mb: 4 }}/>
         }
         if (item.type === 'heading') {
-          return <ListSubheader key={i} size='large' sx={{ bgcolor: 'transparent', color: 'secondary.main', textAlign: 'center' }}>{item.label}</ListSubheader>
+          return <ListSubheader key={i} size='large' sx={{ bgcolor: 'transparent', color: 'tertiary.contrastText', textAlign: 'center' }}>{item.label}</ListSubheader>
         }
         if (item.type === 'button') {
           const colour = item.style ?? 'primary'
@@ -46,7 +49,7 @@ function SidebarItems ({ items }) {
             <ListItem key={i} disablePadding>
               <ListItemButton onClick={item.handleClick} href={item.href} selected={item.selected}>
                 <ListItemIcon sx={{ color: 'primary.main' }}><Icon /></ListItemIcon>
-                <ListItemText primary={item.label} sx={{ color: 'secondary.main' }} />
+                <ListItemText primary={item.label} sx={{ color: 'tertiary.contrastText' }} />
               </ListItemButton>
             </ListItem>
           )
@@ -72,11 +75,12 @@ export default function Sidebar ({ items }) {
       position: 'fixed',
       top: toolbarHeight,
       left: 0,
+      width,
       height: `calc(100vh - ${toolbarHeight}px)`,
       boxSizing: 'border-box',
-      overflowX: 'hidden',
-      width: open ? width : 0,
-      transition: 'width 0.3s ease',
+      overflow: 'hidden',
+      transform: open ? 'translateX(0)' : `translateX(-${width}px)`,
+      transition: 'transform 0.3s ease',
       bgcolor: 'tertiary.main'
     }
   }

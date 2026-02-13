@@ -24,7 +24,9 @@ import {
 import SearchIcon from '@mui/icons-material/Search'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
+import { useTheme } from '@mui/material'
 import Page from '../components/Page'
+import { usePreferences } from '../contexts/UserPreferencesContext'
 import { useApiQuery } from '../utils/api'
 import { t } from '../utils/lang'
 import Icons from '../utils/icons'
@@ -36,6 +38,9 @@ const PAGE_SIZE = 12
 
 export default function Projects () {
   const navigate = useNavigate()
+  const theme = useTheme()
+  const { sidebarOpen } = usePreferences()
+  const sidebarWidth = sidebarOpen ? theme.custom.sidebarWidth : 0
   const [page, setPage] = useState(0)
   const [limit, setLimit] = useState(PAGE_SIZE)
   const [sortField, setSortField] = useState('updatedAt')
@@ -97,19 +102,24 @@ export default function Projects () {
     { label: t('app.dashboard'), href: '/' },
     { label: t('app.projects') }
   ]
-  const actions = [
-    { icon: Icons.Add, color: 'primary' }
-  ]
+  const dial = {
+    label: 'course actions',
+    actions: [
+      { icon: Icons.Add, label: t('app.addnewproject') },
+      { icon: Icons.Import, label: t('app.importcourse') }
+    ]
+  }
   const sidebarItems = [
     { type: 'button', label: t('app.addnewproject'), handleClick: () => {} },
     { type: 'button', style: 'secondary', label: t('app.importcourse'), handleClick: () => {} },
-  ]
-
-  return (
-    <Page title={t('app.projects')} crumbs={crumbs} actions={actions} sidebarItems={sidebarItems} includePaper={false}>
-      <Stack direction='row' spacing={0} sx={{ mb: 3, alignItems: 'center' }}>
+    { type: 'spacer' },
+    { type: 'heading', label: 'Search' },
+    {
+      type: 'custom',
+      content: (
         <TextField
           size='small'
+          fullWidth
           placeholder={t('app.search')}
           onChange={handleSearchChange}
           slotProps={{
@@ -119,8 +129,23 @@ export default function Projects () {
               )
             }
           }}
-          sx={{ flex: 1, maxWidth: 400 }}
+          color='tertiary.contrastText'
+          sx={{
+            px: 2,
+            '& .MuiOutlinedInput-notchedOutline': { borderColor: (theme) => `${theme.palette.tertiary.contrastText}80` },
+            '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'tertiary.contrastText' },
+            '& .MuiInputAdornment-root': { color: 'tertiary.contrastText' },
+            '& .MuiOutlinedInput-input': { color: 'tertiary.contrastText' },
+            '& .MuiOutlinedInput-input::placeholder': { color: 'tertiary.contrastText', opacity: 0.7 }
+          }}
         />
+      )
+    }
+  ]
+
+  return ( <>
+    <Page title={t('app.projects')} crumbs={crumbs} dial={dial} sidebarItems={sidebarItems} includePaper={false}>
+      <Stack direction='row' spacing={0} sx={{ mb: 3, alignItems: 'center', justifyContent: 'flex-end' }}>
         <Select size='small' value={sortField} onChange={handleSortFieldChange}>
           <MenuItem value='title'>{t('app.title')}</MenuItem>
           <MenuItem value='updatedAt'>{t('app.lastupdated')}</MenuItem>
@@ -175,7 +200,7 @@ export default function Projects () {
               ))}
             </Grid>
             )}
-
+      <Box sx={{ pb: 8 }} />
       <TablePagination
         component='div'
         count={-1}
@@ -184,8 +209,23 @@ export default function Projects () {
         rowsPerPage={limit}
         onRowsPerPageChange={handleRowsPerPageChange}
         rowsPerPageOptions={[12, 24, 48]}
-        labelDisplayedRows={({ from, to }) => `${from}–${to}`}
+        labelDisplayedRows={({ from, to }) => `${from} - ${to}`}
+        sx={{
+          position: 'fixed',
+          bottom: 0,
+          left: sidebarWidth,
+          right: 0,
+          bgcolor: 'background.paper',
+          borderTop: 1,
+          borderColor: 'divider',
+          zIndex: 1100,
+          transition: 'left 0.3s ease',
+          '& .MuiTablePagination-toolbar': { justifyContent: 'center' },
+          '& .MuiTablePagination-spacer': { display: 'none' },
+          '& .MuiTablePagination-actions button': { color: 'primary.main' },
+          '& .MuiTablePagination-actions button.Mui-disabled': { color: 'disabled.main' }
+        }}
       />
     </Page>
-  )
+  </>)
 }

@@ -35,7 +35,7 @@ export function createAppTheme (options = {}) {
       main: '#fff'
     },
     disabled: {
-      main: '#696969'
+      main: '#cbcbcb'
     }
   }
   const headingFont = {
@@ -61,6 +61,16 @@ export function createAppTheme (options = {}) {
       MuiButton: {
         defaultProps: {
           disableElevation: true
+        }
+      },
+      MuiMenu: {
+        styleOverrides: {
+          paper: {
+            backgroundColor: defaultPalette.secondary.main,
+            color: defaultPalette.secondary.contrastText,
+            minWidth: 250,
+            border: '1px solid rgba(255, 255, 255, 0.2)'
+          }
         }
       }
     },
