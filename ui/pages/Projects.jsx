@@ -149,7 +149,7 @@ export default function Projects () {
                       <CardMedia
                         component='img'
                         height='140'
-                        image={project.heroImage ? `api/assets/serve/${project.heroImage}` : projectPlaceholder}
+                        image={project.heroImage ? `/api/assets/serve/${project.heroImage}` : projectPlaceholder}
                         alt={project.title}
                         sx={{ bgcolor: 'grey.200' }}
                       />
