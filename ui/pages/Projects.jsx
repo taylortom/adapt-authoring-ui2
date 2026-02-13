@@ -101,8 +101,8 @@ export default function Projects () {
     { icon: Icons.Add, color: 'primary' }
   ]
   const sidebarItems = [
-    { type: 'button', label: t('app.createcourse'), handleClick: () => {} },
-    { type: 'button', style: 'secondary', label: t('app.importsource'), handleClick: () => {} },
+    { type: 'button', label: t('app.addnewproject'), handleClick: () => {} },
+    { type: 'button', style: 'secondary', label: t('app.importcourse'), handleClick: () => {} },
   ]
 
   return (
