@@ -13,6 +13,7 @@ import {
 import SearchIcon from '@mui/icons-material/Search'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
+import { useEffect } from 'react'
 import Collection from './Collection'
 import { usePreferences } from '../contexts/UserPreferencesContext'
 import useCollectionState from '../hooks/useCollectionState'
@@ -65,6 +66,7 @@ export default function GridCollection ({
     totalPages,
     page,
     limit,
+    setLimit,
     sortField,
     sortOrder,
     handleSearchChange,
@@ -73,6 +75,17 @@ export default function GridCollection ({
     handlePageChange,
     handleRowsPerPageChange
   } = useCollectionState({ apiRoot, queryBody, defaultSort, defaultPageSize: initialPageSize, transformData })
+
+  useEffect(() => {
+    if (defaultPageSize) return
+    const recalc = () => {
+      const size = calcPageSize(gridMinWidth, cardHeight, sidebarOpen ? theme.custom.sidebarWidth : 0)
+      setLimit(prev => prev !== size ? size : prev)
+    }
+    recalc()
+    window.addEventListener('resize', recalc)
+    return () => window.removeEventListener('resize', recalc)
+  }, [defaultPageSize, gridMinWidth, cardHeight, sidebarOpen, theme.custom.sidebarWidth, setLimit])
 
   const allSidebarItems = [...sidebarItems]
   if (showSidebarSearch) {

@@ -63,7 +63,6 @@ export default function Assets () {
         { value: 'updatedAt', label: t('app.lastupdated') }
       ]}
       defaultSort={{ field: 'updatedAt', order: -1 }}
-      defaultPageSize={24}
       pageSizeOptions={[12, 24, 48]}
       gridMinWidth={200}
       renderItem={(item) => <AssetCard asset={item} />}

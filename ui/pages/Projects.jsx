@@ -74,7 +74,6 @@ export default function Projects () {
         { value: 'updatedAt', label: t('app.lastupdated') }
       ]}
       defaultSort={{ field: 'updatedAt', order: -1 }}
-      defaultPageSize={12}
       pageSizeOptions={[12, 24, 48]}
       renderItem={(item) => <ProjectCard project={item} />}
       title={t('app.projects')}

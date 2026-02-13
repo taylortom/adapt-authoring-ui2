@@ -69,6 +69,7 @@ export default function useCollectionState ({
     totalPages,
     page,
     limit,
+    setLimit,
     sortField,
     sortOrder,
     search,
