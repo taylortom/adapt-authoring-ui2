@@ -17,6 +17,7 @@ const TEMP_KEYS = {
   'app.menu': 'Menu',
   'app.notdefault': 'Not added by default',
   'app.page': 'Page',
+  'app.pagesize': 'Page size',
   'app.plugins': 'Plugins',
   'app.pluginspagesubtitle': 'Manage installed Adapt plugins',
   'app.pluginspagesubtitle': 'Manage installed Adapt plugins',

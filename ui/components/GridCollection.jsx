@@ -156,6 +156,8 @@ export default function GridCollection ({
         rowsPerPage={limit}
         onRowsPerPageChange={handleRowsPerPageChange}
         rowsPerPageOptions={pageSizeOptions}
+        labelRowsPerPage={t('app.pagesize')}
+        labelDisplayedRows={({ page }) => totalPages ? `${t('app.page')} ${page + 1} / ${totalPages}` : `${t('app.page')} ${page + 1}`}
         sx={{
           position: 'fixed',
           bottom: 0,
