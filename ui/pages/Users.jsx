@@ -1,22 +1,7 @@
 import ListCollection from '../components/ListCollection'
-import Icons from '../utils/icons'
 import { useApiQuery } from '../utils/api'
 import { t } from '../utils/lang'
-
-const ROLE_CONFIG = {
-  superuser: { icon: Icons.SuperAdmin, color: 'error.main' },
-  admin: { icon: Icons.Admin, color: 'warning.main' },
-  coursecreator: { icon: Icons.CourseCreator, color: 'primary.main' },
-  default: { icon: Icons.AuthUser, color: 'secondary.main' }
-}
-
-function getRoleConfig (roles) {
-  if (!Array.isArray(roles) || roles.length === 0) return ROLE_CONFIG.default
-  for (const key of Object.keys(ROLE_CONFIG)) {
-    if (key !== 'default' && roles.some(r => r.shortName === key)) return ROLE_CONFIG[key]
-  }
-  return ROLE_CONFIG.default
-}
+import { getRoleConfig } from '../utils/roles'
 
 export default function Users () {
   const { data: rolesData } = useApiQuery('roles', (api) => api.get())

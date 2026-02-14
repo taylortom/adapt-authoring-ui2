@@ -13,6 +13,7 @@ import {
   Toolbar,
   Typography
 } from '@mui/material'
+import { useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import Sidebar from './Sidebar'
 
@@ -55,7 +56,8 @@ function Links (items) {
   )
 }
 
-function SpeedDialActions (data) {
+function SpeedDialActions ({ data }) {
+  const [open, setOpen] = useState(false)
   if (!data) {
     return ''
   }
@@ -65,6 +67,8 @@ function SpeedDialActions (data) {
       ariaLabel={data.label}
       icon={Icon ? <Icon /> : <SpeedDialIcon />}
       direction='down'
+      open={open}
+      onClick={() => setOpen(o => !o)}
       FabProps={{ color: 'primary', size: 'medium', sx: { boxShadow: 'none' } }}
       sx={{
         '& .MuiSpeedDial-actions': { position: 'absolute', top: '100%' },
@@ -86,7 +90,7 @@ function SpeedDialActions (data) {
               }
             }
           }}
-          onClick={a.handleClick}
+          onClick={() => { a.handleClick?.(); setOpen(false) }}
         />
       ))}
     </SpeedDial>
@@ -103,10 +107,10 @@ export default function Page ({ title = '', subtitle = '', actions = {}, dial, c
             {Crumbs(crumbs)}
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <Typography variant='h4'>{title}</Typography>
-              <Stack direction='row' spacing={1} sx={{ alignItems: 'center' }}>
+              <Stack direction='row' spacing={4} sx={{ alignItems: 'center' }}>
                 {headerControls}
                 {Actions(actions)}
-                {SpeedDialActions(dial)}
+                <SpeedDialActions data={dial} />
               </Stack>
             </Box>
             {subtitle ? <Typography variant='subtitle1'>{subtitle}</Typography> : ''}

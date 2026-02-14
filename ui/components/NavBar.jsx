@@ -1,23 +1,26 @@
-import { useState } from 'react'
 import {
   AppBar,
   Box,
-  Toolbar,
-  ToggleButton,
-  ToggleButtonGroup,
-  Tooltip,
-  Typography,
+  Fab,
   IconButton,
   Menu,
-  MenuItem
+  MenuItem,
+  ToggleButton,
+  ToggleButtonGroup,
+  Toolbar,
+  Tooltip,
+  Typography
 } from '@mui/material'
 import { useColorScheme } from '@mui/material/styles'
+import { useMemo, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import Icons from '../utils/icons'
-import { filterRoutes } from '../routes'
 import { useAuth } from '../contexts/AuthContext'
+import { filterRoutes } from '../routes'
+import { useApiQuery } from '../utils/api'
 import { getConfig } from '../utils/config'
+import Icons from '../utils/icons'
 import { t } from '../utils/lang'
+import { getRoleConfig } from '../utils/roles'
 
 export default function NavBar () {
   const navigate = useNavigate()
@@ -26,6 +29,14 @@ export default function NavBar () {
   const { mode, setMode } = useColorScheme()
   const [navMenuAnchor, setNavMenuAnchor] = useState(null)
   const [userMenuAnchor, setUserMenuAnchor] = useState(null)
+
+  const { data: rolesData } = useApiQuery('roles', (api) => api.get())
+  const userRoles = useMemo(() => {
+    const results = Array.isArray(rolesData) ? rolesData : rolesData?.results ?? []
+    return (user?.roles || []).map(id => results.find(r => r._id === id)).filter(Boolean)
+  }, [rolesData, user?.roles])
+  const roleConfig = getRoleConfig(userRoles)
+  const RoleIcon = roleConfig.icon
 
   const appTitle = getConfig('appTitle')
   const userName = user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : user.email
@@ -73,12 +84,12 @@ export default function NavBar () {
         <Typography variant='h6' sx={{ flexGrow: 1, cursor: 'pointer' }} onClick={() => navigate('/')}>
           {appTitle}
         </Typography>
-        <Typography variant='body2' sx={{ mr: 1 }}>
+        <Typography variant='body2' sx={{ mr: 3 }}>
           {userName}
         </Typography>
-        <IconButton size='large' color='inherit' aria-label='user menu' onClick={handleUserMenuOpen}>
-          <Icons.Account />
-        </IconButton>
+        <Fab size='small' aria-label='user menu' onClick={handleUserMenuOpen} sx={{ boxShadow: 'none', width: 32, height: 32, minHeight: 0, bgcolor: 'secondary.contrastText', '&:hover': { bgcolor: 'secondary.contrastText' } }}>
+          <RoleIcon color='secondary' fontSize='small' />
+        </Fab>
         <Menu
           anchorEl={userMenuAnchor}
           open={Boolean(userMenuAnchor)}
@@ -87,7 +98,7 @@ export default function NavBar () {
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
           <Box sx={{ px: 1, py: 0.5 }}>
-            <Typography variant='caption' color='text.secondary' sx={{ mb: 0.5, display: 'block' }}>
+            <Typography variant='caption' color='text' sx={{ mb: 0.5, display: 'block' }}>
               {t('app.theme')}
             </Typography>
             <ToggleButtonGroup
@@ -96,6 +107,7 @@ export default function NavBar () {
               onChange={(_, val) => val && setMode(val)}
               size='small'
               fullWidth
+              sx={{ '& .MuiToggleButton-root': { color: 'secondary.contrastText', borderColor: 'secondary.contrastText', '&:hover': { bgcolor: 'transparent' }, '&.Mui-selected': { bgcolor: 'secondary.contrastText', color: 'secondary.main', '&:hover': { bgcolor: 'secondary.contrastText' } } } }}
             >
               <ToggleButton value='system'>
                 <Tooltip title={t('app.system')}><Icons.SystemMode /></Tooltip>

@@ -13,7 +13,7 @@ export default function Project () {
   const { id: courseId } = useParams()
   const navigate = useNavigate()
   const [selectedId, setSelectedId] = useState(courseId)
-  const [requiredOnly, setRequiredOnly] = useState(true)
+  const [requiredOnly] = useState(true)
 
   const {
     tree,

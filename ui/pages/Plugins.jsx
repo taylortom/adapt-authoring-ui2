@@ -104,10 +104,6 @@ export default function Plugins () {
       emptyMessage={t('app.noplugins')}
       title={t('app.plugins')}
       subtitle={t('app.pluginspagesubtitle')}
-      actions={[
-        { label: t('app.update'), icon: Icons.Update },
-        { label: t('app.delete'), icon: Icons.Delete }
-      ]}
       sidebarItems={[
         { type: 'link', label: 'Components', icon: Icons.AdaptComponent, handleClick: () => scrollTo('component') },
         { type: 'link', label: 'Extensions', icon: Icons.AdaptExtension, handleClick: () => scrollTo('extension') },

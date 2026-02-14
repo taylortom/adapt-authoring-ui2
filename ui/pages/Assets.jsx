@@ -10,8 +10,19 @@ import GridCollection from '../components/GridCollection'
 import { t } from '../utils/lang'
 import Icons from '../utils/icons'
 
+const ASSET_TYPE_CONFIG = {
+  image: { icon: Icons.Image, color: 'success.main' },
+  video: { icon: Icons.Video, color: 'error.main' },
+  audio: { icon: Icons.Audio, color: 'warning.main' },
+  other: { icon: Icons.Page, color: 'info.main' }
+}
+
+function getAssetTypeConfig (type) {
+  return ASSET_TYPE_CONFIG[type] ?? ASSET_TYPE_CONFIG.other
+}
+
 function AssetCard ({ asset }) {
-  const Icon = Icons[asset.type[0].toUpperCase() + asset.type.slice(1)] ?? Icons.Page
+  const { icon: Icon, color } = getAssetTypeConfig(asset.type)
   return (
     <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <CardActionArea>
@@ -22,19 +33,18 @@ function AssetCard ({ asset }) {
               height='140'
               image={`/api/assets/serve/${asset._id}${asset.hasThumb ? '?thumb=true' : ''}`}
               alt={asset.title}
-              sx={{ bgcolor: 'grey.200' }}
             />
             )
           : (
             <CardMedia
-              sx={{ height: 140, bgcolor: 'grey.200', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              sx={{ height: 140, bgcolor: color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
-              <Icon sx={{ fontSize: 48, color: 'grey.500' }} />
+              <Icon sx={{ fontSize: 48, color: '#fff' }} />
             </CardMedia>
             )}
         <CardContent sx={{ p: 1, '&:last-child': { pb: 1 } }}>
           <Stack direction='row' spacing={0.5} sx={{ alignItems: 'center', justifyContent: 'center' }}>
-            <Icon sx={{ fontSize: 16, color: 'secondary.main' }} />
+            <Icon sx={{ fontSize: 16, color }} />
             <Typography variant='subtitle2' noWrap>{asset.title}</Typography>
           </Stack>
         </CardContent>
@@ -52,6 +62,7 @@ export default function Assets () {
         { value: 'title', icon: Icons.SortByAlpha },
         { value: 'updatedAt', icon: Icons.Schedule }
       ]}
+      selectable={true}
       defaultSort={{ field: 'updatedAt', order: -1 }}
       pageSizeOptions={[12, 24, 48]}
       gridMinWidth={200}

@@ -6,7 +6,7 @@ import {
   useTheme
 } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Collection from './Collection'
 import SortControls from './SortControls'
 import { usePreferences } from '../contexts/UserPreferencesContext'
@@ -25,6 +25,7 @@ export default function GridCollection ({
   pageSizeOptions = [12, 24, 48],
   gridMinWidth = 250,
   cardHeight = 220,
+  selectable = false,
   renderItem,
   transformData,
   emptyMessage,
@@ -40,6 +41,7 @@ export default function GridCollection ({
   subtitle
 }) {
   const theme = useTheme()
+  const [selected, setSelected] = useState(new Set())
   const { sidebarOpen } = usePreferences()
   const sidebarWidth = sidebarOpen ? theme.custom.sidebarWidth : 0
   const gridRef = useRef(null)
@@ -90,6 +92,19 @@ export default function GridCollection ({
     window.addEventListener('resize', recalc)
     return () => window.removeEventListener('resize', recalc)
   }, [defaultPageSize, calcPageSize, setLimit])
+
+  const toggleSelected = useCallback((id) => {
+    if (!selectable) return
+    setSelected(prev => {
+      if (selectable === 'multi') {
+        const next = new Set(prev)
+        if (next.has(id)) next.delete(id)
+        else next.add(id)
+        return next
+      }
+      return prev.has(id) ? new Set() : new Set([id])
+    })
+  }, [selectable])
 
   const allSidebarItems = [...sidebarItems]
   if (showSidebarSearch) {
@@ -147,11 +162,25 @@ export default function GridCollection ({
       headerControls={sortControls}
     >
       <Box ref={gridCallbackRef} sx={{ display: 'grid', gridTemplateColumns: `repeat(auto-fill, minmax(${gridMinWidth}px, 1fr))`, gap: 3 }}>
-        {items.map((item) => (
-          <Box key={item._id}>
-            {renderItem(item)}
-          </Box>
-        ))}
+        {items.map((item) => {
+          const isSelected = selectable && selected.has(item._id)
+          return (
+            <Box
+              key={item._id}
+              onClick={selectable ? () => toggleSelected(item._id) : undefined}
+              sx={{
+                cursor: selectable ? 'pointer' : undefined,
+                borderRadius: 1,
+                outline: isSelected ? 3 : 0,
+                outlineStyle: 'solid',
+                outlineColor: 'secondary.main',
+                '& .MuiCard-root': isSelected ? { bgcolor: 'secondary.main', color: 'secondary.contrastText' } : undefined
+              }}
+            >
+              {renderItem(item, isSelected)}
+            </Box>
+          )
+        })}
       </Box>
 
       <Box sx={{ pb: 8 }} />

@@ -47,6 +47,10 @@ export function createAppTheme (options = {}) {
       dark: {
         palette: {
           ...defaultPalette,
+          secondary: {
+            main: '#484848',
+            contrastText: '#fff'
+          },
           tertiary: {
             main: '#484848',
             contrastText: options.secondaryColour
@@ -65,12 +69,25 @@ export function createAppTheme (options = {}) {
       },
       MuiMenu: {
         styleOverrides: {
-          paper: {
-            backgroundColor: defaultPalette.secondary.main,
-            color: defaultPalette.secondary.contrastText,
+          paper: ({ theme }) => ({
+            backgroundColor: theme.palette.secondary.main,
+            color: theme.palette.secondary.contrastText,
             minWidth: 250,
             border: '1px solid rgba(255, 255, 255, 0.2)'
-          }
+          })
+        }
+      },
+      MuiMenuItem: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            '&.Mui-selected': {
+              backgroundColor: theme.palette.secondary.contrastText,
+              color: theme.palette.secondary.main,
+              '&:hover': {
+                backgroundColor: theme.palette.secondary.contrastText
+              }
+            }
+          })
         }
       }
     },

@@ -10,7 +10,7 @@ import {
 } from '@mui/material'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import projectPlaceholder from '../assets/images/project_placeholder.jpg'
+import Assets from '../utils/assets'
 import GridCollection from '../components/GridCollection'
 import CreateCourseWizard from '../components/wizards/CreateCourseWizard'
 import Icons from '../utils/icons'
@@ -24,7 +24,7 @@ function ProjectCard ({ project }) {
         <CardMedia
           component='img'
           height='140'
-          image={project.heroImage ? `/api/assets/serve/${project.heroImage}` : projectPlaceholder}
+          image={project.heroImage ? `/api/assets/serve/${project.heroImage}` : Assets.ProjectPlaceholder}
           alt={project.title}
           sx={{ bgcolor: 'grey.200' }}
         />
@@ -60,11 +60,12 @@ export default function Projects () {
       apiRoot='content'
       queryBody={{ _type: 'course' }}
       sortOptions={[
-        { value: 'title', label: t('app.title'), icon: Icons.SortByAlpha },
-        { value: 'updatedAt', label: t('app.lastupdated'), icon: Icons.Schedule }
+        { value: 'displayTitle', icon: Icons.SortByAlpha },
+        { value: 'updatedAt', icon: Icons.Schedule }
       ]}
-      defaultSort={{ field: 'updatedAt', order: -1 }}
+      defaultSort={{ field: 'displayTitle', order: 1 }}
       pageSizeOptions={[12, 24, 48]}
+      selectable={true}
       renderItem={(item) => <ProjectCard project={item} />}
       title={t('app.projects')}
       dial={{
