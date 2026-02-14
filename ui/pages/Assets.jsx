@@ -4,15 +4,13 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  IconButton,
+  Paper,
   Stack,
   Typography
 } from '@mui/material'
 import { useCallback, useState } from 'react'
 import GridCollection from '../components/GridCollection'
+import StyledDialog from '../components/StyledDialog'
 import Icons from '../utils/icons'
 import { t } from '../utils/lang'
 
@@ -62,53 +60,45 @@ function AssetCard ({ asset }) {
 function AssetDetailDialog ({ asset, onClose }) {
   const { icon: Icon, color } = asset ? getAssetTypeConfig(asset.type) : {}
 
-  return (
-    <Dialog open={Boolean(asset)} onClose={onClose} maxWidth='sm' fullWidth>
-      {asset && (
-        <>
-          <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            {asset.title}
-            <IconButton size='small' onClick={onClose}>
-              <Icons.Close />
-            </IconButton>
-          </DialogTitle>
-          {asset.hasThumb || asset.type === 'image'
-            ? (
-              <Box
-                component='img'
-                src={`/api/assets/serve/${asset._id}${asset.hasThumb ? '?thumb=true' : ''}`}
-                alt={asset.title}
-                sx={{ width: '100%', height: 300, objectFit: 'contain', bgcolor: 'grey.100' }}
-              />
-              )
-            : (
-              <Box sx={{ height: 200, bgcolor: color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Icon sx={{ fontSize: 64, color: '#fff' }} />
-              </Box>
-              )}
-          <DialogContent>
-            {asset.description && (
-              <Typography variant='body2' color='text.secondary' sx={{ mb: 2 }}>{asset.description}</Typography>
-            )}
-            <Stack spacing={1}>
-              <Typography variant='caption' color='text.secondary'>
-                {t('app.type')}: {asset.type}
-              </Typography>
-              {asset.size && (
-                <Typography variant='caption' color='text.secondary'>
-                  {t('app.filesize')}: {(asset.size / 1024).toFixed(1)} KB
-                </Typography>
-              )}
-              {asset.updatedAt && (
-                <Typography variant='caption' color='text.secondary'>
-                  {t('app.lastupdated')}: {new Date(asset.updatedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
-                </Typography>
-              )}
-            </Stack>
-          </DialogContent>
-        </>
+  const footer = asset && (
+    <Stack spacing={0.5}>
+      {asset.description && (
+        <Typography variant='body2' color='text.secondary'>{asset.description}</Typography>
       )}
-    </Dialog>
+      <Typography variant='caption' color='text.secondary'>
+        {t('app.type')}: {asset.type}
+      </Typography>
+      {asset.size && (
+        <Typography variant='caption' color='text.secondary'>
+          {t('app.filesize')}: {(asset.size / 1024).toFixed(1)} KB
+        </Typography>
+      )}
+      {asset.updatedAt && (
+        <Typography variant='caption' color='text.secondary'>
+          {t('app.lastupdated')}: {new Date(asset.updatedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
+        </Typography>
+      )}
+    </Stack>
+  )
+
+  return (
+    <StyledDialog open={Boolean(asset)} onClose={onClose} title={asset?.title} footer={footer}>
+      {asset && (asset.hasThumb || asset.type === 'image'
+        ? (
+          <Paper
+            component='img'
+            src={`/api/assets/serve/${asset._id}${asset.hasThumb ? '?thumb=true' : ''}`}
+            alt={asset.title}
+            sx={{ height: 300, objectFit: 'contain', display: 'block', mx: 'auto' }}
+          />
+          )
+        : (
+          <Box sx={{ height: 200, bgcolor: color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Icon sx={{ fontSize: 64, color: '#fff' }} />
+          </Box>
+          )
+      )}
+    </StyledDialog>
   )
 }
 
@@ -134,13 +124,9 @@ export default function Assets () {
         gridMinWidth={200}
         renderItem={(item) => <AssetCard asset={item} />}
         title={t('app.assets')}
-        dial={{
-          label: 'asset actions',
-          actions: [{ icon: Icons.Add, label: t('app.uploadasset') }]
-        }}
         sidebarItems={[{
           type: 'button',
-          label: t('app.uploadasset'),
+          label: t('app.uploadnewasset'),
           handleClick: () => {}
         }]}
       />

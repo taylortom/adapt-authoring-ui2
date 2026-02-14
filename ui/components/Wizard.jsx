@@ -7,9 +7,6 @@ import {
   CircularProgress,
   Container,
   Dialog,
-  DialogContent,
-  DialogTitle,
-  IconButton,
   Grid,
   Stack,
   Step,
@@ -18,10 +15,10 @@ import {
   Typography
 } from '@mui/material'
 import { useEffect, useState } from 'react'
-import Assets from '../utils/assets'
 import Icons from '../utils/icons'
-import SchemaForm from './SchemaForm'
 import Page from './Page'
+import SchemaForm from './SchemaForm'
+import StyledDialog from './StyledDialog'
 
 function PathSelection ({ paths, onSelect }) {
   return (
@@ -46,7 +43,7 @@ function PathSelection ({ paths, onSelect }) {
 
 function WizardNav ({ steps, activeStep, setActiveStep, isLast, onComplete }) {
   return (
-    <Stack direction='row' spacing={5} sx={{ alignItems: 'center', p: 4, boxShadow: '0 -2px 8px rgba(0,0,0,0.15)' }}>
+    <Stack direction='row' spacing={5} sx={{ alignItems: 'center' }}>
       <Button disabled={activeStep === 0} onClick={() => setActiveStep(s => s - 1)}>Back</Button>
       <Stepper
         activeStep={activeStep}
@@ -218,38 +215,19 @@ export default function Wizard ({ steps = [], paths, open, onClose, onComplete, 
         />
       )}
       {showWizard && (
-        <Dialog
+        <StyledDialog
           open={open}
           onClose={onClose}
-          slotProps={{
-            paper: {
-              sx: {
-                width: 900,
-                height: 700,
-                maxWidth: 900,
-                maxHeight: 700,
-                bgcolor: 'white',
-                display: 'flex',
-                flexDirection: 'column'
-              }
-            }
-          }}
+          title={currentStep?.title ?? currentStep?.label}
+          paperSx={{ width: 900, height: 700, maxWidth: 900, maxHeight: 700 }}
+          footer={
+            <Box sx={{ flexShrink: 0, position: 'relative', zIndex: 1 }}>
+              <WizardNav {...navProps} />
+            </Box>
+          }
         >
-          <DialogTitle color='secondary.contrastText' sx={{ flexShrink: 0, p: 4, background: `url(${Assets.Bg})`, backgroundSize: 'cover', boxShadow: '0 4px 8px rgba(0,0,0,0.15)', zIndex: 1, position: 'relative' }}>
-            <Stack direction='row' sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-              {currentStep?.title ?? currentStep?.label}
-              <IconButton onClick={onClose} sx={{ color: 'inherit' }}>
-                <Icons.Close />
-              </IconButton>
-            </Stack>
-          </DialogTitle>
-          <DialogContent sx={{ flex: 1, overflow: 'auto', bgcolor: 'background.default', '&.MuiDialogContent-root': { pt: 3 }, '& .MuiOutlinedInput-root': { bgcolor: 'background.paper' } }}>
-            {stepContent}
-          </DialogContent>
-          <Box sx={{ flexShrink: 0, position: 'relative', zIndex: 1 }}>
-            <WizardNav {...navProps} />
-          </Box>
-        </Dialog>
+          {stepContent}
+        </StyledDialog>
       )}
     </>
   )

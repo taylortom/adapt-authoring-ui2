@@ -27,6 +27,7 @@ const TEMP_KEYS = {
   'app.updateavailable': 'Update available',
   'app.users': 'Users',
   'app.edittype': 'Edit ${type}',
+  'app.type': 'Type',
 }
 
 export function loadLang (locale = navigator.language.split('-')[0]) {
