@@ -40,7 +40,11 @@ export default function Users () {
           icon: config.icon,
           iconColor: config.color,
           primary: user.email,
-          secondary: user.roles.map(r => r.displayName).join(', ')
+          secondary: [
+            user.roles.map(r => r.displayName).join(', '),
+            user.authType,
+            user.lastAccessed && `Last active: ${new Date(user.lastAccessed).toLocaleDateString()}`
+          ].filter(Boolean).join(' · ')
         }
       }}
       emptyMessage={t('app.nousers')}

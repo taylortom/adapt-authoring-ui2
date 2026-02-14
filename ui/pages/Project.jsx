@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { Alert, Box, CircularProgress } from '@mui/material'
 import Page from '../components/Page'
 import SchemaForm from '../components/SchemaForm'
@@ -11,6 +11,7 @@ import { t } from '../utils/lang'
 
 export default function Project () {
   const { id: courseId } = useParams()
+  const navigate = useNavigate()
   const [selectedId, setSelectedId] = useState(courseId)
   const [requiredOnly, setRequiredOnly] = useState(true)
 
@@ -99,7 +100,7 @@ export default function Project () {
         { type: 'button', label: t('app.preview'), handleClick: () => {} },
         { type: 'button', style: 'secondary', label: t('app.export'), handleClick: () => {} },
         { type: 'spacer' },
-        { type: 'link', label: 'Extensions', icon: Icons.AdaptExtension, handleClick: () => {} },
+        { type: 'link', label: 'Extensions', icon: Icons.AdaptExtension, handleClick: () => navigate(`/project/${courseId}/extensions`) },
         { type: 'link', label: 'Theme', icon: Icons.AdaptTheme, handleClick: () => {} },
         { type: 'link', label: 'Menu', icon: Icons.AdaptMenu, handleClick: () => {} },
         { type: 'spacer' },
