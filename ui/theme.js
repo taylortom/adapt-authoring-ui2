@@ -29,7 +29,7 @@ export function createAppTheme (options = {}) {
       main: '#00dd95'
     },
     background: {
-      default: '#f3fcfe'
+      default: '#ebfdff'
     },
     white: {
       main: '#fff'

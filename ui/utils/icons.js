@@ -7,6 +7,7 @@ import Book from '@mui/icons-material/Book'
 import Check from '@mui/icons-material/Check'
 import ChevronLeft from '@mui/icons-material/ChevronLeft'
 import ChevronRight from '@mui/icons-material/ChevronRight'
+import Close from '@mui/icons-material/Close'
 import ChromeReaderMode from '@mui/icons-material/ChromeReaderMode'
 import Code from '@mui/icons-material/Code'
 import DarkMode from '@mui/icons-material/DarkMode'
@@ -17,6 +18,7 @@ import Edit from '@mui/icons-material/Edit'
 import Extension from '@mui/icons-material/Extension'
 import FileUpload from '@mui/icons-material/FileUpload'
 import FilterList from '@mui/icons-material/FilterList'
+import FolderZip from '@mui/icons-material/FolderZip';
 import Help from '@mui/icons-material/Help'
 import Image from '@mui/icons-material/Image'
 import Info from '@mui/icons-material/Info'
@@ -40,7 +42,7 @@ import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import Window from '@mui/icons-material/Window'
 
-const Icons = {
+export default {
   Account: AccountCircle,
   AdaptComponent: ChromeReaderMode,
   AdaptExtension: Extension,
@@ -53,6 +55,7 @@ const Icons = {
   Audio: Audiotrack,
   AuthUser: Person,
   Block: ViewColumn,
+  Close: Close,
   CloseSidebar: ChevronLeft,
   Code: Code,
   Course: Book,
@@ -83,6 +86,5 @@ const Icons = {
   Uninstall: LinkOff,
   Update: FileUpload,
   Video: Videocam,
+  Zip: FolderZip,
 }
-
-export default Icons

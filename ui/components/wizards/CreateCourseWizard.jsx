@@ -1,30 +1,13 @@
-import { useState, useMemo } from 'react'
+import { Box, Typography } from '@mui/material'
+import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  Box,
-  Checkbox,
-  FormControl,
-  InputLabel,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  MenuItem,
-  Select,
-  Typography
-} from '@mui/material'
-import Wizard from '../Wizard'
-import SchemaForm from '../SchemaForm'
 import { createApiClient, useApiQuery } from '../../utils/api'
-import adaptLogo from '../../assets/images/adapt_logo.png'
-
-const COURSE_FIELDS = ['title', 'description', 'heroImage', '_isShared', '_shareWithUsers']
+import Icons from '../../utils/icons'
+import Wizard from '../Wizard'
 
 export default function CreateCourseWizard ({ open, onClose }) {
   const navigate = useNavigate()
-  const [courseData, setCourseData] = useState({})
-  const [selectedTheme, setSelectedTheme] = useState('')
-  const [selectedExtensions, setSelectedExtensions] = useState([])
+  const [activePath, setActivePath] = useState(null)
 
   const { data: pluginsData } = useApiQuery(
     'contentplugins',
@@ -33,84 +16,84 @@ export default function CreateCourseWizard ({ open, onClose }) {
   )
 
   const plugins = pluginsData?.results ?? pluginsData ?? []
-  const themes = useMemo(() => plugins.filter(p => p.type === 'theme'), [plugins])
-  const extensions = useMemo(() => plugins.filter(p => p.type === 'extension'), [plugins])
+  const themes = useMemo(() => plugins.filter(p => p.type === 'theme').map(t => ({ key: t.name, label: t.displayName })), [plugins])
+  const extensions = useMemo(() => plugins.filter(p => p.type === 'extension').map(e => ({ key: e.name, label: e.displayName, description: e.description })), [plugins])
 
-  const toggleExtension = (name) => {
-    setSelectedExtensions(prev =>
-      prev.includes(name) ? prev.filter(n => n !== name) : [...prev, name]
-    )
-  }
-
-  const handleComplete = async () => {
-    const api = createApiClient('content')
-    const course = await api.post({ _type: 'course', ...courseData })
-    const { results } = await api.query('', { body: { _courseId: course._id } })
-    const items = Array.isArray(results) ? results : []
-    const config = items.find(i => i._type === 'config')
-    if (config) {
-      await api.patch(config._id, { _theme: selectedTheme, _enabledPlugins: selectedExtensions })
+  const handleComplete = async (stepData) => {
+    if (activePath === 'scratch') {
+      const api = createApiClient('content')
+      const course = await api.post({ _type: 'course', ...stepData.basicInfo })
+      const { results } = await api.query('', { body: { _courseId: course._id } })
+      const items = Array.isArray(results) ? results : []
+      const config = items.find(i => i._type === 'config')
+      if (config) {
+        await api.patch(config._id, { _theme: stepData.theme, _enabledPlugins: stepData.extensions ?? [] })
+      }
+      onClose()
+      navigate(`/project/${course._id}`)
     }
-    onClose()
-    navigate(`/project/${course._id}`)
   }
 
-  const steps = [
+  const paths = [
     {
-      label: 'Welcome',
-      content: (
-        <Box sx={{ textAlign: 'center', py: 4 }}>
-          <Box component='img' src={adaptLogo} alt='Adapt' sx={{ maxWidth: 200, mb: 3 }} />
-          <Typography variant='h5' gutterBottom>Create a new project</Typography>
-          <Typography color='text.secondary'>
-            This wizard will guide you through setting up your new course. You'll configure the basic details, choose a theme, and select which extensions to include.
-          </Typography>
-        </Box>
-      )
+      key: 'scratch',
+      label: 'Start afresh',
+      description: 'Start with a blank course and configure everything yourself.',
+      icon: Icons.Add,
+      steps: [
+        {
+          key: 'basicInfo',
+          label: 'Basic Info',
+          title: 'Add some basic information to your course',
+          type: 'form',
+          apiName: 'content',
+          queryString: '_type=course',
+          fields: ['displayTitle', 'description', 'heroImage']
+        },
+        {
+          key: 'theme',
+          label: 'Theme',
+          title: 'Choose a theme',
+          type: 'select',
+          items: themes
+        },
+        {
+          key: 'extensions',
+          label: 'Extensions',
+          title: 'Customise the functionality',
+          type: 'select',
+          multiple: true,
+          items: extensions
+        },
+        {
+          key: 'sharing',
+          label: 'Sharing',
+          title: 'Set who can access your course',
+          type: 'form',
+          apiName: 'content',
+          queryString: '_type=course',
+          fields: ['_isShared', '_shareWithUsers']
+        }
+      ]
     },
     {
-      label: 'Course details',
-      content: (
-        <SchemaForm
-          apiName='content'
-          queryString='_type=course'
-          formData={courseData}
-          onChange={({ formData }) => setCourseData(formData)}
-          fields={COURSE_FIELDS}
-        />
-      )
-    },
-    {
-      label: 'Theme',
-      content: (
-        <FormControl fullWidth sx={{ mt: 2 }}>
-          <InputLabel>Theme</InputLabel>
-          <Select
-            value={selectedTheme}
-            label='Theme'
-            onChange={(e) => setSelectedTheme(e.target.value)}
-          >
-            {themes.map(t => (
-              <MenuItem key={t.name} value={t.name}>{t.displayName}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      )
-    },
-    {
-      label: 'Extensions',
-      content: (
-        <List>
-          {extensions.map(ext => (
-            <ListItem key={ext.name} disablePadding>
-              <ListItemButton onClick={() => toggleExtension(ext.name)}>
-                <Checkbox checked={selectedExtensions.includes(ext.name)} edge='start' tabIndex={-1} disableRipple />
-                <ListItemText primary={ext.displayName} secondary={ext.description} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      )
+      key: 'import',
+      label: 'Import a course',
+      description: 'Import an existing course from a zip file.',
+      icon: Icons.Zip,
+      steps: [
+        {
+          key: 'upload',
+          label: 'Upload',
+          type: 'custom',
+          content: (
+            <Box sx={{ textAlign: 'center', py: 4 }}>
+              <Typography variant='h6' gutterBottom>Import course</Typography>
+              <Typography color='text.secondary'>Course import coming soon.</Typography>
+            </Box>
+          )
+        }
+      ]
     }
   ]
 
@@ -119,8 +102,8 @@ export default function CreateCourseWizard ({ open, onClose }) {
       open={open}
       onClose={onClose}
       onComplete={handleComplete}
-      title='Create new project'
-      steps={steps}
+      onPathChange={setActivePath}
+      paths={paths}
     />
   )
 }

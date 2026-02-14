@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useAuth } from '../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 import {
   Box,
   Button,
@@ -10,12 +11,10 @@ import {
   Typography,
   Alert
 } from '@mui/material'
-import { useAuth } from '../contexts/AuthContext'
 import { getConfig } from '../utils/config'
-
-import loginBg from '../assets/images/login_bg.jpg'
-import logo from '../assets/images/adapt_logo.png'
 import { t } from '../utils/lang'
+
+import Assets from '../utils/assets'
 
 export default function Login () {
   const [email, setEmail] = useState('')
@@ -53,7 +52,7 @@ export default function Login () {
           position: 'absolute',
           width: '100vw',
           height: '100vh',
-          background: `url(${loginBg})`,
+          background: `url(${Assets.Bg})`,
           backgroundSize: 'cover',
           top: 0,
           left: 0,
@@ -70,7 +69,7 @@ export default function Login () {
       >
         <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
           <img
-            src={getConfig('logoUrl') || logo}
+            src={getConfig('logoUrl') || Assets.Logo}
             alt={getConfig('appTitle') || 'Logo'}
             style={{ maxHeight: 150, maxWidth: '100%', objectFit: 'contain' }}
           />

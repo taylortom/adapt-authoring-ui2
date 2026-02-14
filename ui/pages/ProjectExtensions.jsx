@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 import ListCollection from '../components/ListCollection'
-import { useApiQuery, useApiMutation } from '../utils/api'
+import { useApiMutation, useApiQuery } from '../utils/api'
 import Icons from '../utils/icons'
 import { t } from '../utils/lang'
 

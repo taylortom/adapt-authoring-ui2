@@ -1,12 +1,12 @@
-import { useState, useCallback } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
 import { Alert, Box, CircularProgress } from '@mui/material'
+import { useCallback, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import ContentTree from '../components/ContentTree'
 import Page from '../components/Page'
 import SchemaForm from '../components/SchemaForm'
-import ContentTree from '../components/ContentTree'
-import Icons from '../utils/icons'
 import { useProjectContent } from '../hooks/useProjectContent'
 import { getAllowedChildTypes } from '../utils/contentTypes'
+import Icons from '../utils/icons'
 import { t } from '../utils/lang'
 
 export default function Project () {

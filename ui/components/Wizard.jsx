@@ -1,82 +1,256 @@
-import { useState, useEffect } from 'react'
 import {
   Box,
   Button,
+  Card,
+  CardActionArea,
+  CardContent,
+  CircularProgress,
   Container,
   Dialog,
   DialogContent,
   DialogTitle,
+  IconButton,
+  Grid,
   Stack,
   Step,
   StepLabel,
-  Stepper
+  Stepper,
+  Typography
 } from '@mui/material'
-import Page from './Page'
+import { useEffect, useState } from 'react'
+import Assets from '../utils/assets'
 import Icons from '../utils/icons'
+import SchemaForm from './SchemaForm'
+import Page from './Page'
+
+function PathSelection ({ paths, onSelect }) {
+  return (
+    <Stack direction='row' spacing={3} sx={{ justifyContent: 'center', alignItems: 'stretch', p: 4 }}>
+      {paths.map((path) => {
+        const Icon = path.icon
+        return (
+          <Card key={path.key} sx={{ flex: 1, maxWidth: 280 }}>
+            <CardActionArea onClick={() => onSelect(path.key)} sx={{ height: '100%', p: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+              <CardContent sx={{ textAlign: 'center' }}>
+                {Icon && <Icon sx={{ fontSize: 48, color: 'primary.main', mb: 2 }} />}
+                <Typography variant='h6' gutterBottom>{path.label}</Typography>
+                <Typography variant='body2' color='text.secondary'>{path.description}</Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        )
+      })}
+    </Stack>
+  )
+}
 
 function WizardNav ({ steps, activeStep, setActiveStep, isLast, onComplete }) {
   return (
-    <>
-      <Stepper activeStep={activeStep} sx={{ px: 3, py: 2 }}>
+    <Stack direction='row' spacing={5} sx={{ alignItems: 'center', p: 4, boxShadow: '0 -2px 8px rgba(0,0,0,0.15)' }}>
+      <Button disabled={activeStep === 0} onClick={() => setActiveStep(s => s - 1)}>Back</Button>
+      <Stepper
+        activeStep={activeStep}
+        sx={{
+           flex: 1,
+          '& .MuiStepLabel-label': { '&.Mui-active': { color: 'primary.main' }, '&.Mui-completed': { color: 'primary.main' } },
+          '& .MuiStepIcon-root': { '&.Mui-active': { color: 'primary.main' }, '&.Mui-completed': { color: 'primary.main' } },
+        }}
+      >
         {steps.map((step) => (
           <Step key={step.label}>
             <StepLabel>{step.label}</StepLabel>
           </Step>
         ))}
       </Stepper>
-      <Stack direction='row' spacing={1} sx={{ justifyContent: 'flex-end', px: 3, pb: 2 }}>
-        <Button disabled={activeStep === 0} onClick={() => setActiveStep(s => s - 1)}>Back</Button>
-        {isLast
-          ? <Button variant='contained' onClick={onComplete}>Finish</Button>
-          : <Button variant='contained' onClick={() => setActiveStep(s => s + 1)}>Next</Button>}
-      </Stack>
-    </>
+      <Button
+        variant='contained'
+        onClick={isLast ? onComplete : () => setActiveStep(s => s + 1)}>
+      {isLast ? 'Finish' : 'Next'}
+      </Button>
+    </Stack>
   )
 }
 
-export default function Wizard ({ steps = [], title, open, onClose, onComplete, variant = 'dialog', crumbs }) {
+function WizardSelect ({ items, value, onChange, multiple }) {
+  const selected = multiple ? (value ?? []) : value
+  const handleClick = (key) => {
+    if (multiple) {
+      onChange(selected.includes(key) ? selected.filter(k => k !== key) : [...selected, key])
+    } else {
+      onChange(key)
+    }
+  }
+  return (
+    <Grid container spacing={2}>
+      {items.map(item => {
+        const isSelected = multiple ? selected.includes(item.key) : selected === item.key
+        const Icon = item.icon
+        return (
+          <Grid key={item.key} size={{ xs: 6, sm: 4 }}>
+            <Card sx={{ border: 2, borderColor: isSelected ? 'primary.main' : 'transparent', bgcolor: isSelected ? 'primary.main' : undefined, color: isSelected ? 'primary.contrastText' : undefined, height: '100%' }}>
+              <CardActionArea onClick={() => handleClick(item.key)} sx={{ p: 2, height: '100%' }}>
+                <CardContent>
+                  {Icon && <Icon sx={{ fontSize: 36, color: isSelected ? 'inherit' : 'primary.main', mb: 1 }} />}
+                  <Typography variant='subtitle1'>{item.label}</Typography>
+                  {item.description && <Typography variant='body2' sx={{ color: isSelected ? 'inherit' : 'text.secondary', textAlign: 'left', opacity: isSelected ? 0.85 : 1 }}>{item.description}</Typography>}
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
+        )
+      })}
+    </Grid>
+  )
+}
+
+function WizardLoading ({ message }) {
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: 8, gap: 3 }}>
+      <CircularProgress />
+      {message && <Typography color='text.secondary'>{message}</Typography>}
+    </Box>
+  )
+}
+
+function StepContent ({ step, stepState, onStepStateChange }) {
+  switch (step.type) {
+    case 'form':
+      return (
+        <SchemaForm
+          apiName={step.apiName}
+          queryString={step.queryString}
+          formData={stepState ?? {}}
+          onChange={({ formData }) => onStepStateChange(formData)}
+          fields={step.fields}
+          disablePaper
+        />
+      )
+    case 'select':
+      return (
+        <WizardSelect
+          items={step.items}
+          value={stepState}
+          onChange={onStepStateChange}
+          multiple={step.multiple}
+        />
+      )
+    case 'loading':
+      return <WizardLoading message={step.message} />
+    case 'custom':
+      return step.content
+    default:
+      return step.content ?? null
+  }
+}
+
+function IntroDialog ({ open, onClose, content }) {
+  return (
+    <Dialog
+      open={open}
+      onClose={onClose}
+      slotProps={{ paper: { sx: { bgcolor: 'transparent', boxShadow: 'none' } } }}
+    >
+      {content}
+    </Dialog>
+  )
+}
+
+export default function Wizard ({ steps = [], paths, open, onClose, onComplete, onPathChange, variant = 'dialog', crumbs }) {
   const [activeStep, setActiveStep] = useState(0)
+  const [selectedPath, setSelectedPath] = useState(null)
+  const [stepData, setStepData] = useState({})
 
   useEffect(() => {
-    if (open) setActiveStep(0)
+    if (open) {
+      setActiveStep(0)
+      setSelectedPath(null)
+      setStepData({})
+    }
   }, [open])
 
-  const isLast = activeStep === steps.length - 1
-  const navProps = { steps, activeStep, setActiveStep, isLast, onComplete }
+  const handleSelectPath = (key) => {
+    setSelectedPath(key)
+    setActiveStep(0)
+    onPathChange?.(key)
+  }
+
+  const showPathSelection = paths && selectedPath === null
+  const activeSteps = paths ? (paths.find(p => p.key === selectedPath)?.steps ?? []) : steps
+  const isLast = activeStep === activeSteps.length - 1
+
+  const showWizard = !showPathSelection && activeSteps.length > 0
+
+  const handleComplete = () => onComplete?.(stepData)
+
+  const navProps = { steps: activeSteps, activeStep, setActiveStep, isLast, onComplete: handleComplete }
+
+  const currentStep = activeSteps[activeStep]
+  const stepContent = currentStep
+    ? <StepContent step={currentStep} stepState={stepData[currentStep.key ?? activeStep]} onStepStateChange={(val) => setStepData(prev => ({ ...prev, [currentStep.key ?? activeStep]: val }))} />
+    : null
 
   if (variant === 'page') {
     return (
       <Page
-        title={title}
+        title={currentStep?.title}
         crumbs={crumbs}
         actions={[{
-          icon: Icons.CloseSidebar,
-          color: 'default',
+          icon: Icons.Close,
+          color: 'error',
           handleClick: onClose
         }]}
       >
         <Container maxWidth='md'>
-          {steps[activeStep]?.content}
-          <WizardNav {...navProps} />
+          {stepContent}
+          {showWizard && <WizardNav {...navProps} />}
         </Container>
       </Page>
     )
   }
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth='md'>
-      <Box sx={{ border: 4, borderColor: 'secondary.main', borderRadius: 1 }}>
-        <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          {title}
-          <Button onClick={onClose} variant='outlined' size='small' startIcon={<Icons.CloseSidebar />}>
-            Close
-          </Button>
-        </DialogTitle>
-        <DialogContent>
-          {steps[activeStep]?.content}
-        </DialogContent>
-        <WizardNav {...navProps} />
-      </Box>
-    </Dialog>
+    <>
+      {showPathSelection && (
+        <IntroDialog
+          open={open}
+          onClose={onClose}
+          content={<PathSelection paths={paths} onSelect={handleSelectPath} />}
+        />
+      )}
+      {showWizard && (
+        <Dialog
+          open={open}
+          onClose={onClose}
+          slotProps={{
+            paper: {
+              sx: {
+                width: 900,
+                height: 700,
+                maxWidth: 900,
+                maxHeight: 700,
+                bgcolor: 'white',
+                display: 'flex',
+                flexDirection: 'column'
+              }
+            }
+          }}
+        >
+          <DialogTitle color='secondary.contrastText' sx={{ flexShrink: 0, p: 4, background: `url(${Assets.Bg})`, backgroundSize: 'cover', boxShadow: '0 4px 8px rgba(0,0,0,0.15)', zIndex: 1, position: 'relative' }}>
+            <Stack direction='row' sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+              {currentStep?.title ?? currentStep?.label}
+              <IconButton onClick={onClose} sx={{ color: 'inherit' }}>
+                <Icons.Close />
+              </IconButton>
+            </Stack>
+          </DialogTitle>
+          <DialogContent sx={{ flex: 1, overflow: 'auto', bgcolor: 'background.default', '&.MuiDialogContent-root': { pt: 3 }, '& .MuiOutlinedInput-root': { bgcolor: 'background.paper' } }}>
+            {stepContent}
+          </DialogContent>
+          <Box sx={{ flexShrink: 0, position: 'relative', zIndex: 1 }}>
+            <WizardNav {...navProps} />
+          </Box>
+        </Dialog>
+      )}
+    </>
   )
 }

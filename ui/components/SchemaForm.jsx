@@ -53,7 +53,7 @@ function filterRequiredOnly (schema) {
   return filtered
 }
 
-const SchemaForm = ({ apiName, uiSchema, dataId, queryString, formData: externalFormData, onChange, fields, requiredOnly = false, disableCache = false, onSubmit }) => {
+const SchemaForm = ({ apiName, uiSchema, dataId, queryString, formData: externalFormData, onChange, fields, requiredOnly = false, disableCache = false, onSubmit, disablePaper = false }) => {
   const cacheOpts = disableCache ? { gcTime: 0, staleTime: 0 } : {}
 
   const { data: schema, error: schemaError } = useApiQuery(
@@ -88,17 +88,19 @@ const SchemaForm = ({ apiName, uiSchema, dataId, queryString, formData: external
     return ''
   }
 
-  return (
-    <Paper sx={{ p: 4 }}>
-      <Form
-        schema={processedSchema}
-        uiSchema={{ "ui:submitButtonOptions": { norender: true }, ...uiSchema }}
-        formData={formData}
-        onChange={onChange}
-        validator={validator}
-      />
-    </Paper>
+  const form = (
+    <Form
+      schema={processedSchema}
+      uiSchema={{ "ui:submitButtonOptions": { norender: true }, ...uiSchema }}
+      formData={formData}
+      onChange={onChange}
+      validator={validator}
+    />
   )
+
+  if (disablePaper) return form
+
+  return <Paper sx={{ p: 4 }}>{form}</Paper>
 }
 
 export default SchemaForm

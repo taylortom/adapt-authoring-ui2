@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import {
   Card,
   CardActionArea,
@@ -10,12 +8,13 @@ import {
   Tooltip,
   Typography
 } from '@mui/material'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import projectPlaceholder from '../assets/images/project_placeholder.jpg'
 import GridCollection from '../components/GridCollection'
 import CreateCourseWizard from '../components/wizards/CreateCourseWizard'
-import { t } from '../utils/lang'
 import Icons from '../utils/icons'
-
-import projectPlaceholder from '../assets/images/project_placeholder.jpg'
+import { t } from '../utils/lang'
 
 function ProjectCard ({ project }) {
   const navigate = useNavigate()
