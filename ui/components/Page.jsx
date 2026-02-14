@@ -13,6 +13,7 @@ import {
   Toolbar,
   Typography
 } from '@mui/material'
+import { Link as RouterLink } from 'react-router-dom'
 import Sidebar from './Sidebar'
 
 function Actions (items) {
@@ -21,7 +22,7 @@ function Actions (items) {
   }
   return (
     <Stack direction='row' spacing={1}>
-      {items.map((item, i) => <Fab key={i} color={item.color ?? 'secondary'} size='medium' href={item.href} aria-label={item.label} sx={{ boxShadow: 'none' }}><item.icon /></Fab>)}
+      {items.map((item, i) => <Fab key={i} color={item.color ?? 'secondary'} size='medium' {...(item.href ? { component: RouterLink, to: item.href } : { onClick: item.handleClick })} aria-label={item.label} sx={{ boxShadow: 'none' }}><item.icon /></Fab>)}
     </Stack>
   )
 }
@@ -33,7 +34,7 @@ function Crumbs (items) {
   return (
     <Breadcrumbs separator='›' aria-label='breadcrumb'>
       {items.map((item, i) => item.href
-        ? <Link key={i} underline='hover' color='inherit' href={item.href}>{item.label}</Link>
+        ? <Link key={i} underline='hover' color='inherit' component={RouterLink} to={item.href}>{item.label}</Link>
         : <Typography key={i} color='primary'>{item.label}</Typography>)}
     </Breadcrumbs>
   )
@@ -47,7 +48,7 @@ function Links (items) {
     <AppBar position='sticky' sx={{ bgcolor: 'tertiary.main', color: 'secondary.main' }}>
       <Toolbar variant='dense' sx={{ minHeight: 'auto', px: 1, py: 0.5 }}>
         <Stack direction='row' sx={{ justifyContent: 'center', width: '100%' }}>
-          {items.map((item, i) => <Button key={i} color={item.color ?? 'primary'} size='medium' href={item.href} aria-label={item.label}>{item.label}</Button>)}
+          {items.map((item, i) => <Button key={i} color={item.color ?? 'primary'} size='medium' {...(item.href ? { component: RouterLink, to: item.href } : {})} aria-label={item.label}>{item.label}</Button>)}
         </Stack>
       </Toolbar>
     </AppBar>
