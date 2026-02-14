@@ -65,6 +65,11 @@ export function createAppTheme (options = {}) {
       MuiButton: {
         defaultProps: {
           disableElevation: true
+        },
+        styleOverrides: {
+          root: {
+            padding: '10px 20px'
+          }
         }
       },
       MuiMenu: {
@@ -74,12 +79,17 @@ export function createAppTheme (options = {}) {
             color: theme.palette.secondary.contrastText,
             minWidth: 250,
             border: '1px solid rgba(255, 255, 255, 0.2)'
-          })
+          }),
+          list: {
+            paddingTop: 0,
+            paddingBottom: 0
+          }
         }
       },
       MuiMenuItem: {
         styleOverrides: {
           root: ({ theme }) => ({
+            padding: '10px 20px',
             '&.Mui-selected': {
               backgroundColor: theme.palette.secondary.contrastText,
               color: theme.palette.secondary.main,

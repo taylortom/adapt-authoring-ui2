@@ -5,6 +5,7 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  Fab,
   Paper,
   Stack,
   Typography
@@ -75,18 +76,18 @@ function AssetFormDialog ({ asset, open, onClose }) {
       onClose={handleClose}
       title={asset?.title ?? t('app.uploadnewasset')}
       maxWidth='md'
-      footer={isDirty
-        ? (
-          <Stack direction='row' sx={{ justifyContent: 'flex-end' }}>
-            <Button variant='contained' startIcon={<Icons.Save />} onClick={() => {}}>
-              {t('app.save')}
-            </Button>
-          </Stack>
-          )
-        : undefined}
     >
       {open && (
-        <Stack direction='row' spacing={3} sx={{ alignItems: 'flex-start' }}>
+        <Stack direction='row' spacing={3} sx={{ alignItems: 'flex-start', position: 'relative' }}>
+          <Box sx={{ flex: 1, minWidth: 0 }}>
+            <SchemaForm
+              apiName='assets'
+              {...(isEdit ? { dataId: asset._id } : {})}
+              fields={['title', 'description', 'url', 'tags']}
+              onDirtyChange={setIsDirty}
+              disablePaper
+            />
+          </Box>
           <Stack sx={{ flex: '0 0 300px' }} spacing={2}>
             {isEdit
               ? (asset.hasThumb || asset.type === 'image'
@@ -135,15 +136,11 @@ function AssetFormDialog ({ asset, open, onClose }) {
               </Paper>
             )}
           </Stack>
-          <Box sx={{ flex: 1, minWidth: 0 }}>
-            <SchemaForm
-              apiName='assets'
-              {...(isEdit ? { dataId: asset._id } : {})}
-              fields={['title', 'description', 'url', 'tags']}
-              onDirtyChange={setIsDirty}
-              disablePaper
-            />
-          </Box>
+          {isDirty && (
+            <Fab color='primary' onClick={() => {}} sx={{ position: 'absolute', bottom: 0, right: 0 }}>
+              <Icons.Save />
+            </Fab>
+          )}
         </Stack>
       )}
     </StyledDialog>

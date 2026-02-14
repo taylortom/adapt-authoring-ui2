@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { Paper } from '@mui/material'
 import { useApiQuery } from '../utils/api'
 import Form from '@rjsf/mui'
@@ -80,17 +80,6 @@ const SchemaForm = ({
     { key: dataId, enabled: !!dataId, ...cacheOpts }
   )
   const formData = dataId ? fetchedData : (externalFormData ?? {})
-  const originalDataRef = useRef(null)
-  if (formData && !originalDataRef.current) {
-    originalDataRef.current = JSON.stringify(formData)
-  }
-
-  const handleChange = useCallback((e) => {
-    onChange?.(e)
-    if (onDirtyChange && originalDataRef.current) {
-      onDirtyChange(JSON.stringify(e.formData) !== originalDataRef.current)
-    }
-  }, [onChange, onDirtyChange])
 
   const processedSchema = useMemo(() => {
     if (!schema) return null
@@ -105,6 +94,29 @@ const SchemaForm = ({
     const filtered = filterRequiredOnly(s)
     return Object.keys(filtered.properties).length > 0 ? filtered : s
   }, [schema, requiredOnly, fields])
+
+  const visibleKeys = useMemo(() => {
+    return processedSchema ? Object.keys(processedSchema.properties) : []
+  }, [processedSchema])
+
+  const originalSnapshotRef = useRef(null)
+
+  useEffect(() => {
+    if (formData && visibleKeys.length && !originalSnapshotRef.current) {
+      const pick = {}
+      visibleKeys.forEach(k => { if (k in formData) pick[k] = formData[k] })
+      originalSnapshotRef.current = JSON.stringify(pick)
+    }
+  }, [formData, visibleKeys])
+
+  const handleChange = useCallback((e) => {
+    onChange?.(e)
+    if (onDirtyChange && originalSnapshotRef.current) {
+      const pick = {}
+      visibleKeys.forEach(k => { if (k in e.formData) pick[k] = e.formData[k] })
+      onDirtyChange(JSON.stringify(pick) !== originalSnapshotRef.current)
+    }
+  }, [onChange, onDirtyChange, visibleKeys])
 
   if (dataError ?? schemaError) {
     alert(dataError ?? schemaError)
