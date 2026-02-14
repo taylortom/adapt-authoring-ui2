@@ -26,6 +26,7 @@ export default function GridCollection ({
   gridMinWidth = 250,
   cardHeight = 220,
   selectable = false,
+  onSelectionChange,
   renderItem,
   transformData,
   emptyMessage,
@@ -96,15 +97,21 @@ export default function GridCollection ({
   const toggleSelected = useCallback((id) => {
     if (!selectable) return
     setSelected(prev => {
+      let next
       if (selectable === 'multi') {
-        const next = new Set(prev)
+        next = new Set(prev)
         if (next.has(id)) next.delete(id)
         else next.add(id)
-        return next
+      } else {
+        next = prev.has(id) ? new Set() : new Set([id])
       }
-      return prev.has(id) ? new Set() : new Set([id])
+      return next
     })
   }, [selectable])
+
+  useEffect(() => {
+    onSelectionChange?.(items.filter(i => selected.has(i._id)))
+  }, [selected])
 
   const allSidebarItems = [...sidebarItems]
   if (showSidebarSearch) {
