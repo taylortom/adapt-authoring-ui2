@@ -26,6 +26,7 @@ const TEMP_KEYS = {
   'app.theme': 'Set theme',
   'app.updateavailable': 'Update available',
   'app.users': 'Users',
+  'app.edittype': 'Edit ${type}',
 }
 
 export function loadLang (locale = navigator.language.split('-')[0]) {

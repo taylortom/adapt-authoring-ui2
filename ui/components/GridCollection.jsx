@@ -1,19 +1,14 @@
 import {
   Box,
-  IconButton,
   InputAdornment,
-  Stack,
   TablePagination,
   TextField,
-  Tooltip,
   useTheme
 } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import { useCallback, useEffect, useRef } from 'react'
 import Collection from './Collection'
-import IconButtonGroup from './IconButtonGroup'
+import SortControls from './SortControls'
 import { usePreferences } from '../contexts/UserPreferencesContext'
 import useCollectionState from '../hooks/useCollectionState'
 import { t } from '../utils/lang'
@@ -132,16 +127,7 @@ export default function GridCollection ({
   }
 
   const sortControls = sortOptions.length > 0
-    ? (
-      <Stack direction='row' spacing={1} sx={{ alignItems: 'center' }}>
-        <IconButtonGroup value={sortField} onChange={handleSortFieldChange} options={sortOptions} />
-        <Tooltip title={sortOrder === 1 ? t('app.ascending') : t('app.descending')}>
-          <IconButton size='large' onClick={handleToggleSortOrder}>
-            {sortOrder === 1 ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
-          </IconButton>
-        </Tooltip>
-      </Stack>
-      )
+    ? <SortControls sortField={sortField} sortOrder={sortOrder} sortOptions={sortOptions} onSortFieldChange={handleSortFieldChange} onToggleSortOrder={handleToggleSortOrder} />
     : null
 
   return (

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import { authService } from '../services/authService'
 
 const AuthContext = createContext(null)
@@ -11,7 +11,7 @@ export function AuthProvider ({ children }) {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  const checkAuthStatus = async () => {
+  const checkAuthStatus = useCallback(async () => {
     try {
       const authData = await authService.checkAuth()
       setUser(authData.user)
@@ -28,11 +28,21 @@ export function AuthProvider ({ children }) {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [])
 
   useEffect(() => {
     checkAuthStatus()
-  }, [])
+  }, [checkAuthStatus])
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        checkAuthStatus()
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
+  }, [checkAuthStatus])
 
   const login = async (email, password, persistSession = false) => {
     setIsLoading(true)

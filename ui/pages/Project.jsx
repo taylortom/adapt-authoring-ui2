@@ -72,59 +72,54 @@ export default function Project () {
     return <Alert severity='error'>{error.message}</Alert>
   }
 
+  const course = tree.find(t => t._type === 'course')
   const selectedItem = flatMap.get(selectedId)
-  const courseTitle = tree[0]?.displayTitle || tree[0]?.title || t('app.project')
-  const pageTitle = t(`app.${selectedItem._type}`) + ': ' + (selectedItem?.displayTitle || selectedItem?.title || courseTitle)
-
-  const crumbs = [
-    { label: t('app.dashboard'), href: '/' },
-    { label: t('app.projects'), href: '/projects' },
-    { label: courseTitle }
-  ]
-
-  const actions = [
-    {
-      icon: Icons.Filter,
-      color: requiredOnly ? 'primary' : 'secondary',
-      handleClick: () => setRequiredOnly(prev => !prev)
-    },
-    {
-      icon: Icons.Save,
-      color: 'primary',
-      handleClick: () => {
-        document.querySelector('.project-schema-form form')?.requestSubmit()
-      }
-    }
-  ]
-
-  const sidebarItems = [
-    { type: 'button', label: t('app.preview'), handleClick: () => {} },
-    { type: 'button', style: 'secondary', label: t('app.export'), handleClick: () => {} },
-    { type: 'spacer' },
-    { type: 'link', label: 'Extensions', icon: Icons.AdaptExtension, handleClick: () => {} },
-    { type: 'link', label: 'Theme', icon: Icons.AdaptTheme, handleClick: () => {} },
-    { type: 'link', label: 'Menu', icon: Icons.AdaptMenu, handleClick: () => {} },
-    { type: 'spacer' },
-    { type: 'heading', label: t('app.coursestructure') },
-    {
-      type: 'custom',
-      content: (
-        <ContentTree
-          tree={tree}
-          flatMap={flatMap}
-          pluginNames={pluginNames}
-          selectedId={selectedId}
-          onSelect={handleSelect}
-          onAddChild={handleAddChild}
-          onDelete={handleDelete}
-          onReorder={handleReorder}
-        />
-      )
-    }
-  ]
+  const courseTitle = course.displayTitle || course.title
+  const itemTitle = selectedItem._type !== 'course' ? (selectedItem?.displayTitle || selectedItem?.title) : undefined
+  const pageTitle = t('app.edittype', { type: selectedItem._type !== 'component' ? t(`app.${selectedItem._type}`) : pluginNames.get(selectedItem._component) })
 
   return (
-    <Page title={pageTitle} crumbs={crumbs} actions={actions} sidebarItems={sidebarItems}>
+    <Page 
+      title={pageTitle}
+      subtitle={itemTitle}
+      crumbs={[
+        { label: t('app.projects'), href: '/' },
+        { label: courseTitle }
+      ]}
+      actions={[
+        {
+          icon: Icons.Save,
+          color: 'primary',
+          handleClick: () => {
+            document.querySelector('.project-schema-form form')?.requestSubmit()
+          }
+        }
+      ]}
+      sidebarItems={[
+        { type: 'button', label: t('app.preview'), handleClick: () => {} },
+        { type: 'button', style: 'secondary', label: t('app.export'), handleClick: () => {} },
+        { type: 'spacer' },
+        { type: 'link', label: 'Extensions', icon: Icons.AdaptExtension, handleClick: () => {} },
+        { type: 'link', label: 'Theme', icon: Icons.AdaptTheme, handleClick: () => {} },
+        { type: 'link', label: 'Menu', icon: Icons.AdaptMenu, handleClick: () => {} },
+        { type: 'spacer' },
+        { type: 'heading', label: t('app.coursestructure') },
+        {
+          type: 'custom',
+          content: (
+            <ContentTree
+              tree={tree}
+              flatMap={flatMap}
+              pluginNames={pluginNames}
+              selectedId={selectedId}
+              onSelect={handleSelect}
+              onAddChild={handleAddChild}
+              onDelete={handleDelete}
+              onReorder={handleReorder}
+            />
+          )
+        }
+      ]}>
       {selectedItem
         ? (
           <Box className='project-schema-form'>

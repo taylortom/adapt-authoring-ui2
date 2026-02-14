@@ -86,10 +86,9 @@ const SchemaForm = ({ apiName, uiSchema, dataId, queryString, requiredOnly = fal
     <Paper sx={{ p: 4 }}>
       <Form
         schema={processedSchema}
-        uiSchema={uiSchema}
+        uiSchema={{ "ui:submitButtonOptions": { norender: true }, ...uiSchema }}
         formData={data}
         validator={validator}
-        onSubmit={onSubmit}
       />
     </Paper>
   )

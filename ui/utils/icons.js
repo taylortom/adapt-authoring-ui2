@@ -1,80 +1,88 @@
 import AccountCircle from '@mui/icons-material/AccountCircle'
-import AddIcon from '@mui/icons-material/Add'
-import AddLinkIcon from '@mui/icons-material/AddLink'
-import ArticleIcon from '@mui/icons-material/Article'
-import BookIcon from '@mui/icons-material/Book'
-import CheckIcon from '@mui/icons-material/Check'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import ChromeReaderModeIcon from '@mui/icons-material/ChromeReaderMode'
-import CodeIcon from '@mui/icons-material/Code'
-import DarkModeIcon from '@mui/icons-material/DarkMode'
-import DeleteIcon from '@mui/icons-material/Delete'
-import DescriptionIcon from '@mui/icons-material/Description'
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
-import EditIcon from '@mui/icons-material/Edit'
-import ExtensionIcon from '@mui/icons-material/Extension'
-import FilterListIcon from '@mui/icons-material/FilterList'
-import FileUploadIcon from '@mui/icons-material/FileUpload'
-import HelpIcon from '@mui/icons-material/Help'
-import InfoIcon from '@mui/icons-material/Info'
-import LightModeIcon from '@mui/icons-material/LightMode'
-import LinkOffIcon from '@mui/icons-material/LinkOff'
-import LogoutIcon from '@mui/icons-material/Logout'
-import MenuIcon from '@mui/icons-material/Menu'
-import PaletteIcon from '@mui/icons-material/Palette'
-import PowerIcon from '@mui/icons-material/Power'
-import SettingsIcon from '@mui/icons-material/Settings'
-import SettingsBrightnessIcon from '@mui/icons-material/SettingsBrightness'
-import ViewColumnIcon from '@mui/icons-material/ViewColumn'
-import VisibilityIcon from '@mui/icons-material/Visibility'
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
-import WindowIcon from '@mui/icons-material/Window'
-import VideocamIcon from '@mui/icons-material/Videocam'
-import AudiotrackIcon from '@mui/icons-material/Audiotrack'
-import ImageIcon from '@mui/icons-material/Image'
-import ScheduleIcon from '@mui/icons-material/Schedule'
-import SortByAlphaIcon from '@mui/icons-material/SortByAlpha'
+import Add from '@mui/icons-material/Add'
+import AddLink from '@mui/icons-material/AddLink'
+import Article from '@mui/icons-material/Article'
+import Audiotrack from '@mui/icons-material/Audiotrack'
+import Book from '@mui/icons-material/Book'
+import Check from '@mui/icons-material/Check'
+import ChevronLeft from '@mui/icons-material/ChevronLeft'
+import ChevronRight from '@mui/icons-material/ChevronRight'
+import ChromeReaderMode from '@mui/icons-material/ChromeReaderMode'
+import Code from '@mui/icons-material/Code'
+import DarkMode from '@mui/icons-material/DarkMode'
+import Delete from '@mui/icons-material/Delete'
+import Description from '@mui/icons-material/Description'
+import DragIndicator from '@mui/icons-material/DragIndicator'
+import Edit from '@mui/icons-material/Edit'
+import Extension from '@mui/icons-material/Extension'
+import FileUpload from '@mui/icons-material/FileUpload'
+import FilterList from '@mui/icons-material/FilterList'
+import Help from '@mui/icons-material/Help'
+import Image from '@mui/icons-material/Image'
+import Info from '@mui/icons-material/Info'
+import LightMode from '@mui/icons-material/LightMode'
+import LinkOff from '@mui/icons-material/LinkOff'
+import LocalPolice from '@mui/icons-material/LocalPolice';
+import Logout from '@mui/icons-material/Logout'
+import Menu from '@mui/icons-material/Menu'
+import Palette from '@mui/icons-material/Palette'
+import Person from '@mui/icons-material/Person'
+import Power from '@mui/icons-material/Power'
+import Psychology from '@mui/icons-material/Psychology'
+import Schedule from '@mui/icons-material/Schedule'
+import Settings from '@mui/icons-material/Settings'
+import SettingsBrightness from '@mui/icons-material/SettingsBrightness'
+import Shield from '@mui/icons-material/Shield'
+import SortByAlpha from '@mui/icons-material/SortByAlpha'
+import Videocam from '@mui/icons-material/Videocam'
+import ViewColumn from '@mui/icons-material/ViewColumn'
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import Window from '@mui/icons-material/Window'
 
 const Icons = {
   Account: AccountCircle,
-  AdaptComponent: ChromeReaderModeIcon,
-  AdaptExtension: ExtensionIcon,
-  AdaptMenu: WindowIcon,
-  AdaptPlugin: PowerIcon,
-  AdaptTheme: PaletteIcon,
-  Add: AddIcon,
-  Article: ArticleIcon,
-  Audio: AudiotrackIcon,
-  Block: ViewColumnIcon,
-  CloseSidebar: ChevronLeftIcon,
-  Code: CodeIcon,
-  Course: BookIcon,
-  DarkMode: DarkModeIcon,
-  Delete: DeleteIcon,
-  Disable: VisibilityOffIcon,
-  DragHandle: DragIndicatorIcon,
-  Edit: EditIcon,
-  Enable: VisibilityIcon,
-  Filter: FilterListIcon,
-  Help: HelpIcon,
-  Image: ImageIcon,
-  Import: CodeIcon,
-  Info: InfoIcon,
-  Install: AddLinkIcon,
-  LightMode: LightModeIcon,
-  Logout: LogoutIcon,
-  Menu: MenuIcon,
-  OpenSidebar: ChevronRightIcon,
-  Page: DescriptionIcon,
-  Save: CheckIcon,
-  Schedule: ScheduleIcon,
-  Settings: SettingsIcon,
-  SortByAlpha: SortByAlphaIcon,
-  SystemMode: SettingsBrightnessIcon,
-  Uninstall: LinkOffIcon,
-  Update: FileUploadIcon,
-  Video: VideocamIcon,
+  AdaptComponent: ChromeReaderMode,
+  AdaptExtension: Extension,
+  AdaptMenu: Window,
+  AdaptPlugin: Power,
+  AdaptTheme: Palette,
+  Add: Add,
+  Admin: Shield,
+  Article: Article,
+  Audio: Audiotrack,
+  AuthUser: Person,
+  Block: ViewColumn,
+  CloseSidebar: ChevronLeft,
+  Code: Code,
+  Course: Book,
+  CourseCreator: Psychology,
+  DarkMode: DarkMode,
+  Delete: Delete,
+  Disable: VisibilityOff,
+  DragHandle: DragIndicator,
+  Edit: Edit,
+  Enable: Visibility,
+  Filter: FilterList,
+  Help: Help,
+  Image: Image,
+  Import: Code,
+  Info: Info,
+  Install: AddLink,
+  LightMode: LightMode,
+  Logout: Logout,
+  Menu: Menu,
+  OpenSidebar: ChevronRight,
+  Page: Description,
+  Save: Check,
+  Schedule: Schedule,
+  Settings: Settings,
+  SortByAlpha: SortByAlpha,
+  SuperAdmin: LocalPolice,
+  SystemMode: SettingsBrightness,
+  Uninstall: LinkOff,
+  Update: FileUpload,
+  Video: Videocam,
 }
 
 export default Icons
