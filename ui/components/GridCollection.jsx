@@ -27,6 +27,7 @@ export default function GridCollection ({
   cardHeight = 220,
   selectable = false,
   onSelectionChange,
+  onClick,
   renderItem,
   transformData,
   emptyMessage,
@@ -174,9 +175,9 @@ export default function GridCollection ({
           return (
             <Box
               key={item._id}
-              onClick={selectable ? () => toggleSelected(item._id) : undefined}
+              onClick={() => { onClick?.(item); toggleSelected(item._id) }}
               sx={{
-                cursor: selectable ? 'pointer' : undefined,
+                cursor: (selectable || onClick) ? 'pointer' : undefined,
                 borderRadius: 1,
                 outline: isSelected ? 3 : 0,
                 outlineStyle: 'solid',

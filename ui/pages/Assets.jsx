@@ -115,8 +115,8 @@ function AssetDetailDialog ({ asset, onClose }) {
 export default function Assets () {
   const [selectedAsset, setSelectedAsset] = useState(null)
 
-  const handleSelectionChange = useCallback((selectedItems) => {
-    setSelectedAsset(selectedItems.length > 0 ? selectedItems[0] : null)
+  const handleClick = useCallback((item) => {
+    setSelectedAsset(item)
   }, [])
 
   return (
@@ -128,8 +128,7 @@ export default function Assets () {
           { value: 'title', icon: Icons.SortByAlpha },
           { value: 'updatedAt', icon: Icons.Schedule }
         ]}
-        selectable
-        onSelectionChange={handleSelectionChange}
+        onClick={handleClick}
         defaultSort={{ field: 'updatedAt', order: -1 }}
         pageSizeOptions={[12, 24, 48]}
         gridMinWidth={200}

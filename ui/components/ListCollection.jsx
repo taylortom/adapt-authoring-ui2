@@ -29,10 +29,11 @@ function sortItems (items, field, order) {
   })
 }
 
-function DefaultListItem ({ item, mapItem }) {
+function DefaultListItem ({ item, mapItem, onClick }) {
   const { icon: Icon, iconColor, primary, secondary, secondaryAction, actions } = mapItem(item)
   const [open, setOpen] = useState(false)
   const hasActions = actions?.length > 0
+  const clickable = hasActions || onClick
 
   const content = (
     <>
@@ -47,11 +48,16 @@ function DefaultListItem ({ item, mapItem }) {
     </>
   )
 
+  const handleClick = () => {
+    onClick?.(item)
+    if (hasActions) setOpen(!open)
+  }
+
   return (
     <Box sx={item.disabled ? disabledSx : undefined}>
-      <ListItem secondaryAction={secondaryAction} disablePadding={hasActions}>
-        {hasActions
-          ? <ListItemButton onClick={() => setOpen(!open)}>{content}</ListItemButton>
+      <ListItem secondaryAction={secondaryAction} disablePadding={clickable}>
+        {clickable
+          ? <ListItemButton onClick={handleClick}>{content}</ListItemButton>
           : content}
       </ListItem>
       {hasActions && (
@@ -91,6 +97,7 @@ export default function ListCollection ({
   groupLabel,
   renderGroup,
   mapItem,
+  onClick,
   transformData,
   emptyMessage,
   title,
@@ -165,7 +172,7 @@ export default function ListCollection ({
                 )}
                 <List disablePadding>
                   {group.map(item => (
-                    <DefaultListItem key={item._id} item={item} mapItem={mapItem} />
+                    <DefaultListItem key={item._id} item={item} mapItem={mapItem} onClick={onClick} />
                   ))}
                 </List>
               </Paper>
@@ -176,7 +183,7 @@ export default function ListCollection ({
               <Paper>
                 <List disablePadding>
                   {items.map(item => (
-                    <DefaultListItem key={item._id} item={item} mapItem={mapItem} />
+                    <DefaultListItem key={item._id} item={item} mapItem={mapItem} onClick={onClick} />
                   ))}
                 </List>
               </Paper>
