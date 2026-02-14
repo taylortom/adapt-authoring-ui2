@@ -68,13 +68,9 @@ export default function Projects () {
       selectable={true}
       renderItem={(item) => <ProjectCard project={item} />}
       title={t('app.projects')}
-      dial={{
-        label: 'course actions',
-        actions: [
-          { icon: Icons.Add, label: t('app.addnewproject'), handleClick: openWizard },
-          { icon: Icons.Import, label: t('app.importcourse') }
-        ]
-      }}
+      actions={[
+        { icon: Icons.Add, label: t('app.addnewproject'), handleClick: openWizard },
+      ]}
       sidebarItems={[
         { type: 'button', label: t('app.addnewproject'), handleClick: openWizard },
         { type: 'button', style: 'secondary', label: t('app.importcourse'), handleClick: () => {} }

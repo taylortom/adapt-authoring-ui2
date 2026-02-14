@@ -4,10 +4,8 @@ import {
   Card,
   CardActionArea,
   CardContent,
-  CircularProgress,
   Container,
   Dialog,
-  Grid,
   Stack,
   Step,
   StepLabel,
@@ -18,6 +16,7 @@ import { useEffect, useState } from 'react'
 import Icons from '../utils/icons'
 import Page from './Page'
 import SchemaForm from './SchemaForm'
+import SelectGrid from './SelectGrid'
 import StyledDialog from './StyledDialog'
 
 function PathSelection ({ paths, onSelect }) {
@@ -68,47 +67,6 @@ function WizardNav ({ steps, activeStep, setActiveStep, isLast, onComplete }) {
   )
 }
 
-function WizardSelect ({ items, value, onChange, multiple }) {
-  const selected = multiple ? (value ?? []) : value
-  const handleClick = (key) => {
-    if (multiple) {
-      onChange(selected.includes(key) ? selected.filter(k => k !== key) : [...selected, key])
-    } else {
-      onChange(key)
-    }
-  }
-  return (
-    <Grid container spacing={2}>
-      {items.map(item => {
-        const isSelected = multiple ? selected.includes(item.key) : selected === item.key
-        const Icon = item.icon
-        return (
-          <Grid key={item.key} size={{ xs: 6, sm: 4 }}>
-            <Card sx={{ border: 2, borderColor: isSelected ? 'primary.main' : 'transparent', bgcolor: isSelected ? 'primary.main' : undefined, color: isSelected ? 'primary.contrastText' : undefined, height: '100%' }}>
-              <CardActionArea onClick={() => handleClick(item.key)} sx={{ p: 2, height: '100%' }}>
-                <CardContent>
-                  {Icon && <Icon sx={{ fontSize: 36, color: isSelected ? 'inherit' : 'primary.main', mb: 1 }} />}
-                  <Typography variant='subtitle1'>{item.label}</Typography>
-                  {item.description && <Typography variant='body2' sx={{ color: isSelected ? 'inherit' : 'text.secondary', textAlign: 'left', opacity: isSelected ? 0.85 : 1 }}>{item.description}</Typography>}
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        )
-      })}
-    </Grid>
-  )
-}
-
-function WizardLoading ({ message }) {
-  return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: 8, gap: 3 }}>
-      <CircularProgress />
-      {message && <Typography color='text.secondary'>{message}</Typography>}
-    </Box>
-  )
-}
-
 function StepContent ({ step, stepState, onStepStateChange }) {
   switch (step.type) {
     case 'form':
@@ -124,15 +82,13 @@ function StepContent ({ step, stepState, onStepStateChange }) {
       )
     case 'select':
       return (
-        <WizardSelect
+        <SelectGrid
           items={step.items}
           value={stepState}
           onChange={onStepStateChange}
           multiple={step.multiple}
         />
       )
-    case 'loading':
-      return <WizardLoading message={step.message} />
     case 'custom':
       return step.content
     default:
@@ -152,7 +108,7 @@ function IntroDialog ({ open, onClose, content }) {
   )
 }
 
-export default function Wizard ({ steps = [], paths, open, onClose, onComplete, onPathChange, variant = 'dialog', crumbs }) {
+export default function Wizard ({ steps = [], paths, open, onClose, onComplete, onPathChange, loading, variant = 'dialog', crumbs }) {
   const [activeStep, setActiveStep] = useState(0)
   const [selectedPath, setSelectedPath] = useState(null)
   const [stepData, setStepData] = useState({})
@@ -219,6 +175,7 @@ export default function Wizard ({ steps = [], paths, open, onClose, onComplete, 
           open={open}
           onClose={onClose}
           title={currentStep?.title ?? currentStep?.label}
+          loading={loading}
           paperSx={{ width: 900, height: 700, maxWidth: 900, maxHeight: 700 }}
           footer={
             <Box sx={{ flexShrink: 0, position: 'relative', zIndex: 1 }}>

@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 import { Paper } from '@mui/material'
 import { useApiQuery } from '../utils/api'
 import Form from '@rjsf/mui'
@@ -53,7 +53,20 @@ function filterRequiredOnly (schema) {
   return filtered
 }
 
-const SchemaForm = ({ apiName, uiSchema, dataId, queryString, formData: externalFormData, onChange, fields, requiredOnly = false, disableCache = false, onSubmit, disablePaper = false }) => {
+const SchemaForm = ({
+  apiName,
+  uiSchema,
+  dataId,
+  queryString,
+  formData: externalFormData,
+  onChange,
+  onDirtyChange,
+  fields,
+  requiredOnly = false,
+  disableCache = false,
+  onSubmit,
+  disablePaper = false
+}) => {
   const cacheOpts = disableCache ? { gcTime: 0, staleTime: 0 } : {}
 
   const { data: schema, error: schemaError } = useApiQuery(
@@ -67,10 +80,22 @@ const SchemaForm = ({ apiName, uiSchema, dataId, queryString, formData: external
     { key: dataId, enabled: !!dataId, ...cacheOpts }
   )
   const formData = dataId ? fetchedData : (externalFormData ?? {})
+  const originalDataRef = useRef(null)
+  if (formData && !originalDataRef.current) {
+    originalDataRef.current = JSON.stringify(formData)
+  }
+
+  const handleChange = useCallback((e) => {
+    onChange?.(e)
+    if (onDirtyChange && originalDataRef.current) {
+      onDirtyChange(JSON.stringify(e.formData) !== originalDataRef.current)
+    }
+  }, [onChange, onDirtyChange])
 
   const processedSchema = useMemo(() => {
     if (!schema) return null
     const s = { ...schema, properties: { ...schema.properties } }
+    delete s.description // don't show schema description
     ATTRIBUTE_BLACKLIST.forEach(a => delete s.properties[a])
     if (fields) {
       const allowed = new Set(fields)
@@ -91,9 +116,13 @@ const SchemaForm = ({ apiName, uiSchema, dataId, queryString, formData: external
   const form = (
     <Form
       schema={processedSchema}
-      uiSchema={{ "ui:submitButtonOptions": { norender: true }, ...uiSchema }}
+      uiSchema={{
+        'ui:submitButtonOptions': { norender: true },
+        ...(fields ? { 'ui:order': [...fields, '*'] } : undefined),
+        ...uiSchema
+      }}
       formData={formData}
-      onChange={onChange}
+      onChange={handleChange}
       validator={validator}
     />
   )

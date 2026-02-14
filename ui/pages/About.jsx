@@ -17,9 +17,20 @@ const sidebarItems = [
 function About () {
   const { user, scopes, isSuper } = useAuth()
   return (
-    <Page title='About' body={`Welcome to the application, ${user?.email}!`} sidebarItems={sidebarItems}>
+    <Page 
+      title='About'
+      subtitle={`Welcome to the application, ${user?.email}!`}
+      sidebarItems={sidebarItems}
+      dial={{
+        label: 'Speed dial',
+        actions: [
+          { icon: Icons.Add, label: 'Item 1' },
+          { icon: Icons.Import, label: 'Item 2' }
+        ]
+      }}
+    >
       <Paper sx={{ p: 4, mb:4 }}>
-        <Typography>Learn more about this application.</Typography>
+        <Typography>This page shows some examples of the new UI elements.</Typography>
       </Paper>
       <Paper sx={{ p: 4 }}>
         <Typography variant='h6'>Your Permissions:</Typography>

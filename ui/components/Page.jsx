@@ -23,7 +23,7 @@ function Actions (items) {
   }
   return (
     <Stack direction='row' spacing={1}>
-      {items.map((item, i) => <Fab key={i} color={item.color ?? 'secondary'} size='medium' {...(item.href ? { component: RouterLink, to: item.href } : { onClick: item.handleClick })} aria-label={item.label} sx={{ boxShadow: 'none' }}><item.icon /></Fab>)}
+      {items.map((item, i) => <Fab key={i} color={item.color ?? 'primary'} size='medium' {...(item.href ? { component: RouterLink, to: item.href } : { onClick: item.handleClick })} aria-label={item.label} sx={{ boxShadow: 'none' }}><item.icon /></Fab>)}
     </Stack>
   )
 }

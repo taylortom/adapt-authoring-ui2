@@ -85,6 +85,7 @@ export default {
   SystemMode: SettingsBrightness,
   Uninstall: LinkOff,
   Update: FileUpload,
+  Upload: FileUpload,
   Video: Videocam,
   Zip: FolderZip,
 }
