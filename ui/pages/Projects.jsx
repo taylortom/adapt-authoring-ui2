@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Card,
@@ -10,6 +11,7 @@ import {
   Typography
 } from '@mui/material'
 import GridCollection from '../components/GridCollection'
+import CreateCourseWizard from '../components/wizards/CreateCourseWizard'
 import { t } from '../utils/lang'
 import Icons from '../utils/icons'
 
@@ -49,7 +51,12 @@ function ProjectCard ({ project }) {
 }
 
 export default function Projects () {
+  const [wizardOpen, setWizardOpen] = useState(false)
+  const openWizard = () => setWizardOpen(true)
+
   return (
+    <>
+    <CreateCourseWizard open={wizardOpen} onClose={() => setWizardOpen(false)} />
     <GridCollection
       apiRoot='content'
       queryBody={{ _type: 'course' }}
@@ -64,15 +71,16 @@ export default function Projects () {
       dial={{
         label: 'course actions',
         actions: [
-          { icon: Icons.Add, label: t('app.addnewproject') },
+          { icon: Icons.Add, label: t('app.addnewproject'), handleClick: openWizard },
           { icon: Icons.Import, label: t('app.importcourse') }
         ]
       }}
       sidebarItems={[
-        { type: 'button', label: t('app.addnewproject'), handleClick: () => {} },
+        { type: 'button', label: t('app.addnewproject'), handleClick: openWizard },
         { type: 'button', style: 'secondary', label: t('app.importcourse'), handleClick: () => {} }
       ]}
       fullWidth
     />
+    </>
   )
 }

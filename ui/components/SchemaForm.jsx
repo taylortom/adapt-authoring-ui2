@@ -53,7 +53,7 @@ function filterRequiredOnly (schema) {
   return filtered
 }
 
-const SchemaForm = ({ apiName, uiSchema, dataId, queryString, requiredOnly = false, disableCache = false, onSubmit }) => {
+const SchemaForm = ({ apiName, uiSchema, dataId, queryString, formData: externalFormData, onChange, fields, requiredOnly = false, disableCache = false, onSubmit }) => {
   const cacheOpts = disableCache ? { gcTime: 0, staleTime: 0 } : {}
 
   const { data: schema, error: schemaError } = useApiQuery(
@@ -61,24 +61,30 @@ const SchemaForm = ({ apiName, uiSchema, dataId, queryString, requiredOnly = fal
     (api) => api.getSchema(queryString),
     { key: `schema-${queryString}`, ...cacheOpts }
   )
-  const { data, error: dataError } = useApiQuery(
+  const { data: fetchedData, error: dataError } = useApiQuery(
     apiName,
     (api) => api.get(dataId),
-    { key: dataId, ...cacheOpts }
+    { key: dataId, enabled: !!dataId, ...cacheOpts }
   )
+  const formData = dataId ? fetchedData : (externalFormData ?? {})
+
   const processedSchema = useMemo(() => {
     if (!schema) return null
     const s = { ...schema, properties: { ...schema.properties } }
     ATTRIBUTE_BLACKLIST.forEach(a => delete s.properties[a])
+    if (fields) {
+      const allowed = new Set(fields)
+      Object.keys(s.properties).forEach(k => { if (!allowed.has(k)) delete s.properties[k] })
+    }
     if (!requiredOnly) return s
     const filtered = filterRequiredOnly(s)
     return Object.keys(filtered.properties).length > 0 ? filtered : s
-  }, [schema, requiredOnly])
+  }, [schema, requiredOnly, fields])
 
   if (dataError ?? schemaError) {
     alert(dataError ?? schemaError)
   }
-  if (!processedSchema || !data) {
+  if (!processedSchema || (dataId && !fetchedData)) {
     return ''
   }
 
@@ -87,7 +93,8 @@ const SchemaForm = ({ apiName, uiSchema, dataId, queryString, requiredOnly = fal
       <Form
         schema={processedSchema}
         uiSchema={{ "ui:submitButtonOptions": { norender: true }, ...uiSchema }}
-        formData={data}
+        formData={formData}
+        onChange={onChange}
         validator={validator}
       />
     </Paper>
